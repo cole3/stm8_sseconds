@@ -1,0 +1,988 @@
+;	STMicroelectronics Project file
+
+[Version]
+Keyword=ST7Project
+Number=1.3
+
+[Project]
+Name=atomthreads-cosmic
+Toolset=STM8 Cosmic
+
+[Config]
+0=Config.0
+1=Config.1
+
+[Config.0]
+ConfigName=Debug
+Target=$(ProjectSFile).elf
+OutputFolder=Debug
+Debug=$(TargetFName)
+
+[Config.1]
+ConfigName=Release
+Target=$(ProjectSFile).elf
+OutputFolder=Release
+Debug=$(TargetFName)
+
+[Root]
+ElemType=Project
+PathName=atomthreads-cosmic
+Child=Root.App
+Config.0=Root.Config.0
+Config.1=Root.Config.1
+
+[Root.Config.0]
+Settings.0.0=Root.Config.0.Settings.0
+Settings.0.1=Root.Config.0.Settings.1
+Settings.0.2=Root.Config.0.Settings.2
+Settings.0.3=Root.Config.0.Settings.3
+Settings.0.4=Root.Config.0.Settings.4
+Settings.0.5=Root.Config.0.Settings.5
+Settings.0.6=Root.Config.0.Settings.6
+Settings.0.7=Root.Config.0.Settings.7
+Settings.0.8=Root.Config.0.Settings.8
+
+[Root.Config.1]
+Settings.1.0=Root.Config.1.Settings.0
+Settings.1.1=Root.Config.1.Settings.1
+Settings.1.2=Root.Config.1.Settings.2
+Settings.1.3=Root.Config.1.Settings.3
+Settings.1.4=Root.Config.1.Settings.4
+Settings.1.5=Root.Config.1.Settings.5
+Settings.1.6=Root.Config.1.Settings.6
+Settings.1.7=Root.Config.1.Settings.7
+Settings.1.8=Root.Config.1.Settings.8
+
+[Root.Config.0.Settings.0]
+String.6.0=2015,9,20,9,40,48
+String.100.0=ST Assembler Linker
+String.100.1=ST7 Cosmic
+String.100.2=STM8 Cosmic
+String.100.3=ST7 Metrowerks V1.1
+String.100.4=Raisonance
+String.101.0=STM8 Cosmic
+String.102.0=D:\Program Files\STMicroelectronics\st_toolset\CXSTM8
+String.103.0=
+String.104.0=Hstm8
+String.105.0=Lib
+String.106.0=Debug
+String.107.0=$(ProjectSFile).elf
+Int.108=1
+
+[Root.Config.0.Settings.1]
+String.6.0=2010,2,9,1,12,48
+String.100.0=$(TargetFName)
+String.101.0=
+String.102.0=
+String.103.0=.\;..\..\kernel;..\..\drivers\inc;..\..\drivers\src;..\..\app;..\..\tests;
+
+[Root.Config.0.Settings.2]
+String.2.0=
+String.6.0=2015,9,20,9,40,48
+String.100.0=STM8L152R8
+
+[Root.Config.0.Settings.3]
+String.2.0=Compiling $(InputFile)...
+String.3.0=cxstm8 +modsl0 -customDebCompat -customOpt -no +split -customC-pp -customLst -l -dSTM8L15X_HD -dATOM_STACK_CHECKING -i..\..\tests -i..\..\app -i..\..\drivers\inc -istm8s-periphs -i../../kernel -i../../tests $(ToolsetIncOpts) -cl$(IntermPath) -co$(IntermPath) $(InputFile)
+String.4.0=$(IntermPath)$(InputName).$(ObjectExt)
+String.5.0=$(IntermPath)$(InputName).ls
+String.6.0=2015,9,20,11,29,39
+
+[Root.Config.0.Settings.4]
+String.2.0=Assembling $(InputFile)...
+String.3.0=castm8 -xx -l -u $(ToolsetIncOpts) -o$(IntermPath)$(InputName).$(ObjectExt) $(InputFile)
+String.4.0=$(IntermPath)$(InputName).$(ObjectExt)
+String.5.0=$(IntermPath)$(InputName).ls
+String.6.0=2010,2,10,1,16,38
+
+[Root.Config.0.Settings.5]
+String.2.0=Running Pre-Link step
+String.6.0=2010,2,9,1,12,48
+String.8.0=
+
+[Root.Config.0.Settings.6]
+String.2.0=Running Linker
+String.3.0=clnk $(ToolsetLibOpts) -o $(OutputPath)$(TargetSName).sm8 -fakeInteger -fakeOutFile$(ProjectSFile).elf -fakeRunConv -fakeStartupcrtsi0.sm8 -fakeAutoGen -fakeVectFilestm8_interrupt_vector.c -fakeVectAddr0x8000 -customMapFile -customMapFile-m$(OutputPath)$(TargetSName).map -customMapAddress -customCfgFile$(OutputPath)$(TargetSName).lkf 
+String.3.1=cvdwarf $(OutputPath)$(TargetSName).sm8
+String.4.0=$(OutputPath)$(TargetFName)
+String.5.0=$(OutputPath)$(ProjectSFile).elf $(OutputPath)$(TargetSName).map
+String.6.0=2015,9,20,11,29,39
+String.100.0=
+String.101.0=crtsi.st7
+String.102.0=+seg .const -b 0x8080 -m 0xff80 -n .const -it
+String.102.1=+seg .text -a .const -n .text
+String.102.2=+seg .eeprom -b 0x1000 -m 0x800 -n .eeprom
+String.102.3=+seg .bsct -b 0x0 -m 0x100 -n .bsct
+String.102.4=+seg .ubsct -a .bsct -n .ubsct
+String.102.5=+seg .bit -a .ubsct -n .bit -id
+String.102.6=+seg .share -a .bit -n .share -is
+String.102.7=+seg .data -b 0x100 -m 0xcff -n .data
+String.102.8=+seg .bss -a .data -n .bss
+String.103.0=Code,Constants[0x8080-0x17fff]=.const,.text
+String.103.1=Eeprom[0x1000-0x17ff]=.eeprom
+String.103.2=Zero Page[0x0-0xff]=.bsct,.ubsct,.bit,.share
+String.103.3=Ram[0x100-0xdfe]=.data,.bss
+String.104.0=0xfff
+String.105.0=libisl0.sm8;libm0.sm8
+Int.0=0
+Int.1=0
+
+[Root.Config.0.Settings.7]
+String.2.0=Running Post-Build step
+String.3.0=chex -o $(OutputPath)$(TargetSName).s19 $(OutputPath)$(TargetSName).sm8
+String.6.0=2010,2,9,1,12,48
+
+[Root.Config.0.Settings.8]
+String.2.0=Performing Custom Build on $(InputFile)
+String.6.0=2010,2,9,1,12,48
+
+[Root.Config.1.Settings.0]
+String.6.0=2010,2,9,1,12,50
+String.100.0=ST Assembler Linker
+String.100.1=ST7 Cosmic
+String.100.2=STM8 Cosmic
+String.100.3=ST7 Metrowerks V1.1
+String.100.4=Raisonance
+String.101.0=STM8 Cosmic
+String.102.0=D:\Program Files\STMicroelectronics\st_toolset\stvd
+String.103.0=
+String.104.0=Hstm8
+String.105.0=Lib
+String.106.0=Release
+String.107.0=$(ProjectSFile).elf
+Int.108=0
+
+[Root.Config.1.Settings.1]
+String.6.0=2010,2,9,1,12,48
+String.100.0=$(TargetFName)
+String.101.0=
+String.102.0=
+String.103.0=.\;..\..\kernel;..\..\drivers\inc;..\..\drivers\src;..\..\app;..\..\tests;
+
+[Root.Config.1.Settings.2]
+String.2.0=
+String.6.0=2015,9,20,9,40,48
+String.100.0=STM8L152R8
+
+[Root.Config.1.Settings.3]
+String.2.0=Compiling $(InputFile)...
+String.3.0=cxstm8 -i..\..\tests -i..\..\app -i..\..\drivers\inc +modsl0 -customOpt +split -customC-pp -dSTM8S105 -dATOM_STACK_CHECKING -istm8s-periphs -i../../kernel -i../../tests $(ToolsetIncOpts) -cl$(IntermPath) -co$(IntermPath) $(InputFile)
+String.4.0=$(IntermPath)$(InputName).$(ObjectExt)
+String.5.0=$(IntermPath)$(InputName).ls
+String.6.0=2010,5,27,22,48,49
+
+[Root.Config.1.Settings.4]
+String.2.0=Assembling $(InputFile)...
+String.3.0=castm8 $(ToolsetIncOpts) -o$(IntermPath)$(InputName).$(ObjectExt) $(InputFile)
+String.4.0=$(IntermPath)$(InputName).$(ObjectExt)
+String.5.0=$(IntermPath)$(InputName).ls
+String.6.0=2010,2,9,1,12,48
+
+[Root.Config.1.Settings.5]
+String.2.0=Running Pre-Link step
+String.6.0=2010,2,9,1,12,48
+String.8.0=
+
+[Root.Config.1.Settings.6]
+String.2.0=Running Linker
+String.3.0=clnk $(ToolsetLibOpts) -o $(OutputPath)$(TargetSName).sm8 -fakeInteger -fakeOutFile$(ProjectSFile).elf -fakeRunConv -fakeStartupcrtsi0.sm8 -fakeAutoGen -fakeVectFilestm8_interrupt_vector.c -customMapAddress -customCfgFile $(OutputPath)$(TargetSName).lkf 
+String.3.1=cvdwarf $(OutputPath)$(TargetSName).sm8 -fakeVectAddr0x8000
+String.4.0=$(OutputPath)$(TargetFName)
+String.5.0=$(OutputPath)$(ProjectSFile).elf
+String.6.0=2015,9,20,9,40,48
+String.100.0=
+String.101.0=crtsi.st7
+String.102.0=+seg .const -b 0x8080 -m 0xff80 -n .const -it 
+String.102.1=+seg .text -a .const -n .text 
+String.102.2=+seg .eeprom -b 0x1000 -m 0x800 -n .eeprom 
+String.102.3=+seg .bsct -b 0x0 -m 0x100 -n .bsct 
+String.102.4=+seg .ubsct -a .bsct -n .ubsct 
+String.102.5=+seg .bit -a .ubsct -n .bit -id 
+String.102.6=+seg .share -a .bit -n .share -is 
+String.102.7=+seg .data -b 0x100 -m 0xcff -n .data 
+String.102.8=+seg .bss -a .data -n .bss
+String.103.0=Code,Constants[0x8080-0x17fff]=.const,.text
+String.103.1=Eeprom[0x1000-0x17ff]=.eeprom
+String.103.2=Zero Page[0x0-0xff]=.bsct,.ubsct,.bit,.share
+String.103.3=Ram[0x100-0xdfe]=.data,.bss
+String.104.0=0xfff
+String.105.0=libisl0.sm8;libm0.sm8
+Int.0=0
+Int.1=0
+
+[Root.Config.1.Settings.7]
+String.2.0=Running Post-Build step
+String.3.0=chex -o $(OutputPath)$(TargetSName).s19 $(OutputPath)$(TargetSName).sm8
+String.6.0=2010,2,9,1,12,48
+
+[Root.Config.1.Settings.8]
+String.2.0=Performing Custom Build on $(InputFile)
+String.6.0=2010,2,9,1,12,48
+
+[Root.App]
+ElemType=Folder
+PathName=App
+Child=Root.App...\..\app\main.c
+Next=Root.Drivers
+Config.0=Root.App.Config.0
+Config.1=Root.App.Config.1
+
+[Root.App.Config.0]
+Settings.0.0=Root.App.Config.0.Settings.0
+Settings.0.1=Root.App.Config.0.Settings.1
+Settings.0.2=Root.App.Config.0.Settings.2
+Settings.0.3=Root.App.Config.0.Settings.3
+
+[Root.App.Config.1]
+Settings.1.0=Root.App.Config.1.Settings.0
+Settings.1.1=Root.App.Config.1.Settings.1
+Settings.1.2=Root.App.Config.1.Settings.2
+Settings.1.3=Root.App.Config.1.Settings.3
+
+[Root.App.Config.0.Settings.0]
+String.6.0=2015,9,20,10,41,13
+String.8.0=Debug
+Int.0=0
+Int.1=0
+
+[Root.App.Config.0.Settings.1]
+String.2.0=Compiling $(InputFile)...
+String.3.0=cxstm8 +modsl0 -customDebCompat -customOpt -no +split -customC-pp -customLst -l -dSTM8L15X_HD -dATOM_STACK_CHECKING -i..\..\tests -i..\..\app -i..\..\drivers\inc -istm8s-periphs -i../../kernel -i../../tests $(ToolsetIncOpts) -cl$(IntermPath) -co$(IntermPath) $(InputFile)
+String.4.0=$(IntermPath)$(InputName).$(ObjectExt)
+String.5.0=$(IntermPath)$(InputName).ls
+String.6.0=2015,9,20,11,29,39
+
+[Root.App.Config.0.Settings.2]
+String.2.0=Assembling $(InputFile)...
+String.3.0=castm8 -xx -l -u $(ToolsetIncOpts) -o$(IntermPath)$(InputName).$(ObjectExt) $(InputFile)
+String.4.0=$(IntermPath)$(InputName).$(ObjectExt)
+String.5.0=$(IntermPath)$(InputName).ls
+String.6.0=2010,2,10,1,16,38
+
+[Root.App.Config.0.Settings.3]
+String.2.0=Performing Custom Build on $(InputFile)
+String.3.0=
+String.4.0=
+String.5.0=
+String.6.0=2010,2,9,1,12,48
+
+[Root.App.Config.1.Settings.0]
+String.6.0=2015,9,20,10,41,13
+String.8.0=Release
+Int.0=0
+Int.1=0
+
+[Root.App.Config.1.Settings.1]
+String.2.0=Compiling $(InputFile)...
+String.3.0=cxstm8 -i..\..\tests -i..\..\app -i..\..\drivers\inc +modsl0 -customOpt +split -customC-pp -dSTM8S105 -dATOM_STACK_CHECKING -istm8s-periphs -i../../kernel -i../../tests $(ToolsetIncOpts) -cl$(IntermPath) -co$(IntermPath) $(InputFile)
+String.4.0=$(IntermPath)$(InputName).$(ObjectExt)
+String.5.0=$(IntermPath)$(InputName).ls
+String.6.0=2010,5,27,22,48,49
+
+[Root.App.Config.1.Settings.2]
+String.2.0=Assembling $(InputFile)...
+String.3.0=castm8 $(ToolsetIncOpts) -o$(IntermPath)$(InputName).$(ObjectExt) $(InputFile)
+String.4.0=$(IntermPath)$(InputName).$(ObjectExt)
+String.5.0=$(IntermPath)$(InputName).ls
+String.6.0=2010,2,9,1,12,48
+
+[Root.App.Config.1.Settings.3]
+String.2.0=Performing Custom Build on $(InputFile)
+String.3.0=
+String.4.0=
+String.5.0=
+String.6.0=2010,2,9,1,12,48
+
+[Root.App...\..\app\main.c]
+ElemType=File
+PathName=..\..\app\main.c
+Next=Root.App...\..\app\atomport-tests.h
+
+[Root.App...\..\app\atomport-tests.h]
+ElemType=File
+PathName=..\..\app\atomport-tests.h
+
+[Root.Drivers]
+ElemType=Folder
+PathName=Drivers
+Child=Root.Drivers.Drivers\Inc
+Next=Root.Kernel
+Config.0=Root.Drivers.Config.0
+Config.1=Root.Drivers.Config.1
+
+[Root.Drivers.Config.0]
+Settings.0.0=Root.Drivers.Config.0.Settings.0
+Settings.0.1=Root.Drivers.Config.0.Settings.1
+Settings.0.2=Root.Drivers.Config.0.Settings.2
+Settings.0.3=Root.Drivers.Config.0.Settings.3
+
+[Root.Drivers.Config.1]
+Settings.1.0=Root.Drivers.Config.1.Settings.0
+Settings.1.1=Root.Drivers.Config.1.Settings.1
+Settings.1.2=Root.Drivers.Config.1.Settings.2
+Settings.1.3=Root.Drivers.Config.1.Settings.3
+
+[Root.Drivers.Config.0.Settings.0]
+String.6.0=2015,9,20,9,42,19
+String.8.0=Debug
+Int.0=0
+Int.1=0
+
+[Root.Drivers.Config.0.Settings.1]
+String.2.0=Compiling $(InputFile)...
+String.3.0=cxstm8 +modsl0 -customDebCompat -customOpt -no +split -customC-pp -customLst -l -dSTM8L15X_HD -dATOM_STACK_CHECKING -i..\..\tests -i..\..\app -i..\..\drivers\inc -istm8s-periphs -i../../kernel -i../../tests $(ToolsetIncOpts) -cl$(IntermPath) -co$(IntermPath) $(InputFile)
+String.4.0=$(IntermPath)$(InputName).$(ObjectExt)
+String.5.0=$(IntermPath)$(InputName).ls
+String.6.0=2015,9,20,11,29,39
+
+[Root.Drivers.Config.0.Settings.2]
+String.2.0=Assembling $(InputFile)...
+String.3.0=castm8 -xx -l -u $(ToolsetIncOpts) -o$(IntermPath)$(InputName).$(ObjectExt) $(InputFile)
+String.4.0=$(IntermPath)$(InputName).$(ObjectExt)
+String.5.0=$(IntermPath)$(InputName).ls
+String.6.0=2010,2,10,1,16,38
+
+[Root.Drivers.Config.0.Settings.3]
+String.2.0=Performing Custom Build on $(InputFile)
+String.3.0=
+String.4.0=
+String.5.0=
+String.6.0=2010,2,9,1,12,48
+
+[Root.Drivers.Config.1.Settings.0]
+String.6.0=2015,9,20,9,42,19
+String.8.0=Release
+Int.0=0
+Int.1=0
+
+[Root.Drivers.Config.1.Settings.1]
+String.2.0=Compiling $(InputFile)...
+String.3.0=cxstm8 -i..\..\tests -i..\..\app -i..\..\drivers\inc +modsl0 -customOpt +split -customC-pp -dSTM8S105 -dATOM_STACK_CHECKING -istm8s-periphs -i../../kernel -i../../tests $(ToolsetIncOpts) -cl$(IntermPath) -co$(IntermPath) $(InputFile)
+String.4.0=$(IntermPath)$(InputName).$(ObjectExt)
+String.5.0=$(IntermPath)$(InputName).ls
+String.6.0=2010,5,27,22,48,49
+
+[Root.Drivers.Config.1.Settings.2]
+String.2.0=Assembling $(InputFile)...
+String.3.0=castm8 $(ToolsetIncOpts) -o$(IntermPath)$(InputName).$(ObjectExt) $(InputFile)
+String.4.0=$(IntermPath)$(InputName).$(ObjectExt)
+String.5.0=$(IntermPath)$(InputName).ls
+String.6.0=2010,2,9,1,12,48
+
+[Root.Drivers.Config.1.Settings.3]
+String.2.0=Performing Custom Build on $(InputFile)
+String.3.0=
+String.4.0=
+String.5.0=
+String.6.0=2010,2,9,1,12,48
+
+[Root.Drivers.Drivers\Inc]
+ElemType=Folder
+PathName=Drivers\Inc
+Child=Root.Drivers.Drivers\Inc...\..\drivers\inc\stm8l15x_wwdg.h
+Next=Root.Drivers.Drivers\Src
+
+[Root.Drivers.Drivers\Inc...\..\drivers\inc\stm8l15x_wwdg.h]
+ElemType=File
+PathName=..\..\drivers\inc\stm8l15x_wwdg.h
+Next=Root.Drivers.Drivers\Inc...\..\drivers\inc\stm8l15x_wfe.h
+
+[Root.Drivers.Drivers\Inc...\..\drivers\inc\stm8l15x_wfe.h]
+ElemType=File
+PathName=..\..\drivers\inc\stm8l15x_wfe.h
+Next=Root.Drivers.Drivers\Inc...\..\drivers\inc\stm8l15x_usart.h
+
+[Root.Drivers.Drivers\Inc...\..\drivers\inc\stm8l15x_usart.h]
+ElemType=File
+PathName=..\..\drivers\inc\stm8l15x_usart.h
+Next=Root.Drivers.Drivers\Inc...\..\drivers\inc\stm8l15x_tim5.h
+
+[Root.Drivers.Drivers\Inc...\..\drivers\inc\stm8l15x_tim5.h]
+ElemType=File
+PathName=..\..\drivers\inc\stm8l15x_tim5.h
+Next=Root.Drivers.Drivers\Inc...\..\drivers\inc\stm8l15x_tim4.h
+
+[Root.Drivers.Drivers\Inc...\..\drivers\inc\stm8l15x_tim4.h]
+ElemType=File
+PathName=..\..\drivers\inc\stm8l15x_tim4.h
+Next=Root.Drivers.Drivers\Inc...\..\drivers\inc\stm8l15x_tim3.h
+
+[Root.Drivers.Drivers\Inc...\..\drivers\inc\stm8l15x_tim3.h]
+ElemType=File
+PathName=..\..\drivers\inc\stm8l15x_tim3.h
+Next=Root.Drivers.Drivers\Inc...\..\drivers\inc\stm8l15x_tim2.h
+
+[Root.Drivers.Drivers\Inc...\..\drivers\inc\stm8l15x_tim2.h]
+ElemType=File
+PathName=..\..\drivers\inc\stm8l15x_tim2.h
+Next=Root.Drivers.Drivers\Inc...\..\drivers\inc\stm8l15x_tim1.h
+
+[Root.Drivers.Drivers\Inc...\..\drivers\inc\stm8l15x_tim1.h]
+ElemType=File
+PathName=..\..\drivers\inc\stm8l15x_tim1.h
+Next=Root.Drivers.Drivers\Inc...\..\drivers\inc\stm8l15x_syscfg.h
+
+[Root.Drivers.Drivers\Inc...\..\drivers\inc\stm8l15x_syscfg.h]
+ElemType=File
+PathName=..\..\drivers\inc\stm8l15x_syscfg.h
+Next=Root.Drivers.Drivers\Inc...\..\drivers\inc\stm8l15x_spi.h
+
+[Root.Drivers.Drivers\Inc...\..\drivers\inc\stm8l15x_spi.h]
+ElemType=File
+PathName=..\..\drivers\inc\stm8l15x_spi.h
+Next=Root.Drivers.Drivers\Inc...\..\drivers\inc\stm8l15x_rtc.h
+
+[Root.Drivers.Drivers\Inc...\..\drivers\inc\stm8l15x_rtc.h]
+ElemType=File
+PathName=..\..\drivers\inc\stm8l15x_rtc.h
+Next=Root.Drivers.Drivers\Inc...\..\drivers\inc\stm8l15x_rst.h
+
+[Root.Drivers.Drivers\Inc...\..\drivers\inc\stm8l15x_rst.h]
+ElemType=File
+PathName=..\..\drivers\inc\stm8l15x_rst.h
+Next=Root.Drivers.Drivers\Inc...\..\drivers\inc\stm8l15x_pwr.h
+
+[Root.Drivers.Drivers\Inc...\..\drivers\inc\stm8l15x_pwr.h]
+ElemType=File
+PathName=..\..\drivers\inc\stm8l15x_pwr.h
+Next=Root.Drivers.Drivers\Inc...\..\drivers\inc\stm8l15x_lcd.h
+
+[Root.Drivers.Drivers\Inc...\..\drivers\inc\stm8l15x_lcd.h]
+ElemType=File
+PathName=..\..\drivers\inc\stm8l15x_lcd.h
+Next=Root.Drivers.Drivers\Inc...\..\drivers\inc\stm8l15x_iwdg.h
+
+[Root.Drivers.Drivers\Inc...\..\drivers\inc\stm8l15x_iwdg.h]
+ElemType=File
+PathName=..\..\drivers\inc\stm8l15x_iwdg.h
+Next=Root.Drivers.Drivers\Inc...\..\drivers\inc\stm8l15x_itc.h
+
+[Root.Drivers.Drivers\Inc...\..\drivers\inc\stm8l15x_itc.h]
+ElemType=File
+PathName=..\..\drivers\inc\stm8l15x_itc.h
+Next=Root.Drivers.Drivers\Inc...\..\drivers\inc\stm8l15x_irtim.h
+
+[Root.Drivers.Drivers\Inc...\..\drivers\inc\stm8l15x_irtim.h]
+ElemType=File
+PathName=..\..\drivers\inc\stm8l15x_irtim.h
+Next=Root.Drivers.Drivers\Inc...\..\drivers\inc\stm8l15x_i2c.h
+
+[Root.Drivers.Drivers\Inc...\..\drivers\inc\stm8l15x_i2c.h]
+ElemType=File
+PathName=..\..\drivers\inc\stm8l15x_i2c.h
+Next=Root.Drivers.Drivers\Inc...\..\drivers\inc\stm8l15x_gpio.h
+
+[Root.Drivers.Drivers\Inc...\..\drivers\inc\stm8l15x_gpio.h]
+ElemType=File
+PathName=..\..\drivers\inc\stm8l15x_gpio.h
+Next=Root.Drivers.Drivers\Inc...\..\drivers\inc\stm8l15x_flash.h
+
+[Root.Drivers.Drivers\Inc...\..\drivers\inc\stm8l15x_flash.h]
+ElemType=File
+PathName=..\..\drivers\inc\stm8l15x_flash.h
+Next=Root.Drivers.Drivers\Inc...\..\drivers\inc\stm8l15x_exti.h
+
+[Root.Drivers.Drivers\Inc...\..\drivers\inc\stm8l15x_exti.h]
+ElemType=File
+PathName=..\..\drivers\inc\stm8l15x_exti.h
+Next=Root.Drivers.Drivers\Inc...\..\drivers\inc\stm8l15x_dma.h
+
+[Root.Drivers.Drivers\Inc...\..\drivers\inc\stm8l15x_dma.h]
+ElemType=File
+PathName=..\..\drivers\inc\stm8l15x_dma.h
+Next=Root.Drivers.Drivers\Inc...\..\drivers\inc\stm8l15x_dac.h
+
+[Root.Drivers.Drivers\Inc...\..\drivers\inc\stm8l15x_dac.h]
+ElemType=File
+PathName=..\..\drivers\inc\stm8l15x_dac.h
+Next=Root.Drivers.Drivers\Inc...\..\drivers\inc\stm8l15x_comp.h
+
+[Root.Drivers.Drivers\Inc...\..\drivers\inc\stm8l15x_comp.h]
+ElemType=File
+PathName=..\..\drivers\inc\stm8l15x_comp.h
+Next=Root.Drivers.Drivers\Inc...\..\drivers\inc\stm8l15x_clk.h
+
+[Root.Drivers.Drivers\Inc...\..\drivers\inc\stm8l15x_clk.h]
+ElemType=File
+PathName=..\..\drivers\inc\stm8l15x_clk.h
+Next=Root.Drivers.Drivers\Inc...\..\drivers\inc\stm8l15x_beep.h
+
+[Root.Drivers.Drivers\Inc...\..\drivers\inc\stm8l15x_beep.h]
+ElemType=File
+PathName=..\..\drivers\inc\stm8l15x_beep.h
+Next=Root.Drivers.Drivers\Inc...\..\drivers\inc\stm8l15x_aes.h
+
+[Root.Drivers.Drivers\Inc...\..\drivers\inc\stm8l15x_aes.h]
+ElemType=File
+PathName=..\..\drivers\inc\stm8l15x_aes.h
+Next=Root.Drivers.Drivers\Inc...\..\drivers\inc\stm8l15x_adc.h
+
+[Root.Drivers.Drivers\Inc...\..\drivers\inc\stm8l15x_adc.h]
+ElemType=File
+PathName=..\..\drivers\inc\stm8l15x_adc.h
+Next=Root.Drivers.Drivers\Inc...\..\drivers\inc\stm8l15x.h
+
+[Root.Drivers.Drivers\Inc...\..\drivers\inc\stm8l15x.h]
+ElemType=File
+PathName=..\..\drivers\inc\stm8l15x.h
+
+[Root.Drivers.Drivers\Src]
+ElemType=Folder
+PathName=Drivers\Src
+Child=Root.Drivers.Drivers\Src...\..\drivers\src\stm8l15x_wwdg.c
+
+[Root.Drivers.Drivers\Src...\..\drivers\src\stm8l15x_wwdg.c]
+ElemType=File
+PathName=..\..\drivers\src\stm8l15x_wwdg.c
+Next=Root.Drivers.Drivers\Src...\..\drivers\src\stm8l15x_wfe.c
+
+[Root.Drivers.Drivers\Src...\..\drivers\src\stm8l15x_wfe.c]
+ElemType=File
+PathName=..\..\drivers\src\stm8l15x_wfe.c
+Next=Root.Drivers.Drivers\Src...\..\drivers\src\stm8l15x_usart.c
+
+[Root.Drivers.Drivers\Src...\..\drivers\src\stm8l15x_usart.c]
+ElemType=File
+PathName=..\..\drivers\src\stm8l15x_usart.c
+Next=Root.Drivers.Drivers\Src...\..\drivers\src\stm8l15x_tim5.c
+
+[Root.Drivers.Drivers\Src...\..\drivers\src\stm8l15x_tim5.c]
+ElemType=File
+PathName=..\..\drivers\src\stm8l15x_tim5.c
+Next=Root.Drivers.Drivers\Src...\..\drivers\src\stm8l15x_tim4.c
+
+[Root.Drivers.Drivers\Src...\..\drivers\src\stm8l15x_tim4.c]
+ElemType=File
+PathName=..\..\drivers\src\stm8l15x_tim4.c
+Next=Root.Drivers.Drivers\Src...\..\drivers\src\stm8l15x_tim3.c
+
+[Root.Drivers.Drivers\Src...\..\drivers\src\stm8l15x_tim3.c]
+ElemType=File
+PathName=..\..\drivers\src\stm8l15x_tim3.c
+Next=Root.Drivers.Drivers\Src...\..\drivers\src\stm8l15x_tim2.c
+
+[Root.Drivers.Drivers\Src...\..\drivers\src\stm8l15x_tim2.c]
+ElemType=File
+PathName=..\..\drivers\src\stm8l15x_tim2.c
+Next=Root.Drivers.Drivers\Src...\..\drivers\src\stm8l15x_tim1.c
+
+[Root.Drivers.Drivers\Src...\..\drivers\src\stm8l15x_tim1.c]
+ElemType=File
+PathName=..\..\drivers\src\stm8l15x_tim1.c
+Next=Root.Drivers.Drivers\Src...\..\drivers\src\stm8l15x_syscfg.c
+
+[Root.Drivers.Drivers\Src...\..\drivers\src\stm8l15x_syscfg.c]
+ElemType=File
+PathName=..\..\drivers\src\stm8l15x_syscfg.c
+Next=Root.Drivers.Drivers\Src...\..\drivers\src\stm8l15x_spi.c
+
+[Root.Drivers.Drivers\Src...\..\drivers\src\stm8l15x_spi.c]
+ElemType=File
+PathName=..\..\drivers\src\stm8l15x_spi.c
+Next=Root.Drivers.Drivers\Src...\..\drivers\src\stm8l15x_rtc.c
+
+[Root.Drivers.Drivers\Src...\..\drivers\src\stm8l15x_rtc.c]
+ElemType=File
+PathName=..\..\drivers\src\stm8l15x_rtc.c
+Next=Root.Drivers.Drivers\Src...\..\drivers\src\stm8l15x_rst.c
+
+[Root.Drivers.Drivers\Src...\..\drivers\src\stm8l15x_rst.c]
+ElemType=File
+PathName=..\..\drivers\src\stm8l15x_rst.c
+Next=Root.Drivers.Drivers\Src...\..\drivers\src\stm8l15x_pwr.c
+
+[Root.Drivers.Drivers\Src...\..\drivers\src\stm8l15x_pwr.c]
+ElemType=File
+PathName=..\..\drivers\src\stm8l15x_pwr.c
+Next=Root.Drivers.Drivers\Src...\..\drivers\src\stm8l15x_lcd.c
+
+[Root.Drivers.Drivers\Src...\..\drivers\src\stm8l15x_lcd.c]
+ElemType=File
+PathName=..\..\drivers\src\stm8l15x_lcd.c
+Next=Root.Drivers.Drivers\Src...\..\drivers\src\stm8l15x_iwdg.c
+
+[Root.Drivers.Drivers\Src...\..\drivers\src\stm8l15x_iwdg.c]
+ElemType=File
+PathName=..\..\drivers\src\stm8l15x_iwdg.c
+Next=Root.Drivers.Drivers\Src...\..\drivers\src\stm8l15x_itc.c
+
+[Root.Drivers.Drivers\Src...\..\drivers\src\stm8l15x_itc.c]
+ElemType=File
+PathName=..\..\drivers\src\stm8l15x_itc.c
+Next=Root.Drivers.Drivers\Src...\..\drivers\src\stm8l15x_irtim.c
+
+[Root.Drivers.Drivers\Src...\..\drivers\src\stm8l15x_irtim.c]
+ElemType=File
+PathName=..\..\drivers\src\stm8l15x_irtim.c
+Next=Root.Drivers.Drivers\Src...\..\drivers\src\stm8l15x_i2c.c
+
+[Root.Drivers.Drivers\Src...\..\drivers\src\stm8l15x_i2c.c]
+ElemType=File
+PathName=..\..\drivers\src\stm8l15x_i2c.c
+Next=Root.Drivers.Drivers\Src...\..\drivers\src\stm8l15x_gpio.c
+
+[Root.Drivers.Drivers\Src...\..\drivers\src\stm8l15x_gpio.c]
+ElemType=File
+PathName=..\..\drivers\src\stm8l15x_gpio.c
+Next=Root.Drivers.Drivers\Src...\..\drivers\src\stm8l15x_flash.c
+
+[Root.Drivers.Drivers\Src...\..\drivers\src\stm8l15x_flash.c]
+ElemType=File
+PathName=..\..\drivers\src\stm8l15x_flash.c
+Next=Root.Drivers.Drivers\Src...\..\drivers\src\stm8l15x_exti.c
+
+[Root.Drivers.Drivers\Src...\..\drivers\src\stm8l15x_exti.c]
+ElemType=File
+PathName=..\..\drivers\src\stm8l15x_exti.c
+Next=Root.Drivers.Drivers\Src...\..\drivers\src\stm8l15x_dma.c
+
+[Root.Drivers.Drivers\Src...\..\drivers\src\stm8l15x_dma.c]
+ElemType=File
+PathName=..\..\drivers\src\stm8l15x_dma.c
+Next=Root.Drivers.Drivers\Src...\..\drivers\src\stm8l15x_dac.c
+
+[Root.Drivers.Drivers\Src...\..\drivers\src\stm8l15x_dac.c]
+ElemType=File
+PathName=..\..\drivers\src\stm8l15x_dac.c
+Next=Root.Drivers.Drivers\Src...\..\drivers\src\stm8l15x_comp.c
+
+[Root.Drivers.Drivers\Src...\..\drivers\src\stm8l15x_comp.c]
+ElemType=File
+PathName=..\..\drivers\src\stm8l15x_comp.c
+Next=Root.Drivers.Drivers\Src...\..\drivers\src\stm8l15x_clk.c
+
+[Root.Drivers.Drivers\Src...\..\drivers\src\stm8l15x_clk.c]
+ElemType=File
+PathName=..\..\drivers\src\stm8l15x_clk.c
+Next=Root.Drivers.Drivers\Src...\..\drivers\src\stm8l15x_beep.c
+
+[Root.Drivers.Drivers\Src...\..\drivers\src\stm8l15x_beep.c]
+ElemType=File
+PathName=..\..\drivers\src\stm8l15x_beep.c
+Next=Root.Drivers.Drivers\Src...\..\drivers\src\stm8l15x_aes.c
+
+[Root.Drivers.Drivers\Src...\..\drivers\src\stm8l15x_aes.c]
+ElemType=File
+PathName=..\..\drivers\src\stm8l15x_aes.c
+Next=Root.Drivers.Drivers\Src...\..\drivers\src\stm8l15x_adc.c
+
+[Root.Drivers.Drivers\Src...\..\drivers\src\stm8l15x_adc.c]
+ElemType=File
+PathName=..\..\drivers\src\stm8l15x_adc.c
+
+[Root.Kernel]
+ElemType=Folder
+PathName=Kernel
+Child=Root.Kernel...\..\kernel\atom.h
+Next=Root.Port
+Config.0=Root.Kernel.Config.0
+Config.1=Root.Kernel.Config.1
+
+[Root.Kernel.Config.0]
+Settings.0.0=Root.Kernel.Config.0.Settings.0
+Settings.0.1=Root.Kernel.Config.0.Settings.1
+Settings.0.2=Root.Kernel.Config.0.Settings.2
+Settings.0.3=Root.Kernel.Config.0.Settings.3
+
+[Root.Kernel.Config.1]
+Settings.1.0=Root.Kernel.Config.1.Settings.0
+Settings.1.1=Root.Kernel.Config.1.Settings.1
+Settings.1.2=Root.Kernel.Config.1.Settings.2
+Settings.1.3=Root.Kernel.Config.1.Settings.3
+
+[Root.Kernel.Config.0.Settings.0]
+String.6.0=2010,2,9,1,12,48
+String.8.0=Debug
+Int.0=0
+Int.1=0
+
+[Root.Kernel.Config.0.Settings.1]
+String.2.0=Compiling $(InputFile)...
+String.3.0=cxstm8 +modsl0 -customDebCompat -customOpt -no +split -customC-pp -customLst -l -dSTM8L15X_HD -dATOM_STACK_CHECKING -i..\..\tests -i..\..\app -i..\..\drivers\inc -istm8s-periphs -i../../kernel -i../../tests $(ToolsetIncOpts) -cl$(IntermPath) -co$(IntermPath) $(InputFile)
+String.4.0=$(IntermPath)$(InputName).$(ObjectExt)
+String.5.0=$(IntermPath)$(InputName).ls
+String.6.0=2015,9,20,11,29,39
+
+[Root.Kernel.Config.0.Settings.2]
+String.2.0=Assembling $(InputFile)...
+String.3.0=castm8 -xx -l -u $(ToolsetIncOpts) -o$(IntermPath)$(InputName).$(ObjectExt) $(InputFile)
+String.4.0=$(IntermPath)$(InputName).$(ObjectExt)
+String.5.0=$(IntermPath)$(InputName).ls
+String.6.0=2010,2,10,1,16,38
+
+[Root.Kernel.Config.0.Settings.3]
+String.2.0=Performing Custom Build on $(InputFile)
+String.6.0=2010,2,9,1,12,48
+
+[Root.Kernel.Config.1.Settings.0]
+String.6.0=2010,2,9,1,12,48
+String.8.0=Release
+Int.0=0
+Int.1=0
+
+[Root.Kernel.Config.1.Settings.1]
+String.2.0=Compiling $(InputFile)...
+String.3.0=cxstm8 -i..\..\tests -i..\..\app -i..\..\drivers\inc +modsl0 -customOpt +split -customC-pp -dSTM8S105 -dATOM_STACK_CHECKING -istm8s-periphs -i../../kernel -i../../tests $(ToolsetIncOpts) -cl$(IntermPath) -co$(IntermPath) $(InputFile)
+String.4.0=$(IntermPath)$(InputName).$(ObjectExt)
+String.5.0=$(IntermPath)$(InputName).ls
+String.6.0=2010,5,27,22,48,49
+
+[Root.Kernel.Config.1.Settings.2]
+String.2.0=Assembling $(InputFile)...
+String.3.0=castm8 $(ToolsetIncOpts) -o$(IntermPath)$(InputName).$(ObjectExt) $(InputFile)
+String.4.0=$(IntermPath)$(InputName).$(ObjectExt)
+String.5.0=$(IntermPath)$(InputName).ls
+String.6.0=2010,2,9,1,12,48
+
+[Root.Kernel.Config.1.Settings.3]
+String.2.0=Performing Custom Build on $(InputFile)
+String.6.0=2010,2,9,1,12,48
+
+[Root.Kernel...\..\kernel\atom.h]
+ElemType=File
+PathName=..\..\kernel\atom.h
+Next=Root.Kernel...\..\kernel\atomkernel.c
+
+[Root.Kernel...\..\kernel\atomkernel.c]
+ElemType=File
+PathName=..\..\kernel\atomkernel.c
+Next=Root.Kernel...\..\kernel\atommutex.c
+
+[Root.Kernel...\..\kernel\atommutex.c]
+ElemType=File
+PathName=..\..\kernel\atommutex.c
+Next=Root.Kernel...\..\kernel\atommutex.h
+
+[Root.Kernel...\..\kernel\atommutex.h]
+ElemType=File
+PathName=..\..\kernel\atommutex.h
+Next=Root.Kernel...\..\kernel\atomqueue.c
+
+[Root.Kernel...\..\kernel\atomqueue.c]
+ElemType=File
+PathName=..\..\kernel\atomqueue.c
+Next=Root.Kernel...\..\kernel\atomqueue.h
+
+[Root.Kernel...\..\kernel\atomqueue.h]
+ElemType=File
+PathName=..\..\kernel\atomqueue.h
+Next=Root.Kernel...\..\kernel\atomsem.c
+
+[Root.Kernel...\..\kernel\atomsem.c]
+ElemType=File
+PathName=..\..\kernel\atomsem.c
+Next=Root.Kernel...\..\kernel\atomsem.h
+
+[Root.Kernel...\..\kernel\atomsem.h]
+ElemType=File
+PathName=..\..\kernel\atomsem.h
+Next=Root.Kernel...\..\kernel\atomtimer.c
+
+[Root.Kernel...\..\kernel\atomtimer.c]
+ElemType=File
+PathName=..\..\kernel\atomtimer.c
+Next=Root.Kernel...\..\kernel\atomtimer.h
+
+[Root.Kernel...\..\kernel\atomtimer.h]
+ElemType=File
+PathName=..\..\kernel\atomtimer.h
+
+[Root.Port]
+ElemType=Folder
+PathName=Port
+Child=Root.Port.stm8l15x_it.h
+Next=Root.Tests
+Config.0=Root.Port.Config.0
+Config.1=Root.Port.Config.1
+
+[Root.Port.Config.0]
+Settings.0.0=Root.Port.Config.0.Settings.0
+Settings.0.1=Root.Port.Config.0.Settings.1
+Settings.0.2=Root.Port.Config.0.Settings.2
+Settings.0.3=Root.Port.Config.0.Settings.3
+
+[Root.Port.Config.1]
+Settings.1.0=Root.Port.Config.1.Settings.0
+Settings.1.1=Root.Port.Config.1.Settings.1
+Settings.1.2=Root.Port.Config.1.Settings.2
+Settings.1.3=Root.Port.Config.1.Settings.3
+
+[Root.Port.Config.0.Settings.0]
+String.6.0=2010,2,13,18,46,11
+String.8.0=Debug
+Int.0=0
+Int.1=0
+
+[Root.Port.Config.0.Settings.1]
+String.2.0=Compiling $(InputFile)...
+String.3.0=cxstm8 +modsl0 -customDebCompat -customOpt -no +split -customC-pp -customLst -l -dSTM8L15X_HD -dATOM_STACK_CHECKING -i..\..\tests -i..\..\app -i..\..\drivers\inc -istm8s-periphs -i../../kernel -i../../tests $(ToolsetIncOpts) -cl$(IntermPath) -co$(IntermPath) $(InputFile)
+String.4.0=$(IntermPath)$(InputName).$(ObjectExt)
+String.5.0=$(IntermPath)$(InputName).ls
+String.6.0=2015,9,20,11,29,39
+
+[Root.Port.Config.0.Settings.2]
+String.2.0=Assembling $(InputFile)...
+String.3.0=castm8 -xx -l -u $(ToolsetIncOpts) -o$(IntermPath)$(InputName).$(ObjectExt) $(InputFile)
+String.4.0=$(IntermPath)$(InputName).$(ObjectExt)
+String.5.0=$(IntermPath)$(InputName).ls
+String.6.0=2010,2,10,1,16,38
+
+[Root.Port.Config.0.Settings.3]
+String.2.0=Performing Custom Build on $(InputFile)
+String.3.0=
+String.4.0=
+String.5.0=
+String.6.0=2010,2,9,1,12,48
+
+[Root.Port.Config.1.Settings.0]
+String.6.0=2010,2,13,18,46,11
+String.8.0=Release
+Int.0=0
+Int.1=0
+
+[Root.Port.Config.1.Settings.1]
+String.2.0=Compiling $(InputFile)...
+String.3.0=cxstm8 -i..\..\tests -i..\..\app -i..\..\drivers\inc +modsl0 -customOpt +split -customC-pp -dSTM8S105 -dATOM_STACK_CHECKING -istm8s-periphs -i../../kernel -i../../tests $(ToolsetIncOpts) -cl$(IntermPath) -co$(IntermPath) $(InputFile)
+String.4.0=$(IntermPath)$(InputName).$(ObjectExt)
+String.5.0=$(IntermPath)$(InputName).ls
+String.6.0=2010,5,27,22,48,49
+
+[Root.Port.Config.1.Settings.2]
+String.2.0=Assembling $(InputFile)...
+String.3.0=castm8 $(ToolsetIncOpts) -o$(IntermPath)$(InputName).$(ObjectExt) $(InputFile)
+String.4.0=$(IntermPath)$(InputName).$(ObjectExt)
+String.5.0=$(IntermPath)$(InputName).ls
+String.6.0=2010,2,9,1,12,48
+
+[Root.Port.Config.1.Settings.3]
+String.2.0=Performing Custom Build on $(InputFile)
+String.3.0=
+String.4.0=
+String.5.0=
+String.6.0=2010,2,9,1,12,48
+
+[Root.Port.stm8l15x_it.h]
+ElemType=File
+PathName=stm8l15x_it.h
+Next=Root.Port.stm8l15x_it.c
+
+[Root.Port.stm8l15x_it.c]
+ElemType=File
+PathName=stm8l15x_it.c
+Next=Root.Port.stm8l15x_conf.h
+
+[Root.Port.stm8l15x_conf.h]
+ElemType=File
+PathName=stm8l15x_conf.h
+Next=Root.Port.uart.h
+
+[Root.Port.uart.h]
+ElemType=File
+PathName=uart.h
+Next=Root.Port.uart.c
+
+[Root.Port.uart.c]
+ElemType=File
+PathName=uart.c
+Next=Root.Port.atomport-private.h
+
+[Root.Port.atomport-private.h]
+ElemType=File
+PathName=atomport-private.h
+Next=Root.Port.atomport.h
+
+[Root.Port.atomport.h]
+ElemType=File
+PathName=atomport.h
+Next=Root.Port.atomport.c
+
+[Root.Port.atomport.c]
+ElemType=File
+PathName=atomport.c
+Next=Root.Port.atomport-asm-cosmic.s
+
+[Root.Port.atomport-asm-cosmic.s]
+ElemType=File
+PathName=atomport-asm-cosmic.s
+Next=Root.Port.stm8_interrupt_vector.c
+
+[Root.Port.stm8_interrupt_vector.c]
+ElemType=File
+PathName=stm8_interrupt_vector.c
+
+[Root.Tests]
+ElemType=Folder
+PathName=Tests
+Child=Root.Tests...\..\tests\atomtests.h
+Config.0=Root.Tests.Config.0
+Config.1=Root.Tests.Config.1
+
+[Root.Tests.Config.0]
+Settings.0.0=Root.Tests.Config.0.Settings.0
+Settings.0.1=Root.Tests.Config.0.Settings.1
+Settings.0.2=Root.Tests.Config.0.Settings.2
+Settings.0.3=Root.Tests.Config.0.Settings.3
+
+[Root.Tests.Config.1]
+Settings.1.0=Root.Tests.Config.1.Settings.0
+Settings.1.1=Root.Tests.Config.1.Settings.1
+Settings.1.2=Root.Tests.Config.1.Settings.2
+Settings.1.3=Root.Tests.Config.1.Settings.3
+
+[Root.Tests.Config.0.Settings.0]
+String.6.0=2015,9,20,10,45,25
+String.8.0=Debug
+Int.0=0
+Int.1=0
+
+[Root.Tests.Config.0.Settings.1]
+String.2.0=Compiling $(InputFile)...
+String.3.0=cxstm8 +modsl0 -customDebCompat -customOpt -no +split -customC-pp -customLst -l -dSTM8L15X_HD -dATOM_STACK_CHECKING -i..\..\tests -i..\..\app -i..\..\drivers\inc -istm8s-periphs -i../../kernel -i../../tests $(ToolsetIncOpts) -cl$(IntermPath) -co$(IntermPath) $(InputFile)
+String.4.0=$(IntermPath)$(InputName).$(ObjectExt)
+String.5.0=$(IntermPath)$(InputName).ls
+String.6.0=2015,9,20,11,29,39
+
+[Root.Tests.Config.0.Settings.2]
+String.2.0=Assembling $(InputFile)...
+String.3.0=castm8 -xx -l -u $(ToolsetIncOpts) -o$(IntermPath)$(InputName).$(ObjectExt) $(InputFile)
+String.4.0=$(IntermPath)$(InputName).$(ObjectExt)
+String.5.0=$(IntermPath)$(InputName).ls
+String.6.0=2010,2,10,1,16,38
+
+[Root.Tests.Config.0.Settings.3]
+String.2.0=Performing Custom Build on $(InputFile)
+String.3.0=
+String.4.0=
+String.5.0=
+String.6.0=2010,2,9,1,12,48
+
+[Root.Tests.Config.1.Settings.0]
+String.6.0=2015,9,20,10,45,25
+String.8.0=Release
+Int.0=0
+Int.1=0
+
+[Root.Tests.Config.1.Settings.1]
+String.2.0=Compiling $(InputFile)...
+String.3.0=cxstm8 -i..\..\tests -i..\..\app -i..\..\drivers\inc +modsl0 -customOpt +split -customC-pp -dSTM8S105 -dATOM_STACK_CHECKING -istm8s-periphs -i../../kernel -i../../tests $(ToolsetIncOpts) -cl$(IntermPath) -co$(IntermPath) $(InputFile)
+String.4.0=$(IntermPath)$(InputName).$(ObjectExt)
+String.5.0=$(IntermPath)$(InputName).ls
+String.6.0=2010,5,27,22,48,49
+
+[Root.Tests.Config.1.Settings.2]
+String.2.0=Assembling $(InputFile)...
+String.3.0=castm8 $(ToolsetIncOpts) -o$(IntermPath)$(InputName).$(ObjectExt) $(InputFile)
+String.4.0=$(IntermPath)$(InputName).$(ObjectExt)
+String.5.0=$(IntermPath)$(InputName).ls
+String.6.0=2010,2,9,1,12,48
+
+[Root.Tests.Config.1.Settings.3]
+String.2.0=Performing Custom Build on $(InputFile)
+String.3.0=
+String.4.0=
+String.5.0=
+String.6.0=2010,2,9,1,12,48
+
+[Root.Tests...\..\tests\atomtests.h]
+ElemType=File
+PathName=..\..\tests\atomtests.h
