@@ -1,203 +1,201 @@
-/*
- * Copyright (c) 2010, Kelvin Lawson. All rights reserved.
- *
- * Redistribution and use in source and binary forms, with or without
- * modification, are permitted provided that the following conditions
- * are met:
- *
- * 1. Redistributions of source code must retain the above copyright
- *    notice, this list of conditions and the following disclaimer.
- * 2. Redistributions in binary form must reproduce the above copyright
- *    notice, this list of conditions and the following disclaimer in the
- *    documentation and/or other materials provided with the distribution.
- * 3. No personal names or organizations' names associated with the
- *    Atomthreads project may be used to endorse or promote products
- *    derived from this software without specific prior written permission.
- *
- * THIS SOFTWARE IS PROVIDED BY THE ATOMTHREADS PROJECT AND CONTRIBUTORS
- * "AS IS" AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED
- * TO, THE IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR
- * PURPOSE ARE DISCLAIMED. IN NO EVENT SHALL THE PROJECT OR CONTRIBUTORS BE
- * LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR
- * CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF
- * SUBSTITUTE GOODS OR SERVICES; LOSS OF USE, DATA, OR PROFITS; OR BUSINESS
- * INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN
- * CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE)
- * ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE
- * POSSIBILITY OF SUCH DAMAGE.
- */
+/**
+  ******************************************************************************
+  * @file    GPIO/GPIO_Toggle/main.c
+  * @author  MCD Application Team
+  * @version V1.5.0
+  * @date    13-May-2011
+  * @brief   Main program body
+  ******************************************************************************
+  * @attention
+  *
+  * THE PRESENT FIRMWARE WHICH IS FOR GUIDANCE ONLY AIMS AT PROVIDING CUSTOMERS
+  * WITH CODING INFORMATION REGARDING THEIR PRODUCTS IN ORDER FOR THEM TO SAVE
+  * TIME. AS A RESULT, STMICROELECTRONICS SHALL NOT BE HELD LIABLE FOR ANY
+  * DIRECT, INDIRECT OR CONSEQUENTIAL DAMAGES WITH RESPECT TO ANY CLAIMS ARISING
+  * FROM THE CONTENT OF SUCH FIRMWARE AND/OR THE USE MADE BY CUSTOMERS OF THE
+  * CODING INFORMATION CONTAINED HEREIN IN CONNECTION WITH THEIR PRODUCTS.
+  *
+  * <h2><center>&copy; COPYRIGHT 2011 STMicroelectronics</center></h2>
+  ******************************************************************************
+  */ 
 
-
-#include <stdio.h>
-
-#include "atom.h"
-#include "atomport-private.h"
-#include "atomport-tests.h"
-//#include "atomtests.h"
-#include "atomtimer.h"
-#include "uart.h"
+/* Includes ------------------------------------------------------------------*/
 #include "stm8l15x_conf.h"
 
+/** @addtogroup STM8L15x_StdPeriph_Examples
+  * @{
+  */
 
-/* Constants */
+/** @addtogroup GPIO_Toggle
+  * @{
+  */
 
-/*
- * Idle thread stack size
- *
- * This needs to be large enough to handle any interrupt handlers
- * and callbacks called by interrupt handlers (e.g. user-created
- * timer callbacks) as well as the saving of all context when
- * switching away from this thread.
- *
- * In this case, the idle stack is allocated on the BSS via the
- * idle_thread_stack[] byte array.
- */
-#define IDLE_STACK_SIZE_BYTES       128
+/* Private typedef -----------------------------------------------------------*/
+/* Private define ------------------------------------------------------------*/
+/* define the GPIO port and pins connected to Leds mounted on STM8L152X-EVAL board */
+#define LED_GPIO_PORT  GPIOE
+#define LED_GPIO_PINS  GPIO_Pin_7
 
 
-/*
- * Main thread stack size
- *
- * Note that this is not a required OS kernel thread - you will replace
- * this with your own application thread.
- *
- * In this case the Main thread is responsible for calling out to the
- * test routines. Once a test routine has finished, the test status is
- * printed out on the UART and the thread remains running in a loop
- * flashing a LED.
- *
- * The Main thread stack generally needs to be larger than the idle
- * thread stack, as not only does it need to store interrupt handler
- * stack saves and context switch saves, but the application main thread
- * will generally be carrying out more nested function calls and require
- * stack for application code local variables etc.
- *
- * With all OS tests implemented to date on the STM8, the Main thread
- * stack has not exceeded 256 bytes. To allow all tests to run we set
- * a minimum main thread stack size of 204 bytes. This may increase in
- * future as the codebase changes but for the time being is enough to
- * cope with all of the automated tests.
- */
-#define MAIN_STACK_SIZE_BYTES       256
+/* Private macro -------------------------------------------------------------*/
+/* Private variables ---------------------------------------------------------*/
+/* Private function prototypes -----------------------------------------------*/
+void Delay (uint16_t nCount);
+/* Private functions ---------------------------------------------------------*/
 
+#define TIM1_PERIOD                  4095
+#define TIM1_PRESCALER                  0
+#define TIM1_REPTETION_COUNTER          0
 
-/*
- * Startup code stack
- *
- * Some stack space is required at initial startup for running the main()
- * routine. This stack space is only temporarily required at first bootup
- * and is no longer required as soon as the OS is started. By default
- * Cosmic sets this to the top of RAM and it grows down from there.
- *
- * Because we only need this temporarily you may reuse the area once the
- * OS is started, and are free to use some area other than the top of RAM.
- * For convenience we just use the default region here.
- */
+#define CCR1_VAL                     2047
+#define CCR2_VAL                     1023
+#define CCR3_VAL                      511
+#define DEADTIME                        1
 
-
-/* Linker-provided startup stack location (usually top of RAM) */
-extern int _stack;
-
-
-/* Local data */
-
-/* Application threads' TCBs */
-static ATOM_TCB main_tcb;
-
-/* Main thread's stack area (large so place outside of the small page0 area on STM8) */
-NEAR static uint8_t main_thread_stack[MAIN_STACK_SIZE_BYTES];
-
-/* Idle thread's stack area (large so place outside of the small page0 area on STM8) */
-NEAR static uint8_t idle_thread_stack[IDLE_STACK_SIZE_BYTES];
-
-
-/* Forward declarations */
-static void main_thread_func (uint32_t param);
-
-
-/**
- * \b main
- *
- * Program entry point.
- *
- * Sets up the STM8 hardware resources (system tick timer interrupt) necessary
- * for the OS to be started. Creates an application thread and starts the OS.
- *
- * If the compiler supports it, stack space can be saved by preventing
- * the function from saving registers on entry. This is because we
- * are called directly by the C startup assembler, and know that we will
- * never return from here. The NO_REG_SAVE macro is used to denote such 
- * functions in a compiler-agnostic way, though not all compilers support it.
- *
- */
-NO_REG_SAVE void main ( void )
+static void TIM1_Config(void)
 {
-    int8_t status;
+  /* Time Base configuration */
+  TIM1_TimeBaseInit(TIM1_PRESCALER, TIM1_CounterMode_Up, TIM1_PERIOD, TIM1_REPTETION_COUNTER);
 
-    /**
-     * Note: to protect OS structures and data during initialisation,
-     * interrupts must remain disabled until the first thread
-     * has been restored. They are reenabled at the very end of
-     * the first thread restore, at which point it is safe for a
-     * reschedule to take place.
-     */
-		enableInterrupts();
-    uart_init(115200);
-    /* Initialise the OS before creating our threads */
-    status = atomOSInit(&idle_thread_stack[IDLE_STACK_SIZE_BYTES - 1], IDLE_STACK_SIZE_BYTES);
-    if (status == ATOM_OK)
-    {
-        /* Enable the system tick timer */
-        archInitSystemTickTimer();
+  /* Channels 1, 2 and 3 Configuration in TIMING mode */
+  TIM1_OC1Init(TIM1_OCMode_Timing, TIM1_OutputState_Enable, TIM1_OutputNState_Enable, CCR1_VAL,
+               TIM1_OCPolarity_High, TIM1_OCNPolarity_High, TIM1_OCIdleState_Reset, TIM1_OCNIdleState_Reset);
+  TIM1_OC2Init(TIM1_OCMode_Timing, TIM1_OutputState_Enable, TIM1_OutputNState_Enable, CCR2_VAL,
+               TIM1_OCPolarity_High, TIM1_OCNPolarity_High, TIM1_OCIdleState_Reset, TIM1_OCNIdleState_Reset);
+  TIM1_OC3Init(TIM1_OCMode_Timing, TIM1_OutputState_Enable, TIM1_OutputNState_Enable, CCR3_VAL,
+               TIM1_OCPolarity_High, TIM1_OCNPolarity_High, TIM1_OCIdleState_Reset, TIM1_OCNIdleState_Reset);
 
-        /* Create an application thread */
-        status = atomThreadCreate(&main_tcb,
-                     16, main_thread_func, 0,
-                     &main_thread_stack[MAIN_STACK_SIZE_BYTES - 1],
-                     MAIN_STACK_SIZE_BYTES);
-        if (status == ATOM_OK)
-        {
-            /**
-             * First application thread successfully created. It is
-             * now possible to start the OS. Execution will not return
-             * from atomOSStart(), which will restore the context of
-             * our application thread and start executing it.
-             *
-             * Note that interrupts are still disabled at this point.
-             * They will be enabled as we restore and execute our first
-             * thread in archFirstThreadRestore().
-             */
-            atomOSStart();
-        }
-    }
+  /* Automatic Output Enable, Break, dead time and lock configuration*/
+  TIM1_BDTRConfig(TIM1_OSSIState_Enable, TIM1_LockLevel_Off, DEADTIME,
+                  TIM1_BreakState_Enable, TIM1_BreakPolarity_Low, TIM1_AutomaticOutput_Disable);
 
-    /* There was an error starting the OS if we reach here */
-    while (1)
-    {
-			  printf("Main thread\n");
-				atomTimerDelay(SYSTEM_TICKS_PER_SEC);
-    }
-
+  TIM1_CCPreloadControl(ENABLE);
+  TIM1_ITConfig(TIM1_IT_COM, ENABLE);
+  /* Main Output Enable */
+  TIM1_CtrlPWMOutputs(ENABLE);
+  /* TIM1 counter enable */
+  TIM1_Cmd(ENABLE);
 }
 
-
-/**
- * \b main_thread_func
- *
- * Entry point for main application thread.
- *
- * This is the first thread that will be executed when the OS is started.
- *
- * @param[in] param Unused (optional thread entry parameter)
- *
- * @return None
- */
-static void main_thread_func (uint32_t param)
+static void TIM4_Config(void)
 {
-    while (1)
-    {
-		    printf("1 thread\n");
-				atomTimerDelay(SYSTEM_TICKS_PER_SEC);
-    }
+  /* TIM4 configuration:
+   - TIM4CLK is set to 16 MHz, the TIM4 Prescaler is equal to 128 so the TIM1 counter
+   clock used is 16 MHz / 128 = 125 000 Hz
+  - With 125 000 Hz we can generate time base:
+      max time base is 2.048 ms if TIM4_PERIOD = 255 --> (255 + 1) / 125000 = 2.048 ms
+      min time base is 0.016 ms if TIM4_PERIOD = 1   --> (  1 + 1) / 125000 = 0.016 ms
+  - In this example we need to generate a time base equal to 1 ms
+   so TIM4_PERIOD = (0.001 * 125000 - 1) = 124 */
+
+  /* Time base configuration */
+  TIM4_TimeBaseInit(TIM4_Prescaler_128, 124);
+  /* Clear TIM4 update flag */
+  TIM4_ClearFlag(TIM4_FLAG_Update);
+  /* Enable update interrupt */
+  TIM4_ITConfig(TIM4_IT_Update, ENABLE);
+  /* enable interrupts */
+  enableInterrupts();
+
+  /* Enable TIM4 */
+  TIM4_Cmd(ENABLE);
 }
 
+/**
+  * @brief  Main program.
+  * @param  None
+  * @retval None
+  */
+void main(void)
+{
+	CLK_SYSCLKDivConfig(CLK_SYSCLKDiv_1);
+	
+	SYSCFG_REMAPPinConfig(REMAP_Pin_USART1TxRxPortA, ENABLE);
+	
+  /* Enable USART clock */
+  CLK_PeripheralClockConfig(CLK_Peripheral_USART1, ENABLE);
+
+  /* Configure USART Tx as alternate function push-pull  (software pull up)*/
+  GPIO_ExternalPullUpConfig(GPIOA, GPIO_Pin_2, ENABLE);
+
+  /* Configure USART Rx as alternate function push-pull  (software pull up)*/
+  GPIO_ExternalPullUpConfig(GPIOA, GPIO_Pin_3, ENABLE);
+
+  /* USART configuration */
+  USART_Init(USART1, 115200,
+             USART_WordLength_8b,
+             USART_StopBits_1,
+             USART_Parity_No,
+             (USART_Mode_TypeDef)(USART_Mode_Tx | USART_Mode_Rx));	
+	
+  /* Initialize LEDs mounted on STM8L152X-EVAL board */
+  GPIO_Init(LED_GPIO_PORT, LED_GPIO_PINS, GPIO_Mode_Out_PP_Low_Fast);
+
+	//CLK_PeripheralClockConfig(CLK_Peripheral_TIM1, ENABLE);
+	//TIM1_Config(); 
+	
+	CLK_PeripheralClockConfig(CLK_Peripheral_TIM4, ENABLE);
+	TIM4_Config();
+	
+	enableInterrupts();
+	
+  while (1)
+  {
+		unsigned char c;
+		
+		while (USART_GetFlagStatus(USART1, USART_FLAG_RXNE) == RESET);
+		
+		c = USART_ReceiveData8(USART1);
+		
+		USART_SendData8(USART1, c);
+		/* Loop until the end of transmission */
+		while (USART_GetFlagStatus(USART1, USART_FLAG_TC) == RESET);
+		
+    /* Toggle LEDs LD1..LD4 */
+    GPIO_ToggleBits(LED_GPIO_PORT, LED_GPIO_PINS);
+    //Delay(0xFFFF);
+  }
+}
+
+/**
+  * @brief  Inserts a delay time.
+  * @param  nCount: specifies the delay time length.
+  * @retval None
+  */
+void Delay(__IO uint16_t nCount)
+{
+  /* Decrement nCount value */
+  while (nCount != 0)
+  {
+    nCount--;
+  }
+}
+
+#ifdef  USE_FULL_ASSERT
+
+/**
+  * @brief  Reports the name of the source file and the source line number
+  *   where the assert_param error has occurred.
+  * @param  file: pointer to the source file name
+  * @param  line: assert_param error line source number
+  * @retval None
+  */
+void assert_failed(uint8_t* file, uint32_t line)
+{
+  /* User can add his own implementation to report the file name and line number,
+     ex: printf("Wrong parameters value: file %s on line %d\r\n", file, line) */
+  /* Infinite loop */
+  while (1)
+  {}
+}
+#endif
+
+/**
+  * @}
+  */
+
+/**
+  * @}
+  */
+
+/******************* (C) COPYRIGHT 2011 STMicroelectronics *****END OF FILE****/

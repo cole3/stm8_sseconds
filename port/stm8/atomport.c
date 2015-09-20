@@ -237,16 +237,30 @@ void archThreadContextInit (ATOM_TCB *tcb_ptr, void *stack_top, void (*entry_poi
 void archInitSystemTickTimer ( void )
 {
     /* Reset TIM1 */
-    TIM1_DeInit();
+    TIM4_DeInit();
+		/* Enable TIM4 CLK */
+		CLK_PeripheralClockConfig(CLK_Peripheral_TIM4, ENABLE);
 
     /* Configure a 10ms tick */
-    TIM1_TimeBaseInit(10000, TIM1_CounterMode_Up, 1, 0);
+  /* TIM4 configuration:
+   - TIM4CLK is set to 16 MHz, the TIM4 Prescaler is equal to 128 so the TIM1 counter
+   clock used is 16 MHz / 128 = 125 000 Hz
+  - With 125 000 Hz we can generate time base:
+      max time base is 2.048 ms if TIM4_PERIOD = 255 --> (255 + 1) / 125000 = 2.048 ms
+      min time base is 0.016 ms if TIM4_PERIOD = 1   --> (  1 + 1) / 125000 = 0.016 ms
+  - In this example we need to generate a time base equal to 1 ms
+   so TIM4_PERIOD = (0.001 * 125000 - 1) = 124 */
+
+  /* Time base configuration */
+    TIM4_TimeBaseInit(TIM4_Prescaler_128, 1249);
 
     /* Generate an interrupt on timer count overflow */
-    TIM1_ITConfig(TIM1_IT_Update, ENABLE);
-
+    TIM4_ClearFlag(TIM4_FLAG_Update);
+		TIM4_ITConfig(TIM4_IT_Update, ENABLE);
+		
+    enableInterrupts();
     /* Enable TIM1 */
-    TIM1_Cmd(ENABLE);
+    TIM4_Cmd(ENABLE);
 
 }
 
@@ -291,9 +305,9 @@ void archInitSystemTickTimer ( void )
 #if defined(__IAR_SYSTEMS_ICC__)
 #pragma vector = 13
 #endif
-INTERRUPT void TIM1_SystemTickISR (void)
+INTERRUPT void TIM4_SystemTickISR (void)
 #if defined(__RCSTM8__)
-interrupt 11
+interrupt 25
 #endif
 {
     /* Call the interrupt entry routine */
@@ -303,7 +317,7 @@ interrupt 11
     atomTimerTick();
 
     /* Ack the interrupt (Clear TIM1:SR1 register bit 0) */
-    TIM1->SR1 = (uint8_t)(~(uint8_t)TIM1_IT_Update);
+    TIM4_ClearITPendingBit(TIM4_IT_Update);
 
     /* Call the interrupt exit routine */
     atomIntExit(TRUE);

@@ -73,6 +73,6 @@
 
 /* Function prototypes */
 void archInitSystemTickTimer (void);
-INTERRUPT void TIM1_SystemTickISR (void);
+INTERRUPT void TIM4_SystemTickISR (void);
 
 #endif /* __ATOM_PORT_PRIVATE_H */
