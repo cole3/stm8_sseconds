@@ -169,11 +169,11 @@
  * on some OS primitive if no longer ready (e.g. on the suspended TCB queue
  * for a semaphore, or in the timer list if suspended on a timer delay).
  */
-ATOM_TCB *tcbReadyQ = NULL;
 
 /** Set to TRUE when OS is started and running threads */
 uint8_t atomOSStarted = FALSE;
 
+ATOM_TCB *tcbReadyQ = NULL;
 
 /* Local data */
 

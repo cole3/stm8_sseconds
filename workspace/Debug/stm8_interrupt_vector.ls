@@ -1,10 +1,10 @@
    1                     ; C Compiler for STM8 (COSMIC Software)
    2                     ; Generator V4.2.8 - 03 Dec 2008
-  34                     ; 13 @far @interrupt void NonHandledInterrupt (void)
-  34                     ; 14 {
+  34                     ; 14 @far @interrupt void NonHandledInterrupt (void)
+  34                     ; 15 {
   35                     	switch	.text
   36  0000               f_NonHandledInterrupt:
-  40                     ; 18 	return;
+  40                     ; 19 	return;
   43  0000 80            	iret
   45                     .const:	section	.text
   46  0000               __vectab:
@@ -84,14 +84,14 @@
  145  0061 00            	dc.b	page(f_NonHandledInterrupt)
  146  0062 0000          	dc.w	f_NonHandledInterrupt
  147  0064 82            	dc.b	130
- 149  0065 00            	dc.b	page(f_TIM1_UPD_OVF_TRG_COM_IRQHandler)
- 150  0066 0000          	dc.w	f_TIM1_UPD_OVF_TRG_COM_IRQHandler
+ 149  0065 00            	dc.b	page(f_NonHandledInterrupt)
+ 150  0066 0000          	dc.w	f_NonHandledInterrupt
  151  0068 82            	dc.b	130
  153  0069 00            	dc.b	page(f_NonHandledInterrupt)
  154  006a 0000          	dc.w	f_NonHandledInterrupt
  155  006c 82            	dc.b	130
- 157  006d 00            	dc.b	page(f_TIM4_UPD_OVF_TRG_IRQHandler)
- 158  006e 0000          	dc.w	f_TIM4_UPD_OVF_TRG_IRQHandler
+ 157  006d 00            	dc.b	page(f_TIM4_SystemTickISR)
+ 158  006e 0000          	dc.w	f_TIM4_SystemTickISR
  159  0070 82            	dc.b	130
  161  0071 00            	dc.b	page(f_NonHandledInterrupt)
  162  0072 0000          	dc.w	f_NonHandledInterrupt
@@ -105,8 +105,7 @@
  173  007d 00            	dc.b	page(f_NonHandledInterrupt)
  174  007e 0000          	dc.w	f_NonHandledInterrupt
  225                     	xdef	__vectab
- 226                     	xref	f_TIM4_UPD_OVF_TRG_IRQHandler
- 227                     	xref	f_TIM1_UPD_OVF_TRG_COM_IRQHandler
- 228                     	xdef	f_NonHandledInterrupt
- 229                     	xref	__stext
- 248                     	end
+ 226                     	xref	f_TIM4_SystemTickISR
+ 227                     	xdef	f_NonHandledInterrupt
+ 228                     	xref	__stext
+ 247                     	end

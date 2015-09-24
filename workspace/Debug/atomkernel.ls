@@ -1,10 +1,10 @@
    1                     ; C Compiler for STM8 (COSMIC Software)
    2                     ; Generator V4.2.8 - 03 Dec 2008
    4                     	bsct
-   5  0000               _tcbReadyQ:
-   6  0000 0000          	dc.w	0
-   7  0002               _atomOSStarted:
-   8  0002 00            	dc.b	0
+   5  0000               _atomOSStarted:
+   6  0000 00            	dc.b	0
+   7  0001               _tcbReadyQ:
+   8  0001 0000          	dc.w	0
    9  0003               L3_curr_tcb:
   10  0003 0000          	dc.w	0
   11  0005               L7_atomIntCnt:
@@ -19,7 +19,7 @@
  239                     ; 227     ATOM_TCB *new_tcb = NULL;
  241  0003 1e02          	ldw	x,(OFST-1,sp)
  242                     ; 235     if (atomOSStarted == FALSE)
- 244  0005 3d02          	tnz	_atomOSStarted
+ 244  0005 3d00          	tnz	_atomOSStarted
  245  0007 2602          	jrne	L01
  246  0009 2076          	jp	L6
  247  000b               L01:
@@ -37,7 +37,7 @@
  264  0017 a101          	cp	a,#1
  265  0019 2612          	jrne	L351
  266                     ; 256         new_tcb = tcbDequeueHead (&tcbReadyQ);
- 268  001b ae0000        	ldw	x,#_tcbReadyQ
+ 268  001b ae0001        	ldw	x,#_tcbReadyQ
  269  001e cd0243        	call	_tcbDequeueHead
  271  0021 1f02          	ldw	(OFST-1,sp),x
  272                     ; 266         atomThreadSwitch (curr_tcb, new_tcb);
@@ -84,7 +84,7 @@
  324                     ; 299             new_tcb = tcbDequeuePriority (&tcbReadyQ, (uint8_t)lowest_pri);
  326  0058 7b03          	ld	a,(OFST+0,sp)
  327  005a 88            	push	a
- 328  005b ae0000        	ldw	x,#_tcbReadyQ
+ 328  005b ae0001        	ldw	x,#_tcbReadyQ
  329  005e cd0321        	call	_tcbDequeuePriority
  331  0061 84            	pop	a
  332  0062 1f02          	ldw	(OFST-1,sp),x
@@ -94,7 +94,7 @@
  337                     ; 305                 (void)tcbEnqueuePriority (&tcbReadyQ, curr_tcb);
  339  0068 be03          	ldw	x,L3_curr_tcb
  340  006a 89            	pushw	x
- 341  006b ae0000        	ldw	x,#_tcbReadyQ
+ 341  006b ae0001        	ldw	x,#_tcbReadyQ
  342  006e cd01bf        	call	_tcbEnqueuePriority
  344  0071 85            	popw	x
  345                     ; 308                 atomThreadSwitch (curr_tcb, new_tcb);
@@ -227,7 +227,7 @@
  672                     ; 458         if (tcbEnqueuePriority (&tcbReadyQ, tcb_ptr) != ATOM_OK)
  674  0113 1e03          	ldw	x,(OFST+1,sp)
  675  0115 89            	pushw	x
- 676  0116 ae0000        	ldw	x,#_tcbReadyQ
+ 676  0116 ae0001        	ldw	x,#_tcbReadyQ
  677  0119 cd01bf        	call	_tcbEnqueuePriority
  679  011c 85            	popw	x
  680  011d 4d            	tnz	a
@@ -250,7 +250,7 @@
  704  0132 88            push A
  705  0133 86            pop CC
  707                     ; 475             if ((atomOSStarted == TRUE) && atomCurrentContext())
- 709  0134 b602          	ld	a,_atomOSStarted
+ 709  0134 b600          	ld	a,_atomOSStarted
  710  0136 a101          	cp	a,#1
  711  0138 260b          	jrne	L513
  713  013a ad22          	call	_atomCurrentContext
@@ -311,9 +311,9 @@
  942  016a bf03          	ldw	L3_curr_tcb,x
  943                     ; 663     tcbReadyQ = NULL;
  945  016c 5f            	clrw	x
- 946  016d bf00          	ldw	_tcbReadyQ,x
+ 946  016d bf01          	ldw	_tcbReadyQ,x
  947                     ; 664     atomOSStarted = FALSE;
- 949  016f 3f02          	clr	_atomOSStarted
+ 949  016f 3f00          	clr	_atomOSStarted
  950                     ; 667     status = atomThreadCreate(&idle_tcb,
  950                     ; 668                  IDLE_THREAD_PRIORITY,
  950                     ; 669                  atomIdleThread,
@@ -348,10 +348,10 @@
 1022  0197 89            	pushw	x
 1023       00000002      OFST:	set	2
 1026                     ; 703     atomOSStarted = TRUE;
-1028  0198 35010002      	mov	_atomOSStarted,#1
+1028  0198 35010000      	mov	_atomOSStarted,#1
 1029                     ; 712     new_tcb = tcbDequeuePriority (&tcbReadyQ, 255);
 1031  019c 4bff          	push	#255
-1032  019e ae0000        	ldw	x,#_tcbReadyQ
+1032  019e ae0001        	ldw	x,#_tcbReadyQ
 1033  01a1 cd0321        	call	_tcbDequeuePriority
 1035  01a4 84            	pop	a
 1036  01a5 1f01          	ldw	(OFST-1,sp),x
