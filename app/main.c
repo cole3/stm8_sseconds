@@ -47,9 +47,11 @@
 #define TEST_THREAD_PRIO            16
 
 /* Private variables ---------------------------------------------------------*/
-NEAR static uint8_t main_thread_stack[MAIN_STACK_SIZE_BYTES];
 NEAR static uint8_t idle_thread_stack[IDLE_STACK_SIZE_BYTES];
+NEAR static uint8_t main_thread_stack[MAIN_STACK_SIZE_BYTES];
+NEAR static uint8_t first_thread_stack[MAIN_STACK_SIZE_BYTES];
 static ATOM_TCB main_tcb;
+static ATOM_TCB first_tcb;
 
 /* Private function prototypes -----------------------------------------------*/
 void Delay (uint16_t nCount);
@@ -113,14 +115,47 @@ static void TIM4_Config(void)
     TIM4_Cmd(ENABLE);
 }
 
+static void first_thread_func (uint32_t param)
+{
+		int cnt = 0;
+		
+    while (1)
+    {
+        printf("first_thread_func cnt=%d\n", cnt++);
+
+        /* Sleep then toggle LED again */
+        atomTimerDelay(SYSTEM_TICKS_PER_SEC);
+    }
+}
+
 static void main_thread_func (uint32_t param)
 {
     int cnt = 0;
-
+		int8_t status;
+		int i = 0;
+		int flag = 1;
+		
+		status = atomThreadCreate(&first_tcb,
+								 TEST_THREAD_PRIO, first_thread_func, 0,
+								 &first_thread_stack[MAIN_STACK_SIZE_BYTES - 1],
+								 MAIN_STACK_SIZE_BYTES);
+		if (status != ATOM_OK)
+		{
+				printf("atomThreadCreate first_thread_func fail!\n");
+		}
+		
     /* Test finished, flash slowly for pass, fast for fail */
     while (1)
     {
-        printf("main_thread_func cnt=%d\n", cnt++);
+				cnt = flag ? (cnt + 1) : (cnt - 1);
+				
+				flag = (cnt == 20) ? 0 : ((cnt == 0) ? 1 : flag);
+				
+				for(i=0; i<cnt; i++)
+				{
+						printf(" ", cnt);
+				}
+        printf("+\n");
 
         /* Sleep then toggle LED again */
         atomTimerDelay(SYSTEM_TICKS_PER_SEC);
@@ -172,6 +207,8 @@ void main(void)
 									 TEST_THREAD_PRIO, main_thread_func, 0,
 									 &main_thread_stack[MAIN_STACK_SIZE_BYTES - 1],
 									 MAIN_STACK_SIZE_BYTES);
+									 
+									 
 			if (status == ATOM_OK)
 			{
 					/**
@@ -188,22 +225,7 @@ void main(void)
 			}
 	}
 
-  while (1)
-  {
-		unsigned char c;
-
-		while (USART_GetFlagStatus(USART1, USART_FLAG_RXNE) == RESET);
-
-		c = USART_ReceiveData8(USART1);
-
-		USART_SendData8(USART1, c);
-		/* Loop until the end of transmission */
-		while (USART_GetFlagStatus(USART1, USART_FLAG_TC) == RESET);
-
-    /* Toggle LEDs LD1..LD4 */
-    GPIO_ToggleBits(LED_GPIO_PORT, LED_GPIO_PINS);
-    //Delay(0xFFFF);
-  }
+  while (1);
 }
 
 /**

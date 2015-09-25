@@ -82,9 +82,9 @@
  383  005e a602          	ld	a,#2
  384  0060 95            	ld	xh,a
  385  0061 cd0000        	call	_CLK_PeripheralClockConfig
- 387                     ; 254 		TIM4_TimeBaseInit(TIM4_Prescaler_128, 124);
+ 387                     ; 254 		TIM4_TimeBaseInit(TIM4_Prescaler_1024, 124);
  389  0064 ae007c        	ldw	x,#124
- 390  0067 a607          	ld	a,#7
+ 390  0067 a60a          	ld	a,#10
  391  0069 95            	ld	xh,a
  392  006a cd0000        	call	_TIM4_TimeBaseInit
  394                     ; 256 		TIM4_ClearFlag(TIM4_FLAG_Update);

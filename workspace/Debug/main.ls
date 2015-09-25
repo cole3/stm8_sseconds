@@ -1,10 +1,10 @@
    1                     ; C Compiler for STM8 (COSMIC Software)
    2                     ; Generator V4.2.8 - 03 Dec 2008
-  41                     ; 67 static void TIM1_Config(void)
-  41                     ; 68 {
+  41                     ; 69 static void TIM1_Config(void)
+  41                     ; 70 {
   43                     	switch	.text
-  44  0000               L11_TIM1_Config:
-  48                     ; 70     TIM1_TimeBaseInit(TIM1_PRESCALER, TIM1_CounterMode_Up, TIM1_PERIOD, TIM1_REPTETION_COUNTER);
+  44  0000               L51_TIM1_Config:
+  48                     ; 72     TIM1_TimeBaseInit(TIM1_PRESCALER, TIM1_CounterMode_Up, TIM1_PERIOD, TIM1_REPTETION_COUNTER);
   50  0000 4b00          	push	#0
   51  0002 ae0fff        	ldw	x,#4095
   52  0005 89            	pushw	x
@@ -12,8 +12,8 @@
   54  0008 5f            	clrw	x
   55  0009 cd0000        	call	_TIM1_TimeBaseInit
   57  000c 5b04          	addw	sp,#4
-  58                     ; 73     TIM1_OC1Init(TIM1_OCMode_Timing, TIM1_OutputState_Enable, TIM1_OutputNState_Enable, CCR1_VAL,
-  58                     ; 74                TIM1_OCPolarity_High, TIM1_OCNPolarity_High, TIM1_OCIdleState_Reset, TIM1_OCNIdleState_Reset);
+  58                     ; 75     TIM1_OC1Init(TIM1_OCMode_Timing, TIM1_OutputState_Enable, TIM1_OutputNState_Enable, CCR1_VAL,
+  58                     ; 76                TIM1_OCPolarity_High, TIM1_OCNPolarity_High, TIM1_OCIdleState_Reset, TIM1_OCNIdleState_Reset);
   60  000e 4b00          	push	#0
   61  0010 4b00          	push	#0
   62  0012 4b00          	push	#0
@@ -26,8 +26,8 @@
   69  0020 95            	ld	xh,a
   70  0021 cd0000        	call	_TIM1_OC1Init
   72  0024 5b07          	addw	sp,#7
-  73                     ; 75     TIM1_OC2Init(TIM1_OCMode_Timing, TIM1_OutputState_Enable, TIM1_OutputNState_Enable, CCR2_VAL,
-  73                     ; 76                TIM1_OCPolarity_High, TIM1_OCNPolarity_High, TIM1_OCIdleState_Reset, TIM1_OCNIdleState_Reset);
+  73                     ; 77     TIM1_OC2Init(TIM1_OCMode_Timing, TIM1_OutputState_Enable, TIM1_OutputNState_Enable, CCR2_VAL,
+  73                     ; 78                TIM1_OCPolarity_High, TIM1_OCNPolarity_High, TIM1_OCIdleState_Reset, TIM1_OCNIdleState_Reset);
   75  0026 4b00          	push	#0
   76  0028 4b00          	push	#0
   77  002a 4b00          	push	#0
@@ -40,8 +40,8 @@
   84  0038 95            	ld	xh,a
   85  0039 cd0000        	call	_TIM1_OC2Init
   87  003c 5b07          	addw	sp,#7
-  88                     ; 77     TIM1_OC3Init(TIM1_OCMode_Timing, TIM1_OutputState_Enable, TIM1_OutputNState_Enable, CCR3_VAL,
-  88                     ; 78                TIM1_OCPolarity_High, TIM1_OCNPolarity_High, TIM1_OCIdleState_Reset, TIM1_OCNIdleState_Reset);
+  88                     ; 79     TIM1_OC3Init(TIM1_OCMode_Timing, TIM1_OutputState_Enable, TIM1_OutputNState_Enable, CCR3_VAL,
+  88                     ; 80                TIM1_OCPolarity_High, TIM1_OCNPolarity_High, TIM1_OCIdleState_Reset, TIM1_OCNIdleState_Reset);
   90  003e 4b00          	push	#0
   91  0040 4b00          	push	#0
   92  0042 4b00          	push	#0
@@ -54,8 +54,8 @@
   99  0050 95            	ld	xh,a
  100  0051 cd0000        	call	_TIM1_OC3Init
  102  0054 5b07          	addw	sp,#7
- 103                     ; 81     TIM1_BDTRConfig(TIM1_OSSIState_Enable, TIM1_LockLevel_Off, DEADTIME,
- 103                     ; 82                   TIM1_BreakState_Enable, TIM1_BreakPolarity_Low, TIM1_AutomaticOutput_Disable);
+ 103                     ; 83     TIM1_BDTRConfig(TIM1_OSSIState_Enable, TIM1_LockLevel_Off, DEADTIME,
+ 103                     ; 84                   TIM1_BreakState_Enable, TIM1_BreakPolarity_Low, TIM1_AutomaticOutput_Disable);
  105  0056 4b00          	push	#0
  106  0058 4b00          	push	#0
  107  005a 4b10          	push	#16
@@ -65,263 +65,340 @@
  111  0061 95            	ld	xh,a
  112  0062 cd0000        	call	_TIM1_BDTRConfig
  114  0065 5b04          	addw	sp,#4
- 115                     ; 84     TIM1_CCPreloadControl(ENABLE);
+ 115                     ; 86     TIM1_CCPreloadControl(ENABLE);
  117  0067 a601          	ld	a,#1
  118  0069 cd0000        	call	_TIM1_CCPreloadControl
- 120                     ; 85     TIM1_ITConfig(TIM1_IT_COM, ENABLE);
+ 120                     ; 87     TIM1_ITConfig(TIM1_IT_COM, ENABLE);
  122  006c ae0001        	ldw	x,#1
  123  006f a620          	ld	a,#32
  124  0071 95            	ld	xh,a
  125  0072 cd0000        	call	_TIM1_ITConfig
- 127                     ; 87     TIM1_CtrlPWMOutputs(ENABLE);
+ 127                     ; 89     TIM1_CtrlPWMOutputs(ENABLE);
  129  0075 a601          	ld	a,#1
  130  0077 cd0000        	call	_TIM1_CtrlPWMOutputs
- 132                     ; 89     TIM1_Cmd(ENABLE);
+ 132                     ; 91     TIM1_Cmd(ENABLE);
  134  007a a601          	ld	a,#1
  135  007c cd0000        	call	_TIM1_Cmd
- 137                     ; 90 }
+ 137                     ; 92 }
  140  007f 81            	ret
- 168                     ; 92 static void TIM4_Config(void)
- 168                     ; 93 {
+ 168                     ; 94 static void TIM4_Config(void)
+ 168                     ; 95 {
  169                     	switch	.text
- 170  0080               L13_TIM4_Config:
- 174                     ; 104     TIM4_TimeBaseInit(TIM4_Prescaler_128, 124);
+ 170  0080               L53_TIM4_Config:
+ 174                     ; 106     TIM4_TimeBaseInit(TIM4_Prescaler_128, 124);
  176  0080 ae007c        	ldw	x,#124
  177  0083 a607          	ld	a,#7
  178  0085 95            	ld	xh,a
  179  0086 cd0000        	call	_TIM4_TimeBaseInit
- 181                     ; 106     TIM4_ClearFlag(TIM4_FLAG_Update);
+ 181                     ; 108     TIM4_ClearFlag(TIM4_FLAG_Update);
  183  0089 a601          	ld	a,#1
  184  008b cd0000        	call	_TIM4_ClearFlag
- 186                     ; 108     TIM4_ITConfig(TIM4_IT_Update, ENABLE);
+ 186                     ; 110     TIM4_ITConfig(TIM4_IT_Update, ENABLE);
  188  008e ae0001        	ldw	x,#1
  189  0091 a601          	ld	a,#1
  190  0093 95            	ld	xh,a
  191  0094 cd0000        	call	_TIM4_ITConfig
- 193                     ; 110     enableInterrupts();
+ 193                     ; 112     enableInterrupts();
  196  0097 9a            rim
- 198                     ; 113     TIM4_Cmd(ENABLE);
+ 198                     ; 115     TIM4_Cmd(ENABLE);
  201  0098 a601          	ld	a,#1
  202  009a cd0000        	call	_TIM4_Cmd
- 204                     ; 114 }
+ 204                     ; 116 }
  207  009d 81            	ret
- 252                     ; 116 static void main_thread_func (uint32_t param)
- 252                     ; 117 {
+ 252                     ; 118 static void first_thread_func (uint32_t param)
+ 252                     ; 119 {
  253                     	switch	.text
- 254  009e               L34_main_thread_func:
+ 254  009e               L74_first_thread_func:
  256  009e 89            	pushw	x
  257       00000002      OFST:	set	2
- 260                     ; 118     int cnt = 0;
+ 260                     ; 120 		int cnt = 0;
  262  009f 5f            	clrw	x
  263  00a0 1f01          	ldw	(OFST-1,sp),x
- 264  00a2               L76:
- 265                     ; 123         printf("main_thread_func cnt=%d\n", cnt++);
+ 264  00a2               L37:
+ 265                     ; 124         printf("first_thread_func cnt=%d\n", cnt++);
  267  00a2 1601          	ldw	y,(OFST-1,sp)
  268  00a4 0c02          	inc	(OFST+0,sp)
  269  00a6 2602          	jrne	L21
  270  00a8 0c01          	inc	(OFST-1,sp)
  271  00aa               L21:
  272  00aa 9089          	pushw	y
- 273  00ac ae0000        	ldw	x,#L37
+ 273  00ac ae002f        	ldw	x,#L77
  274  00af cd0000        	call	_printf
  276  00b2 85            	popw	x
- 277                     ; 126         atomTimerDelay(SYSTEM_TICKS_PER_SEC);
- 279  00b3 ae0064        	ldw	x,#100
+ 277                     ; 127         atomTimerDelay(SYSTEM_TICKS_PER_SEC);
+ 279  00b3 ae007d        	ldw	x,#125
  280  00b6 89            	pushw	x
  281  00b7 ae0000        	ldw	x,#0
  282  00ba 89            	pushw	x
  283  00bb cd0000        	call	_atomTimerDelay
  285  00be 5b04          	addw	sp,#4
- 287  00c0 20e0          	jra	L76
- 350                     ; 135 void main(void)
- 350                     ; 136 {
- 351                     	switch	.text
- 352  00c2               _main:
- 354  00c2 88            	push	a
- 355       00000001      OFST:	set	1
- 358                     ; 139 	CLK_SYSCLKDivConfig(CLK_SYSCLKDiv_1);
- 360  00c3 4f            	clr	a
- 361  00c4 cd0000        	call	_CLK_SYSCLKDivConfig
- 363                     ; 141 	SYSCFG_REMAPPinConfig(REMAP_Pin_USART1TxRxPortA, ENABLE);
- 365  00c7 4b01          	push	#1
- 366  00c9 ae011c        	ldw	x,#284
- 367  00cc cd0000        	call	_SYSCFG_REMAPPinConfig
- 369  00cf 84            	pop	a
- 370                     ; 144     CLK_PeripheralClockConfig(CLK_Peripheral_USART1, ENABLE);
- 372  00d0 ae0001        	ldw	x,#1
- 373  00d3 a605          	ld	a,#5
- 374  00d5 95            	ld	xh,a
- 375  00d6 cd0000        	call	_CLK_PeripheralClockConfig
- 377                     ; 147     GPIO_ExternalPullUpConfig(GPIOA, GPIO_Pin_2, ENABLE);
- 379  00d9 4b01          	push	#1
- 380  00db 4b04          	push	#4
- 381  00dd ae5000        	ldw	x,#20480
- 382  00e0 cd0000        	call	_GPIO_ExternalPullUpConfig
- 384  00e3 85            	popw	x
- 385                     ; 150     GPIO_ExternalPullUpConfig(GPIOA, GPIO_Pin_3, ENABLE);
- 387  00e4 4b01          	push	#1
- 388  00e6 4b08          	push	#8
- 389  00e8 ae5000        	ldw	x,#20480
- 390  00eb cd0000        	call	_GPIO_ExternalPullUpConfig
- 392  00ee 85            	popw	x
- 393                     ; 153     USART_Init(USART1, 115200,
- 393                     ; 154              USART_WordLength_8b,
- 393                     ; 155              USART_StopBits_1,
- 393                     ; 156              USART_Parity_No,
- 393                     ; 157              (USART_Mode_TypeDef)(USART_Mode_Tx | USART_Mode_Rx));
- 395  00ef 4b0c          	push	#12
- 396  00f1 4b00          	push	#0
- 397  00f3 4b00          	push	#0
- 398  00f5 4b00          	push	#0
- 399  00f7 aec200        	ldw	x,#49664
- 400  00fa 89            	pushw	x
- 401  00fb ae0001        	ldw	x,#1
- 402  00fe 89            	pushw	x
- 403  00ff ae5230        	ldw	x,#21040
- 404  0102 cd0000        	call	_USART_Init
- 406  0105 5b08          	addw	sp,#8
- 407                     ; 160     GPIO_Init(LED_GPIO_PORT, LED_GPIO_PINS, GPIO_Mode_Out_PP_Low_Fast);
- 409  0107 4be0          	push	#224
- 410  0109 4b80          	push	#128
- 411  010b ae5014        	ldw	x,#20500
- 412  010e cd0000        	call	_GPIO_Init
- 414  0111 85            	popw	x
- 415                     ; 162 	enableInterrupts();
- 418  0112 9a            rim
- 420                     ; 164 	status = atomOSInit(&idle_thread_stack[IDLE_STACK_SIZE_BYTES - 1], IDLE_STACK_SIZE_BYTES);
- 423  0113 ae0080        	ldw	x,#128
- 424  0116 89            	pushw	x
- 425  0117 ae0000        	ldw	x,#0
- 426  011a 89            	pushw	x
- 427  011b ae007f        	ldw	x,#L5_idle_thread_stack+127
- 428  011e cd0000        	call	_atomOSInit
- 430  0121 5b04          	addw	sp,#4
- 431  0123 6b01          	ld	(OFST+0,sp),a
- 432                     ; 165 	if (status == ATOM_OK)
- 434  0125 0d01          	tnz	(OFST+0,sp)
- 435  0127 262e          	jrne	L131
- 436                     ; 168 			archInitSystemTickTimer();
- 438  0129 cd0000        	call	_archInitSystemTickTimer
- 440                     ; 171 			status = atomThreadCreate(&main_tcb,
- 440                     ; 172 									 TEST_THREAD_PRIO, main_thread_func, 0,
- 440                     ; 173 									 &main_thread_stack[MAIN_STACK_SIZE_BYTES - 1],
- 440                     ; 174 									 MAIN_STACK_SIZE_BYTES);
- 442  012c ae0100        	ldw	x,#256
- 443  012f 89            	pushw	x
- 444  0130 ae0000        	ldw	x,#0
- 445  0133 89            	pushw	x
- 446  0134 ae017f        	ldw	x,#L3_main_thread_stack+255
- 447  0137 89            	pushw	x
- 448  0138 ae0000        	ldw	x,#0
- 449  013b 89            	pushw	x
- 450  013c ae0000        	ldw	x,#0
- 451  013f 89            	pushw	x
- 452  0140 ae009e        	ldw	x,#L34_main_thread_func
- 453  0143 89            	pushw	x
- 454  0144 4b10          	push	#16
- 455  0146 ae0000        	ldw	x,#L7_main_tcb
- 456  0149 cd0000        	call	_atomThreadCreate
- 458  014c 5b0d          	addw	sp,#13
- 459  014e 6b01          	ld	(OFST+0,sp),a
- 460                     ; 175 			if (status == ATOM_OK)
- 462  0150 0d01          	tnz	(OFST+0,sp)
- 463  0152 2603          	jrne	L131
- 464                     ; 187 					atomOSStart();
- 466  0154 cd0000        	call	_atomOSStart
- 468  0157               L131:
- 469                     ; 195 		while (USART_GetFlagStatus(USART1, USART_FLAG_RXNE) == RESET);
- 471  0157 ae0020        	ldw	x,#32
- 472  015a 89            	pushw	x
- 473  015b ae5230        	ldw	x,#21040
- 474  015e cd0000        	call	_USART_GetFlagStatus
- 476  0161 85            	popw	x
- 477  0162 4d            	tnz	a
- 478  0163 27f2          	jreq	L131
- 479                     ; 197 		c = USART_ReceiveData8(USART1);
- 481  0165 ae5230        	ldw	x,#21040
- 482  0168 cd0000        	call	_USART_ReceiveData8
- 484  016b 6b01          	ld	(OFST+0,sp),a
- 485                     ; 199 		USART_SendData8(USART1, c);
- 487  016d 7b01          	ld	a,(OFST+0,sp)
- 488  016f 88            	push	a
- 489  0170 ae5230        	ldw	x,#21040
- 490  0173 cd0000        	call	_USART_SendData8
- 492  0176 84            	pop	a
- 494  0177               L731:
- 495                     ; 201 		while (USART_GetFlagStatus(USART1, USART_FLAG_TC) == RESET);
- 497  0177 ae0040        	ldw	x,#64
- 498  017a 89            	pushw	x
- 499  017b ae5230        	ldw	x,#21040
- 500  017e cd0000        	call	_USART_GetFlagStatus
- 502  0181 85            	popw	x
- 503  0182 4d            	tnz	a
- 504  0183 27f2          	jreq	L731
- 505                     ; 204     GPIO_ToggleBits(LED_GPIO_PORT, LED_GPIO_PINS);
- 507  0185 4b80          	push	#128
- 508  0187 ae5014        	ldw	x,#20500
- 509  018a cd0000        	call	_GPIO_ToggleBits
- 511  018d 84            	pop	a
- 513  018e 20c7          	jra	L131
- 547                     ; 214 void Delay(__IO uint16_t nCount)
- 547                     ; 215 {
- 548                     	switch	.text
- 549  0190               _Delay:
- 551  0190 89            	pushw	x
- 552       00000000      OFST:	set	0
- 555  0191 2007          	jra	L361
- 556  0193               L161:
- 557                     ; 219     nCount--;
- 559  0193 1e01          	ldw	x,(OFST+1,sp)
- 560  0195 1d0001        	subw	x,#1
- 561  0198 1f01          	ldw	(OFST+1,sp),x
- 562  019a               L361:
- 563                     ; 217   while (nCount != 0)
- 565  019a 1e01          	ldw	x,(OFST+1,sp)
- 566  019c 26f5          	jrne	L161
- 567                     ; 221 }
- 570  019e 85            	popw	x
- 571  019f 81            	ret
- 756                     	xdef	_main
- 757                     	xdef	_Delay
- 758                     	switch	.ubsct
- 759  0000               L7_main_tcb:
- 760  0000 000000000000  	ds.b	17
- 761                     	switch	.bss
- 762  0000               L5_idle_thread_stack:
- 763  0000 000000000000  	ds.b	128
- 764  0080               L3_main_thread_stack:
- 765  0080 000000000000  	ds.b	256
- 766                     	xref	_archInitSystemTickTimer
- 767                     	xref	_atomThreadCreate
- 768                     	xref	_atomOSStart
- 769                     	xref	_atomOSInit
- 770                     	xref	_atomTimerDelay
- 771                     	xref	_USART_GetFlagStatus
- 772                     	xref	_USART_ReceiveData8
- 773                     	xref	_USART_SendData8
- 774                     	xref	_USART_Init
- 775                     	xref	_TIM4_ClearFlag
- 776                     	xref	_TIM4_ITConfig
- 777                     	xref	_TIM4_Cmd
- 778                     	xref	_TIM4_TimeBaseInit
- 779                     	xref	_TIM1_ITConfig
- 780                     	xref	_TIM1_CCPreloadControl
- 781                     	xref	_TIM1_CtrlPWMOutputs
- 782                     	xref	_TIM1_BDTRConfig
- 783                     	xref	_TIM1_OC3Init
- 784                     	xref	_TIM1_OC2Init
- 785                     	xref	_TIM1_OC1Init
- 786                     	xref	_TIM1_Cmd
- 787                     	xref	_TIM1_TimeBaseInit
- 788                     	xref	_SYSCFG_REMAPPinConfig
- 789                     	xref	_GPIO_ToggleBits
- 790                     	xref	_GPIO_ExternalPullUpConfig
- 791                     	xref	_GPIO_Init
- 792                     	xref	_CLK_PeripheralClockConfig
- 793                     	xref	_CLK_SYSCLKDivConfig
- 794                     	xref	_printf
- 795                     .const:	section	.text
- 796  0000               L37:
- 797  0000 6d61696e5f74  	dc.b	"main_thread_func c"
- 798  0012 6e743d25640a  	dc.b	"nt=%d",10,0
- 818                     	end
+ 287  00c0 20e0          	jra	L37
+ 364                     ; 131 static void main_thread_func (uint32_t param)
+ 364                     ; 132 {
+ 365                     	switch	.text
+ 366  00c2               L101_main_thread_func:
+ 368  00c2 5207          	subw	sp,#7
+ 369       00000007      OFST:	set	7
+ 372                     ; 133     int cnt = 0;
+ 374  00c4 5f            	clrw	x
+ 375  00c5 1f06          	ldw	(OFST-1,sp),x
+ 376                     ; 135 		int i = 0;
+ 378  00c7 1e04          	ldw	x,(OFST-3,sp)
+ 379                     ; 136 		int flag = 1;
+ 381  00c9 ae0001        	ldw	x,#1
+ 382  00cc 1f02          	ldw	(OFST-5,sp),x
+ 383                     ; 138 		status = atomThreadCreate(&first_tcb,
+ 383                     ; 139 								 TEST_THREAD_PRIO, first_thread_func, 0,
+ 383                     ; 140 								 &first_thread_stack[MAIN_STACK_SIZE_BYTES - 1],
+ 383                     ; 141 								 MAIN_STACK_SIZE_BYTES);
+ 385  00ce ae0100        	ldw	x,#256
+ 386  00d1 89            	pushw	x
+ 387  00d2 ae0000        	ldw	x,#0
+ 388  00d5 89            	pushw	x
+ 389  00d6 ae00ff        	ldw	x,#L7_first_thread_stack+255
+ 390  00d9 89            	pushw	x
+ 391  00da ae0000        	ldw	x,#0
+ 392  00dd 89            	pushw	x
+ 393  00de ae0000        	ldw	x,#0
+ 394  00e1 89            	pushw	x
+ 395  00e2 ae009e        	ldw	x,#L74_first_thread_func
+ 396  00e5 89            	pushw	x
+ 397  00e6 4b10          	push	#16
+ 398  00e8 ae0000        	ldw	x,#L31_first_tcb
+ 399  00eb cd0000        	call	_atomThreadCreate
+ 401  00ee 5b0d          	addw	sp,#13
+ 402  00f0 6b01          	ld	(OFST-6,sp),a
+ 403                     ; 142 		if (status != ATOM_OK)
+ 405  00f2 0d01          	tnz	(OFST-6,sp)
+ 406  00f4 2706          	jreq	L541
+ 407                     ; 144 				printf("atomThreadCreate first_thread_func fail!\n");
+ 409  00f6 ae0005        	ldw	x,#L341
+ 410  00f9 cd0000        	call	_printf
+ 412  00fc               L541:
+ 413                     ; 150 				cnt = flag ? (cnt + 1) : (cnt - 1);
+ 415  00fc 1e02          	ldw	x,(OFST-5,sp)
+ 416  00fe 2705          	jreq	L61
+ 417  0100 1e06          	ldw	x,(OFST-1,sp)
+ 418  0102 5c            	incw	x
+ 419  0103 2003          	jra	L02
+ 420  0105               L61:
+ 421  0105 1e06          	ldw	x,(OFST-1,sp)
+ 422  0107 5a            	decw	x
+ 423  0108               L02:
+ 424  0108 1f06          	ldw	(OFST-1,sp),x
+ 425                     ; 152 				flag = (cnt == 20) ? 0 : ((cnt == 0) ? 1 : flag);
+ 427  010a 1e06          	ldw	x,(OFST-1,sp)
+ 428  010c a30014        	cpw	x,#20
+ 429  010f 2603          	jrne	L22
+ 430  0111 5f            	clrw	x
+ 431  0112 200b          	jra	L42
+ 432  0114               L22:
+ 433  0114 1e06          	ldw	x,(OFST-1,sp)
+ 434  0116 2605          	jrne	L62
+ 435  0118 ae0001        	ldw	x,#1
+ 436  011b 2002          	jra	L03
+ 437  011d               L62:
+ 438  011d 1e02          	ldw	x,(OFST-5,sp)
+ 439  011f               L03:
+ 440  011f               L42:
+ 441  011f 1f02          	ldw	(OFST-5,sp),x
+ 442                     ; 154 				for(i=0; i<cnt; i++)
+ 444  0121 5f            	clrw	x
+ 445  0122 1f04          	ldw	(OFST-3,sp),x
+ 447  0124 2011          	jra	L551
+ 448  0126               L151:
+ 449                     ; 156 						printf(" ", cnt);
+ 451  0126 1e06          	ldw	x,(OFST-1,sp)
+ 452  0128 89            	pushw	x
+ 453  0129 ae0003        	ldw	x,#L161
+ 454  012c cd0000        	call	_printf
+ 456  012f 85            	popw	x
+ 457                     ; 154 				for(i=0; i<cnt; i++)
+ 459  0130 1e04          	ldw	x,(OFST-3,sp)
+ 460  0132 1c0001        	addw	x,#1
+ 461  0135 1f04          	ldw	(OFST-3,sp),x
+ 462  0137               L551:
+ 465  0137 9c            	rvf
+ 466  0138 1e04          	ldw	x,(OFST-3,sp)
+ 467  013a 1306          	cpw	x,(OFST-1,sp)
+ 468  013c 2fe8          	jrslt	L151
+ 469                     ; 158         printf("+\n");
+ 471  013e ae0000        	ldw	x,#L361
+ 472  0141 cd0000        	call	_printf
+ 474                     ; 161         atomTimerDelay(SYSTEM_TICKS_PER_SEC);
+ 476  0144 ae007d        	ldw	x,#125
+ 477  0147 89            	pushw	x
+ 478  0148 ae0000        	ldw	x,#0
+ 479  014b 89            	pushw	x
+ 480  014c cd0000        	call	_atomTimerDelay
+ 482  014f 5b04          	addw	sp,#4
+ 484  0151 20a9          	jra	L541
+ 534                     ; 170 void main(void)
+ 534                     ; 171 {
+ 535                     	switch	.text
+ 536  0153               _main:
+ 538  0153 88            	push	a
+ 539       00000001      OFST:	set	1
+ 542                     ; 174 	CLK_SYSCLKDivConfig(CLK_SYSCLKDiv_1);
+ 544  0154 4f            	clr	a
+ 545  0155 cd0000        	call	_CLK_SYSCLKDivConfig
+ 547                     ; 176 	SYSCFG_REMAPPinConfig(REMAP_Pin_USART1TxRxPortA, ENABLE);
+ 549  0158 4b01          	push	#1
+ 550  015a ae011c        	ldw	x,#284
+ 551  015d cd0000        	call	_SYSCFG_REMAPPinConfig
+ 553  0160 84            	pop	a
+ 554                     ; 179     CLK_PeripheralClockConfig(CLK_Peripheral_USART1, ENABLE);
+ 556  0161 ae0001        	ldw	x,#1
+ 557  0164 a605          	ld	a,#5
+ 558  0166 95            	ld	xh,a
+ 559  0167 cd0000        	call	_CLK_PeripheralClockConfig
+ 561                     ; 182     GPIO_ExternalPullUpConfig(GPIOA, GPIO_Pin_2, ENABLE);
+ 563  016a 4b01          	push	#1
+ 564  016c 4b04          	push	#4
+ 565  016e ae5000        	ldw	x,#20480
+ 566  0171 cd0000        	call	_GPIO_ExternalPullUpConfig
+ 568  0174 85            	popw	x
+ 569                     ; 185     GPIO_ExternalPullUpConfig(GPIOA, GPIO_Pin_3, ENABLE);
+ 571  0175 4b01          	push	#1
+ 572  0177 4b08          	push	#8
+ 573  0179 ae5000        	ldw	x,#20480
+ 574  017c cd0000        	call	_GPIO_ExternalPullUpConfig
+ 576  017f 85            	popw	x
+ 577                     ; 188     USART_Init(USART1, 115200,
+ 577                     ; 189              USART_WordLength_8b,
+ 577                     ; 190              USART_StopBits_1,
+ 577                     ; 191              USART_Parity_No,
+ 577                     ; 192              (USART_Mode_TypeDef)(USART_Mode_Tx | USART_Mode_Rx));
+ 579  0180 4b0c          	push	#12
+ 580  0182 4b00          	push	#0
+ 581  0184 4b00          	push	#0
+ 582  0186 4b00          	push	#0
+ 583  0188 aec200        	ldw	x,#49664
+ 584  018b 89            	pushw	x
+ 585  018c ae0001        	ldw	x,#1
+ 586  018f 89            	pushw	x
+ 587  0190 ae5230        	ldw	x,#21040
+ 588  0193 cd0000        	call	_USART_Init
+ 590  0196 5b08          	addw	sp,#8
+ 591                     ; 195     GPIO_Init(LED_GPIO_PORT, LED_GPIO_PINS, GPIO_Mode_Out_PP_Low_Fast);
+ 593  0198 4be0          	push	#224
+ 594  019a 4b80          	push	#128
+ 595  019c ae5014        	ldw	x,#20500
+ 596  019f cd0000        	call	_GPIO_Init
+ 598  01a2 85            	popw	x
+ 599                     ; 197 	enableInterrupts();
+ 602  01a3 9a            rim
+ 604                     ; 199 	status = atomOSInit(&idle_thread_stack[IDLE_STACK_SIZE_BYTES - 1], IDLE_STACK_SIZE_BYTES);
+ 607  01a4 ae0080        	ldw	x,#128
+ 608  01a7 89            	pushw	x
+ 609  01a8 ae0000        	ldw	x,#0
+ 610  01ab 89            	pushw	x
+ 611  01ac ae027f        	ldw	x,#L3_idle_thread_stack+127
+ 612  01af cd0000        	call	_atomOSInit
+ 614  01b2 5b04          	addw	sp,#4
+ 615  01b4 6b01          	ld	(OFST+0,sp),a
+ 616                     ; 200 	if (status == ATOM_OK)
+ 618  01b6 0d01          	tnz	(OFST+0,sp)
+ 619  01b8 262e          	jrne	L702
+ 620                     ; 203 			archInitSystemTickTimer();
+ 622  01ba cd0000        	call	_archInitSystemTickTimer
+ 624                     ; 206 			status = atomThreadCreate(&main_tcb,
+ 624                     ; 207 									 TEST_THREAD_PRIO, main_thread_func, 0,
+ 624                     ; 208 									 &main_thread_stack[MAIN_STACK_SIZE_BYTES - 1],
+ 624                     ; 209 									 MAIN_STACK_SIZE_BYTES);
+ 626  01bd ae0100        	ldw	x,#256
+ 627  01c0 89            	pushw	x
+ 628  01c1 ae0000        	ldw	x,#0
+ 629  01c4 89            	pushw	x
+ 630  01c5 ae01ff        	ldw	x,#L5_main_thread_stack+255
+ 631  01c8 89            	pushw	x
+ 632  01c9 ae0000        	ldw	x,#0
+ 633  01cc 89            	pushw	x
+ 634  01cd ae0000        	ldw	x,#0
+ 635  01d0 89            	pushw	x
+ 636  01d1 ae00c2        	ldw	x,#L101_main_thread_func
+ 637  01d4 89            	pushw	x
+ 638  01d5 4b10          	push	#16
+ 639  01d7 ae0011        	ldw	x,#L11_main_tcb
+ 640  01da cd0000        	call	_atomThreadCreate
+ 642  01dd 5b0d          	addw	sp,#13
+ 643  01df 6b01          	ld	(OFST+0,sp),a
+ 644                     ; 212 			if (status == ATOM_OK)
+ 646  01e1 0d01          	tnz	(OFST+0,sp)
+ 647  01e3 2603          	jrne	L702
+ 648                     ; 224 					atomOSStart();
+ 650  01e5 cd0000        	call	_atomOSStart
+ 652  01e8               L702:
+ 653                     ; 228   while (1);
+ 655  01e8 20fe          	jra	L702
+ 689                     ; 236 void Delay(__IO uint16_t nCount)
+ 689                     ; 237 {
+ 690                     	switch	.text
+ 691  01ea               _Delay:
+ 693  01ea 89            	pushw	x
+ 694       00000000      OFST:	set	0
+ 697  01eb 2007          	jra	L332
+ 698  01ed               L132:
+ 699                     ; 241     nCount--;
+ 701  01ed 1e01          	ldw	x,(OFST+1,sp)
+ 702  01ef 1d0001        	subw	x,#1
+ 703  01f2 1f01          	ldw	(OFST+1,sp),x
+ 704  01f4               L332:
+ 705                     ; 239   while (nCount != 0)
+ 707  01f4 1e01          	ldw	x,(OFST+1,sp)
+ 708  01f6 26f5          	jrne	L132
+ 709                     ; 243 }
+ 712  01f8 85            	popw	x
+ 713  01f9 81            	ret
+ 918                     	xdef	_main
+ 919                     	xdef	_Delay
+ 920                     	switch	.ubsct
+ 921  0000               L31_first_tcb:
+ 922  0000 000000000000  	ds.b	17
+ 923  0011               L11_main_tcb:
+ 924  0011 000000000000  	ds.b	17
+ 925                     	switch	.bss
+ 926  0000               L7_first_thread_stack:
+ 927  0000 000000000000  	ds.b	256
+ 928  0100               L5_main_thread_stack:
+ 929  0100 000000000000  	ds.b	256
+ 930  0200               L3_idle_thread_stack:
+ 931  0200 000000000000  	ds.b	128
+ 932                     	xref	_archInitSystemTickTimer
+ 933                     	xref	_atomThreadCreate
+ 934                     	xref	_atomOSStart
+ 935                     	xref	_atomOSInit
+ 936                     	xref	_atomTimerDelay
+ 937                     	xref	_USART_Init
+ 938                     	xref	_TIM4_ClearFlag
+ 939                     	xref	_TIM4_ITConfig
+ 940                     	xref	_TIM4_Cmd
+ 941                     	xref	_TIM4_TimeBaseInit
+ 942                     	xref	_TIM1_ITConfig
+ 943                     	xref	_TIM1_CCPreloadControl
+ 944                     	xref	_TIM1_CtrlPWMOutputs
+ 945                     	xref	_TIM1_BDTRConfig
+ 946                     	xref	_TIM1_OC3Init
+ 947                     	xref	_TIM1_OC2Init
+ 948                     	xref	_TIM1_OC1Init
+ 949                     	xref	_TIM1_Cmd
+ 950                     	xref	_TIM1_TimeBaseInit
+ 951                     	xref	_SYSCFG_REMAPPinConfig
+ 952                     	xref	_GPIO_ExternalPullUpConfig
+ 953                     	xref	_GPIO_Init
+ 954                     	xref	_CLK_PeripheralClockConfig
+ 955                     	xref	_CLK_SYSCLKDivConfig
+ 956                     	xref	_printf
+ 957                     .const:	section	.text
+ 958  0000               L361:
+ 959  0000 2b0a00        	dc.b	"+",10,0
+ 960  0003               L161:
+ 961  0003 2000          	dc.b	" ",0
+ 962  0005               L341:
+ 963  0005 61746f6d5468  	dc.b	"atomThreadCreate f"
+ 964  0017 697273745f74  	dc.b	"irst_thread_func f"
+ 965  0029 61696c210a00  	dc.b	"ail!",10,0
+ 966  002f               L77:
+ 967  002f 66697273745f  	dc.b	"first_thread_func "
+ 968  0041 636e743d2564  	dc.b	"cnt=%d",10,0
+ 988                     	end

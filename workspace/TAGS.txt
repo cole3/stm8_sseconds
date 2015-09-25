@@ -366,15 +366,15 @@ CCR1H	..\drivers\inc\stm8l15x.h	1714;"	member	struct:TIM1_struct
 CCR1H	..\drivers\inc\stm8l15x.h	1945;"	member	struct:TIM_struct
 CCR1L	..\drivers\inc\stm8l15x.h	1715;"	member	struct:TIM1_struct
 CCR1L	..\drivers\inc\stm8l15x.h	1946;"	member	struct:TIM_struct
-CCR1_VAL	..\app\main.c	62;"	macro	file:
+CCR1_VAL	..\app\main.c	64;"	macro	file:
 CCR2H	..\drivers\inc\stm8l15x.h	1716;"	member	struct:TIM1_struct
 CCR2H	..\drivers\inc\stm8l15x.h	1947;"	member	struct:TIM_struct
 CCR2L	..\drivers\inc\stm8l15x.h	1717;"	member	struct:TIM1_struct
 CCR2L	..\drivers\inc\stm8l15x.h	1948;"	member	struct:TIM_struct
-CCR2_VAL	..\app\main.c	63;"	macro	file:
+CCR2_VAL	..\app\main.c	65;"	macro	file:
 CCR3H	..\drivers\inc\stm8l15x.h	1718;"	member	struct:TIM1_struct
 CCR3L	..\drivers\inc\stm8l15x.h	1719;"	member	struct:TIM1_struct
-CCR3_VAL	..\app\main.c	64;"	macro	file:
+CCR3_VAL	..\app\main.c	66;"	macro	file:
 CCR4H	..\drivers\inc\stm8l15x.h	1720;"	member	struct:TIM1_struct
 CCR4L	..\drivers\inc\stm8l15x.h	1721;"	member	struct:TIM1_struct
 CCRH	..\drivers\inc\stm8l15x.h	1062;"	member	struct:I2C_struct
@@ -974,7 +974,7 @@ DCH2RDHRL	..\drivers\inc\stm8l15x.h	2416;"	member	struct:DAC_struct
 DCR1	..\drivers\inc\stm8l15x.h	1725;"	member	struct:TIM1_struct
 DCR2	..\drivers\inc\stm8l15x.h	1726;"	member	struct:TIM1_struct
 DDR	..\drivers\inc\stm8l15x.h	250;"	member	struct:GPIO_struct
-DEADTIME	..\app\main.c	65;"	macro	file:
+DEADTIME	..\app\main.c	67;"	macro	file:
 DELAY_TIMER	..\kernel\atomtimer.c	81;"	typedef	typeref:struct:delay_timer	file:
 DER	..\drivers\inc\stm8l15x.h	1696;"	member	struct:TIM1_struct
 DER	..\drivers\inc\stm8l15x.h	1932;"	member	struct:TIM_struct
@@ -1128,8 +1128,8 @@ DRH	..\drivers\inc\stm8l15x.h	2287;"	member	struct:ADC_struct
 DRL	..\drivers\inc\stm8l15x.h	2288;"	member	struct:ADC_struct
 DTR	..\drivers\inc\stm8l15x.h	1723;"	member	struct:TIM1_struct
 DUKR	..\drivers\inc\stm8l15x.h	995;"	member	struct:FLASH_struct
-Delay	..\app\main.c	214;"	function	signature:(__IO uint16_t nCount)
-Delay	..\app\main.c	55;"	prototype	file:	signature:(uint16_t nCount)
+Delay	..\app\main.c	226;"	function	signature:(__IO uint16_t nCount)
+Delay	..\app\main.c	57;"	prototype	file:	signature:(uint16_t nCount)
 ECKCR	..\drivers\inc\stm8l15x.h	708;"	member	struct:CLK_struct
 EEPROM	..\drivers\inc\stm8l15x.h	108;"	macro
 EEPROM	..\drivers\inc\stm8l15x.h	114;"	macro
@@ -3539,7 +3539,7 @@ TIM1_ClearOC4Ref	..\drivers\inc\stm8l15x_tim1.h	957;"	prototype	signature:(Funct
 TIM1_ClearOC4Ref	..\drivers\src\stm8l15x_tim1.c	1250;"	function	signature:(FunctionalState NewState)
 TIM1_Cmd	..\drivers\inc\stm8l15x_tim1.h	904;"	prototype	signature:(FunctionalState NewState)
 TIM1_Cmd	..\drivers\src\stm8l15x_tim1.c	466;"	function	signature:(FunctionalState NewState)
-TIM1_Config	..\app\main.c	67;"	function	file:	signature:(void)
+TIM1_Config	..\app\main.c	69;"	function	file:	signature:(void)
 TIM1_CounterModeConfig	..\drivers\inc\stm8l15x_tim1.h	895;"	prototype	signature:(TIM1_CounterMode_TypeDef TIM1_CounterMode)
 TIM1_CounterModeConfig	..\drivers\src\stm8l15x_tim1.c	297;"	function	signature:(TIM1_CounterMode_TypeDef TIM1_CounterMode)
 TIM1_CounterMode_CenterAligned1	..\drivers\inc\stm8l15x_tim1.h	95;"	enumerator	enum:__anon156
@@ -3841,8 +3841,8 @@ TIM1_OutputNState_TypeDef	..\drivers\inc\stm8l15x_tim1.h	150;"	typedef	typeref:e
 TIM1_OutputState_Disable	..\drivers\inc\stm8l15x_tim1.h	135;"	enumerator	enum:__anon159
 TIM1_OutputState_Enable	..\drivers\inc\stm8l15x_tim1.h	136;"	enumerator	enum:__anon159
 TIM1_OutputState_TypeDef	..\drivers\inc\stm8l15x_tim1.h	137;"	typedef	typeref:enum:__anon159
-TIM1_PERIOD	..\app\main.c	58;"	macro	file:
-TIM1_PRESCALER	..\app\main.c	59;"	macro	file:
+TIM1_PERIOD	..\app\main.c	60;"	macro	file:
+TIM1_PRESCALER	..\app\main.c	61;"	macro	file:
 TIM1_PSCH_PSC	..\drivers\inc\stm8l15x.h	1871;"	macro
 TIM1_PSCL_PSC	..\drivers\inc\stm8l15x.h	1872;"	macro
 TIM1_PSCRH_RESET_VALUE	..\drivers\inc\stm8l15x.h	1751;"	macro
@@ -3856,7 +3856,7 @@ TIM1_PrescalerConfig	..\drivers\inc\stm8l15x_tim1.h	893;"	prototype	signature:(u
 TIM1_PrescalerConfig	..\drivers\src\stm8l15x_tim1.c	273;"	function	signature:(uint16_t Prescaler, TIM1_PSCReloadMode_TypeDef TIM1_PSCReloadMode)
 TIM1_RCR_REP	..\drivers\inc\stm8l15x.h	1877;"	macro
 TIM1_RCR_RESET_VALUE	..\drivers\inc\stm8l15x.h	1755;"	macro
-TIM1_REPTETION_COUNTER	..\app\main.c	60;"	macro	file:
+TIM1_REPTETION_COUNTER	..\app\main.c	62;"	macro	file:
 TIM1_SMCR_MSM	..\drivers\inc\stm8l15x.h	1793;"	macro
 TIM1_SMCR_OCCS	..\drivers\inc\stm8l15x.h	1795;"	macro
 TIM1_SMCR_RESET_VALUE	..\drivers\inc\stm8l15x.h	1736;"	macro
@@ -4480,7 +4480,7 @@ TIM4_ClearITPendingBit	..\drivers\inc\stm8l15x_tim4.h	345;"	prototype	signature:
 TIM4_ClearITPendingBit	..\drivers\src\stm8l15x_tim4.c	544;"	function	signature:(TIM4_IT_TypeDef TIM4_IT)
 TIM4_Cmd	..\drivers\inc\stm8l15x_tim4.h	337;"	prototype	signature:(FunctionalState NewState)
 TIM4_Cmd	..\drivers\src\stm8l15x_tim4.c	382;"	function	signature:(FunctionalState NewState)
-TIM4_Config	..\app\main.c	92;"	function	file:	signature:(void)
+TIM4_Config	..\app\main.c	94;"	function	file:	signature:(void)
 TIM4_DER_RESET_VALUE	..\drivers\inc\stm8l15x.h	2128;"	macro
 TIM4_DER_UDE	..\drivers\inc\stm8l15x.h	2159;"	macro
 TIM4_DMACmd	..\drivers\inc\stm8l15x_tim4.h	346;"	prototype	signature:(TIM4_DMASource_TypeDef TIM4_DMASource, FunctionalState NewState)
@@ -5293,7 +5293,7 @@ archInitSystemTickTimer	..\port\stm8\atomport-private.h	75;"	prototype	signature
 archInitSystemTickTimer	..\port\stm8\atomport.c	237;"	function	signature:( void )
 archThreadContextInit	..\kernel\atom.h	120;"	prototype	signature:(ATOM_TCB *tcb_ptr, void *stack_top, void (*entry_point)(uint32_t), uint32_t entry_param)
 archThreadContextInit	..\port\stm8\atomport.c	166;"	function	signature:(ATOM_TCB *tcb_ptr, void *stack_top, void (*entry_point)(uint32_t), uint32_t entry_param)
-assert_failed	..\app\main.c	232;"	function	signature:(uint8_t* file, uint32_t line)
+assert_failed	..\app\main.c	244;"	function	signature:(uint8_t* file, uint32_t line)
 assert_failed	..\port\stm8\stm8l15x_conf.h	78;"	prototype	signature:(uint8_t* file, uint32_t line)
 assert_param	..\port\stm8\stm8l15x_conf.h	76;"	macro
 assert_param	..\port\stm8\stm8l15x_conf.h	80;"	macro
@@ -5320,7 +5320,7 @@ atomOSInit	..\kernel\atom.h	101;"	prototype	signature:(void *idle_thread_stack_t
 atomOSInit	..\kernel\atomkernel.c	657;"	function	signature:(void *idle_thread_stack_top, uint32_t idle_thread_stack_size)
 atomOSStart	..\kernel\atom.h	102;"	prototype	signature:(void)
 atomOSStart	..\kernel\atomkernel.c	694;"	function	signature:(void)
-atomOSStarted	..\kernel\atomkernel.c	175;"	variable
+atomOSStarted	..\kernel\atomkernel.c	174;"	variable
 atomQueueCreate	..\kernel\atomqueue.c	146;"	function	signature:(ATOM_QUEUE *qptr, uint8_t *buff_ptr, uint32_t unit_size, uint32_t max_num_msgs)
 atomQueueCreate	..\kernel\atomqueue.h	44;"	prototype	signature:(ATOM_QUEUE *qptr, uint8_t *buff_ptr, uint32_t unit_size, uint32_t max_num_msgs)
 atomQueueDelete	..\kernel\atomqueue.c	205;"	function	signature:(ATOM_QUEUE *qptr)
@@ -5389,6 +5389,9 @@ enableInterrupts	..\drivers\inc\stm8l15x.h	2883;"	macro
 enableInterrupts	..\drivers\inc\stm8l15x.h	2894;"	macro
 entry_param	..\kernel\atom.h	52;"	member	struct:atom_tcb
 entry_point	..\kernel\atom.h	51;"	member	struct:atom_tcb
+first_tcb	..\app\main.c	54;"	variable	file:
+first_thread_func	..\app\main.c	118;"	function	file:	signature:(uint32_t param)
+first_thread_stack	..\app\main.c	52;"	variable	file:
 getSuspQ	..\kernel\atomqueue.h	35;"	member	struct:atom_queue
 getchar	d:\program files\stmicroelectronics\st_toolset\cxstm8\hstm8\stdio.h	15;"	prototype	signature:(void)
 gets	d:\program files\stmicroelectronics\st_toolset\cxstm8\hstm8\stdio.h	16;"	prototype	signature:(char *s)
@@ -5396,7 +5399,7 @@ halt	..\drivers\inc\stm8l15x.h	2881;"	macro
 halt	..\drivers\inc\stm8l15x.h	2891;"	macro
 halt	..\drivers\inc\stm8l15x.h	2902;"	macro
 idle_tcb	..\kernel\atomkernel.c	184;"	variable	file:
-idle_thread_stack	..\app\main.c	51;"	variable	file:
+idle_thread_stack	..\app\main.c	50;"	variable	file:
 insert_index	..\kernel\atomqueue.h	39;"	member	struct:atom_queue
 int16_t	..\drivers\inc\stm8l15x.h	192;"	typedef
 int16_t	..\kernel\atomport-template.h	48;"	macro
@@ -5412,10 +5415,10 @@ interrupt_handler	..\port\stm8\stm8_interrupt_vector.c	11;"	member	struct:interr
 interrupt_handler_t	..\port\stm8\stm8_interrupt_vector.c	7;"	typedef	file:
 interrupt_instruction	..\port\stm8\stm8_interrupt_vector.c	10;"	member	struct:interrupt_vector	file:
 interrupt_vector	..\port\stm8\stm8_interrupt_vector.c	9;"	struct	file:
-main	..\app\main.c	135;"	function	signature:(void)
-main_tcb	..\app\main.c	52;"	variable	file:
-main_thread_func	..\app\main.c	116;"	function	file:	signature:(uint32_t param)
-main_thread_stack	..\app\main.c	50;"	variable	file:
+main	..\app\main.c	160;"	function	signature:(void)
+main_tcb	..\app\main.c	53;"	variable	file:
+main_thread_func	..\app\main.c	131;"	function	file:	signature:(uint32_t param)
+main_thread_stack	..\app\main.c	51;"	variable	file:
 max_num_msgs	..\kernel\atomqueue.h	38;"	member	struct:atom_queue
 memchr	d:\program files\stmicroelectronics\st_toolset\cxstm8\hstm8\string.h	26;"	prototype	signature:(void *s, char c, unsigned int n)
 memcmp	d:\program files\stmicroelectronics\st_toolset\cxstm8\hstm8\string.h	20;"	prototype	signature:(void *s1, void *s2, unsigned int n)
@@ -5495,7 +5498,7 @@ tcbDequeuePriority	..\kernel\atom.h	112;"	prototype	signature:(ATOM_TCB **tcb_qu
 tcbDequeuePriority	..\kernel\atomkernel.c	997;"	function	signature:(ATOM_TCB **tcb_queue_ptr, uint8_t priority)
 tcbEnqueuePriority	..\kernel\atom.h	109;"	prototype	signature:(ATOM_TCB **tcb_queue_ptr, ATOM_TCB *tcb_ptr)
 tcbEnqueuePriority	..\kernel\atomkernel.c	780;"	function	signature:(ATOM_TCB **tcb_queue_ptr, ATOM_TCB *tcb_ptr)
-tcbReadyQ	..\kernel\atomkernel.c	172;"	variable
+tcbReadyQ	..\kernel\atomkernel.c	176;"	variable
 tcb_ptr	..\kernel\atommutex.c	114;"	member	struct:mutex_timer	file:
 tcb_ptr	..\kernel\atomqueue.c	106;"	member	struct:queue_timer	file:
 tcb_ptr	..\kernel\atomsem.c	101;"	member	struct:sem_timer	file:

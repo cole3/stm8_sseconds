@@ -40,8 +40,8 @@
 #endif
 
 
-/* Required number of system ticks per second (normally 100 for 10ms tick) */
-#define SYSTEM_TICKS_PER_SEC            100
+/* Required number of system ticks per second (normally 125 for 8ms tick) */
+#define SYSTEM_TICKS_PER_SEC            125
 
 
 /**
