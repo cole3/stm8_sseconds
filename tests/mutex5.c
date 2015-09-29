@@ -76,28 +76,23 @@ uint32_t test_start (void)
     failures = 0;
 
     /* Create mutex */
-    if (atomMutexCreate (&mutex1) != ATOM_OK)
-    {
+    if (atomMutexCreate (&mutex1) != ATOM_OK) {
         ATOMLOG (_STR("Error creating mutex\n"));
         failures++;
-    }
-    else
-    {
+    } else {
         /* Initialise the shared_data to zero */
         shared_data = 0;
 
         /* Take the mutex to ensure only this thread can modify shared_data */
-        if (atomMutexGet (&mutex1, 0) != ATOM_OK)
-        {
+        if (atomMutexGet (&mutex1, 0) != ATOM_OK) {
             ATOMLOG (_STR("Error taking mutex\n"));
             failures++;
         }
 
         /* Create second thread */
         else if (atomThreadCreate(&tcb[0], TEST_THREAD_PRIO, test_thread_func, 1,
-              &test_thread_stack[0][TEST_THREAD_STACK_SIZE - 1],
-              TEST_THREAD_STACK_SIZE) != ATOM_OK)
-        {
+                                  &test_thread_stack[0][TEST_THREAD_STACK_SIZE - 1],
+                                  TEST_THREAD_STACK_SIZE) != ATOM_OK) {
             /* Fail */
             ATOMLOG (_STR("Error creating test thread\n"));
             failures++;
@@ -108,8 +103,7 @@ uint32_t test_start (void)
          * the mutex until we release it. We wait a while and check that
          * shared_data has not been modified.
          */
-        for (i = 0; i < 4; i++)
-        {
+        for (i = 0; i < 4; i++) {
             /*
              * Sleep for a while to give the second thread a chance to
              * modify shared_data, thought it shouldn't until we
@@ -118,8 +112,7 @@ uint32_t test_start (void)
             atomTimerDelay (SYSTEM_TICKS_PER_SEC/4);
 
             /* Check shared data. The second thread always sets it to one. */
-            if (shared_data != 0)
-            {
+            if (shared_data != 0) {
                 ATOMLOG (_STR("Shared data modified\n"));
                 failures++;
                 break;
@@ -127,14 +120,12 @@ uint32_t test_start (void)
         }
 
         /* Check successful so far */
-        if (failures == 0)
-        {
+        if (failures == 0) {
             /*
              * Release the mutex, which will allow the second thread to
              * wake and start modifying shared_data.
              */
-            if (atomMutexPut (&mutex1) != ATOM_OK)
-            {
+            if (atomMutexPut (&mutex1) != ATOM_OK) {
                 ATOMLOG (_STR("Failed release\n"));
                 failures++;
             }
@@ -144,8 +135,7 @@ uint32_t test_start (void)
              * been modified.
              */
             atomTimerDelay (SYSTEM_TICKS_PER_SEC/4);
-            if (shared_data != 1)
-            {
+            if (shared_data != 1) {
                 ATOMLOG (_STR("Expected modify\n"));
                 failures++;
             }
@@ -154,20 +144,16 @@ uint32_t test_start (void)
              * Release and take the mutex again a few times to ensure
              * that the mutex continues to protect shared_data.
              */
-            for (i = 0; i < 4; i++)
-            {
+            for (i = 0; i < 4; i++) {
                 /*
                  * Take the mutex again, to prevent second thread accessing
                  * shared_data.
                  */
-                if (atomMutexGet (&mutex1, SYSTEM_TICKS_PER_SEC) != ATOM_OK)
-                {
+                if (atomMutexGet (&mutex1, SYSTEM_TICKS_PER_SEC) != ATOM_OK) {
                     ATOMLOG (_STR("Retake %d\n"), i);
                     failures++;
                     break;
-                }
-                else
-                {
+                } else {
                     /*
                      * Set shared_data to 0 and wait to ensure that the
                      * second thread doesn't modify it while we have the
@@ -182,8 +168,7 @@ uint32_t test_start (void)
                      * Check that shared_data has not been modified while we
                      * own the mutex.
                      */
-                    if (shared_data != 0)
-                    {
+                    if (shared_data != 0) {
                         /* Thread is still modifying the data */
                         ATOMLOG (_STR("Still modifying\n"));
                         failures++;
@@ -194,8 +179,7 @@ uint32_t test_start (void)
                      * Release the mutex, which will allow the second thread to
                      * wake and start modifying shared_data again.
                      */
-                    if (atomMutexPut (&mutex1) != ATOM_OK)
-                    {
+                    if (atomMutexPut (&mutex1) != ATOM_OK) {
                         ATOMLOG (_STR("Failed release\n"));
                         failures++;
                     }
@@ -204,8 +188,7 @@ uint32_t test_start (void)
         }
 
         /* Delete mutex, test finished */
-        if (atomMutexDelete (&mutex1) != ATOM_OK)
-        {
+        if (atomMutexDelete (&mutex1) != ATOM_OK) {
             ATOMLOG (_STR("Delete failed\n"));
             failures++;
         }
@@ -218,19 +201,14 @@ uint32_t test_start (void)
         int thread;
 
         /* Check all threads */
-        for (thread = 0; thread < NUM_TEST_THREADS; thread++)
-        {
+        for (thread = 0; thread < NUM_TEST_THREADS; thread++) {
             /* Check thread stack usage */
-            if (atomThreadStackCheck (&tcb[thread], &used_bytes, &free_bytes) != ATOM_OK)
-            {
+            if (atomThreadStackCheck (&tcb[thread], &used_bytes, &free_bytes) != ATOM_OK) {
                 ATOMLOG (_STR("StackCheck\n"));
                 failures++;
-            }
-            else
-            {
+            } else {
                 /* Check the thread did not use up to the end of stack */
-                if (free_bytes == 0)
-                {
+                if (free_bytes == 0) {
                     ATOMLOG (_STR("StackOverflow %d\n"), thread);
                     failures++;
                 }
@@ -267,25 +245,21 @@ static void test_thread_func (uint32_t param)
     param = param;
 
     /* Repeatedly attempt to get the mutex and set shared_data to 1 */
-    while (1)
-    {
+    while (1) {
         /* Block on the mutex */
-        if ((status = atomMutexGet (&mutex1, 0)) != ATOM_OK)
-        {
+        if ((status = atomMutexGet (&mutex1, 0)) != ATOM_OK) {
             /* Error getting mutex, notify the status code */
             ATOMLOG (_STR("G%d\n"), status);
             break;
         }
 
         /* Got the mutex */
-        else
-        {
+        else {
             /* Set shared_data to signify that we think we have the mutex */
             shared_data = 1;
 
             /* Release the mutex allowing the main thread to take it again */
-            if ((status = atomMutexPut (&mutex1)) != ATOM_OK)
-            {
+            if ((status = atomMutexPut (&mutex1)) != ATOM_OK) {
                 /* Error putting mutex, notify the status code */
                 ATOMLOG (_STR("P%d\n"), status);
                 break;
@@ -295,8 +269,7 @@ static void test_thread_func (uint32_t param)
     }
 
     /* Loop forever - we only reach here on error */
-    while (1)
-    {
+    while (1) {
         atomTimerDelay (SYSTEM_TICKS_PER_SEC);
     }
 }

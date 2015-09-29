@@ -78,27 +78,21 @@ uint32_t test_start (void)
     /* Create two test queues: queue1 is empty, queue2 is full */
 
     /* Empty queue1 creation */
-    if (atomQueueCreate (&queue1, &queue1_storage[0], sizeof(uint8_t), QUEUE_ENTRIES) != ATOM_OK)
-    {
+    if (atomQueueCreate (&queue1, &queue1_storage[0], sizeof(uint8_t), QUEUE_ENTRIES) != ATOM_OK) {
         ATOMLOG (_STR("Queue1 create\n"));
         failures++;
     }
 
     /* Full queue2 creation */
-    if (atomQueueCreate (&queue2, &queue2_storage[0], sizeof(uint8_t), QUEUE_ENTRIES) != ATOM_OK)
-    {
+    if (atomQueueCreate (&queue2, &queue2_storage[0], sizeof(uint8_t), QUEUE_ENTRIES) != ATOM_OK) {
         ATOMLOG (_STR("Queue2 create\n"));
         failures++;
-    }
-    else
-    {
+    } else {
         /* Fill the queue */
         msg = 0x66;
-        for (count = 0; count < QUEUE_ENTRIES; count++)
-        {
+        for (count = 0; count < QUEUE_ENTRIES; count++) {
             /* Add one message at a time */
-            if (atomQueuePut (&queue2, 0, &msg) != ATOM_OK)
-            {
+            if (atomQueuePut (&queue2, 0, &msg) != ATOM_OK) {
                 ATOMLOG (_STR("Queue2 put\n"));
                 failures++;
             }
@@ -106,23 +100,19 @@ uint32_t test_start (void)
     }
 
     /* Test parameter checks */
-    if (atomQueueGet (NULL, 0, &msg) != ATOM_ERR_PARAM)
-    {
+    if (atomQueueGet (NULL, 0, &msg) != ATOM_ERR_PARAM) {
         ATOMLOG (_STR("Get queue param failed\n"));
         failures++;
     }
-    if (atomQueueGet (&queue1, 0, NULL) != ATOM_ERR_PARAM)
-    {
+    if (atomQueueGet (&queue1, 0, NULL) != ATOM_ERR_PARAM) {
         ATOMLOG (_STR("Get msg param failed\n"));
         failures++;
     }
-    if (atomQueuePut (NULL, 0, &msg) != ATOM_ERR_PARAM)
-    {
+    if (atomQueuePut (NULL, 0, &msg) != ATOM_ERR_PARAM) {
         ATOMLOG (_STR("Put queue param failed\n"));
         failures++;
     }
-    if (atomQueuePut (&queue1, 0, NULL) != ATOM_ERR_PARAM)
-    {
+    if (atomQueuePut (&queue1, 0, NULL) != ATOM_ERR_PARAM) {
         ATOMLOG (_STR("Put msg param failed\n"));
         failures++;
     }
@@ -136,18 +126,15 @@ uint32_t test_start (void)
     timer_cb.cb_ticks = SYSTEM_TICKS_PER_SEC;
 
     /* Request the timer callback to run in one second */
-    if (atomTimerRegister (&timer_cb) != ATOM_OK)
-    {
+    if (atomTimerRegister (&timer_cb) != ATOM_OK) {
         ATOMLOG (_STR("Error registering timer\n"));
         failures++;
     }
 
     /* Wait two seconds for g_result to be set indicating success */
-    else
-    {
+    else {
         atomTimerDelay (2 * SYSTEM_TICKS_PER_SEC);
-        if (g_result != 1)
-        {
+        if (g_result != 1) {
             ATOMLOG (_STR("Get context check failed\n"));
             failures++;
         }
@@ -162,18 +149,15 @@ uint32_t test_start (void)
     timer_cb.cb_ticks = SYSTEM_TICKS_PER_SEC;
 
     /* Request the timer callback to run in one second */
-    if (atomTimerRegister (&timer_cb) != ATOM_OK)
-    {
+    if (atomTimerRegister (&timer_cb) != ATOM_OK) {
         ATOMLOG (_STR("Error registering timer\n"));
         failures++;
     }
 
     /* Wait two seconds for g_result to be set indicating success */
-    else
-    {
+    else {
         atomTimerDelay (2 * SYSTEM_TICKS_PER_SEC);
-        if (g_result != 1)
-        {
+        if (g_result != 1) {
             ATOMLOG (_STR("Put context check failed\n"));
             failures++;
         }
@@ -182,16 +166,14 @@ uint32_t test_start (void)
     /* Test ATOM_TIMEOUT is returned for Get/Put calls with timeout */
 
     /* Attempt atomQueueGet() on empty queue to force timeout */
-    if (atomQueueGet (&queue1, SYSTEM_TICKS_PER_SEC, &msg) != ATOM_TIMEOUT)
-    {
+    if (atomQueueGet (&queue1, SYSTEM_TICKS_PER_SEC, &msg) != ATOM_TIMEOUT) {
         ATOMLOG (_STR("Timeout q1 failed\n"));
         failures++;
     }
 
     /* Attempt atomQueuePut() on full queue to force timeout */
     msg = 0x66;
-    if (atomQueuePut (&queue2, SYSTEM_TICKS_PER_SEC, &msg) != ATOM_TIMEOUT)
-    {
+    if (atomQueuePut (&queue2, SYSTEM_TICKS_PER_SEC, &msg) != ATOM_TIMEOUT) {
         ATOMLOG (_STR("Timeout q2 failed\n"));
         failures++;
     }
@@ -199,28 +181,24 @@ uint32_t test_start (void)
     /* Test ATOM_WOULDBLOCK is returned for Get/Put calls with -1 timeout */
 
     /* Attempt atomQueueGet() on empty queue to force block */
-    if (atomQueueGet (&queue1, -1, &msg) != ATOM_WOULDBLOCK)
-    {
+    if (atomQueueGet (&queue1, -1, &msg) != ATOM_WOULDBLOCK) {
         ATOMLOG (_STR("Timeout q1 failed\n"));
         failures++;
     }
 
     /* Attempt atomQueuePut() on full queue to force block */
     msg = 0x66;
-    if (atomQueuePut (&queue2, -1, &msg) != ATOM_WOULDBLOCK)
-    {
+    if (atomQueuePut (&queue2, -1, &msg) != ATOM_WOULDBLOCK) {
         ATOMLOG (_STR("Timeout q2 failed\n"));
         failures++;
     }
 
     /* Delete the test queues */
-    if (atomQueueDelete (&queue1) != ATOM_OK)
-    {
+    if (atomQueueDelete (&queue1) != ATOM_OK) {
         ATOMLOG (_STR("Error deleting q1\n"));
         failures++;
     }
-    if (atomQueueDelete (&queue2) != ATOM_OK)
-    {
+    if (atomQueueDelete (&queue2) != ATOM_OK) {
         ATOMLOG (_STR("Error deleting q2\n"));
         failures++;
     }
@@ -243,13 +221,10 @@ static void testCallbackGet (POINTER cb_data)
     uint8_t msg;
 
     /* Check the return value from atomQueueGet() */
-    if (atomQueueGet(&queue1, 0, &msg) == ATOM_ERR_CONTEXT)
-    {
+    if (atomQueueGet(&queue1, 0, &msg) == ATOM_ERR_CONTEXT) {
         /* Received the error we expected, set g_result to notify success */
         g_result = 1;
-    }
-    else
-    {
+    } else {
         /* Did not get expected error, don't set g_result signifying fail */
     }
 
@@ -270,13 +245,10 @@ static void testCallbackPut (POINTER cb_data)
 
     /* Check the return value from atomQueuePut() */
     msg = 0x66;
-    if (atomQueuePut(&queue2, 0, &msg) == ATOM_ERR_CONTEXT)
-    {
+    if (atomQueuePut(&queue2, 0, &msg) == ATOM_ERR_CONTEXT) {
         /* Received the error we expected, set g_result to notify success */
         g_result = 1;
-    }
-    else
-    {
+    } else {
         /* Did not get expected error, don't set g_result signifying fail */
     }
 

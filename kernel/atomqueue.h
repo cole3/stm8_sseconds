@@ -29,8 +29,7 @@
 #ifndef __ATOM_QUEUE_H
 #define __ATOM_QUEUE_H
 
-typedef struct atom_queue
-{
+typedef struct atom_queue {
     ATOM_TCB *  putSuspQ;       /* Queue of threads waiting to send */
     ATOM_TCB *  getSuspQ;       /* Queue of threads waiting to receive */
     uint8_t *   buff_ptr;       /* Pointer to queue data area */

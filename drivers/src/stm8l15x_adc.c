@@ -4,65 +4,65 @@
   * @author  MCD Application Team
   * @version V1.5.0
   * @date    13-May-2011
-  * @brief   This file provides firmware functions to manage the following 
-  *          functionalities of the Analog to Digital Convertor (ADC) peripheral:           
+  * @brief   This file provides firmware functions to manage the following
+  *          functionalities of the Analog to Digital Convertor (ADC) peripheral:
   *           - Initialization and Configuration
   *           - Power saving
-  *           - Analog Watchdog configuration              
-  *           - Temperature Sensor & Vrefint (Voltage Reference internal) management 
+  *           - Analog Watchdog configuration
+  *           - Temperature Sensor & Vrefint (Voltage Reference internal) management
   *           - Regular Channels Configuration
   *           - Regular Channels DMA Configuration
-  *           - Injected channels Configuration      
-  *           - Interrupts and flags management       
-  *         
+  *           - Injected channels Configuration
+  *           - Interrupts and flags management
+  *
   *  @verbatim
-  *                               
-  *          ===================================================================      
+  *
+  *          ===================================================================
   *                                   How to use this driver
-  *          ===================================================================      
-  *          1. Enable The ADC controller clock using CLK_PeripheralClockConfig() 
+  *          ===================================================================
+  *          1. Enable The ADC controller clock using CLK_PeripheralClockConfig()
   *            function : CLK_PeripheralClockConfig(CLK_Peripheral_ADC1, ENABLE).
   *
-  *            2. Configure the ADC Prescaler, conversion resolution and data 
+  *            2. Configure the ADC Prescaler, conversion resolution and data
   *              alignment using the ADC_Init() function.
-  * 
-  *            3. Activate the ADC peripheral using ADC_Cmd() function.  
+  *
+  *            3. Activate the ADC peripheral using ADC_Cmd() function.
   *
   *          Regular channels group configuration
-  *          ====================================    
-  *            - To configure the ADC regular channels group features, use 
+  *          ====================================
+  *            - To configure the ADC regular channels group features, use
   *              ADC_Init() and ADC_RegularChannelConfig() functions.
   *            - To activate the continuous mode, use the ADC_continuousModeCmd()
   *              function.
-  *            - To configure and activate the Discontinuous mode, use the 
-  *              ADC_DiscModeChannelCountConfig() and ADC_DiscModeCmd() functions.        
+  *            - To configure and activate the Discontinuous mode, use the
+  *              ADC_DiscModeChannelCountConfig() and ADC_DiscModeCmd() functions.
   *            - To read the ADC converted values, use the ADC_GetConversionValue()
   *              function.
   *
   *          DMA for Regular channels group features configuration
-  *          ====================================================== 
-  *           - To enable the DMA mode for regular channels group, use the 
+  *          ======================================================
+  *           - To enable the DMA mode for regular channels group, use the
   *             ADC_DMACmd() function.
   *           - To enable the generation of DMA requests continuously at the end
-  *             of the last DMA transfer, use the ADC_DMARequestAfterLastTransferCmd() 
-  *             function.    
-             
+  *             of the last DMA transfer, use the ADC_DMARequestAfterLastTransferCmd()
+  *             function.
+
   *          Injected channels group configuration
-  *          =====================================    
-  *            - To configure the ADC Injected channels group features, use 
+  *          =====================================
+  *            - To configure the ADC Injected channels group features, use
   *              ADC_InjectedChannelConfig() and  ADC_InjectedSequencerLengthConfig()
   *              functions.
   *            - To activate the continuous mode, use the ADC_continuousModeCmd()
   *              function.
-  *            - To activate the Injected Discontinuous mode, use the 
-  *              ADC_InjectedDiscModeCmd() function.  
-  *            - To activate the AutoInjected mode, use the ADC_AutoInjectedConvCmd() 
-  *              function.        
-  *            - To read the ADC converted values, use the ADC_GetInjectedConversionValue() 
+  *            - To activate the Injected Discontinuous mode, use the
+  *              ADC_InjectedDiscModeCmd() function.
+  *            - To activate the AutoInjected mode, use the ADC_AutoInjectedConvCmd()
   *              function.
-  *              
+  *            - To read the ADC converted values, use the ADC_GetInjectedConversionValue()
+  *              function.
+  *
   *  @endverbatim
-  *         
+  *
   ******************************************************************************
   * @attention
   *
@@ -74,8 +74,8 @@
   * CODING INFORMATION CONTAINED HEREIN IN CONNECTION WITH THEIR PRODUCTS.
   *
   * <h2><center>&copy; COPYRIGHT 2011 STMicroelectronics</center></h2>
-  ******************************************************************************  
-  */ 
+  ******************************************************************************
+  */
 
 /* Includes ------------------------------------------------------------------*/
 #include "stm8l15x_adc.h"
@@ -84,11 +84,11 @@
   * @{
   */
 
-/** @defgroup ADC 
+/** @defgroup ADC
   * @brief ADC driver modules
   * @{
-  */ 
-  
+  */
+
 /* Private typedef -----------------------------------------------------------*/
 /* Private define ------------------------------------------------------------*/
 /* Private macro -------------------------------------------------------------*/
@@ -98,20 +98,20 @@
 
 /** @defgroup ADC_Private_Functions
   * @{
-  */ 
-    
-    
+  */
+
+
 /** @defgroup ADC_Group1 Initialization and Configuration functions
- *  @brief   Initialization and Configuration functions 
+ *  @brief   Initialization and Configuration functions
  *
-@verbatim    
+@verbatim
  ===============================================================================
                       Initialization and Configuration functions
- ===============================================================================  
+ ===============================================================================
   This section provides functions allowing to:
    - Enable or disable the ADC peripheral,
-   - Initialize and configure the ADC Prescaler, ADC Conversion Resolution 
-     (12bit..6bit), ADC Continuous Conversion Mode (Continuous or Single 
+   - Initialize and configure the ADC Prescaler, ADC Conversion Resolution
+     (12bit..6bit), ADC Continuous Conversion Mode (Continuous or Single
      conversion),
    - Configure External trigger Sensitivity and source,
    - Start ADC conversion, by software trigger.
@@ -121,44 +121,44 @@
   * @{
   */
 /**
-  * @brief  Deinitializes the ADC peripheral registers to their default reset 
+  * @brief  Deinitializes the ADC peripheral registers to their default reset
   *         values.
   * @param  ADCx where x can be 1 to select the specified ADC peripheral.
   * @retval None
   */
 void ADC_DeInit(ADC_TypeDef* ADCx)
 {
-  /*  Set the Configuration registers to their reset values */
-  ADCx->CR1 =  ADC_CR1_RESET_VALUE;
-  ADCx->CR2 =  ADC_CR2_RESET_VALUE;
-  ADCx->CR3 =  ADC_CR3_RESET_VALUE;
+    /*  Set the Configuration registers to their reset values */
+    ADCx->CR1 =  ADC_CR1_RESET_VALUE;
+    ADCx->CR2 =  ADC_CR2_RESET_VALUE;
+    ADCx->CR3 =  ADC_CR3_RESET_VALUE;
 
-  /*  Set the status registers to their reset values */
-  ADCx->SR =  (uint8_t)~ADC_SR_RESET_VALUE;
+    /*  Set the status registers to their reset values */
+    ADCx->SR =  (uint8_t)~ADC_SR_RESET_VALUE;
 
-  /*  Set the High threshold registers to their reset values */
-  ADCx->HTRH =  ADC_HTRH_RESET_VALUE;
-  ADCx->HTRL =  ADC_HTRL_RESET_VALUE;
+    /*  Set the High threshold registers to their reset values */
+    ADCx->HTRH =  ADC_HTRH_RESET_VALUE;
+    ADCx->HTRL =  ADC_HTRL_RESET_VALUE;
 
-  /*  Set the low threshold registers to their reset values */
-  ADCx->LTRH =  ADC_LTRH_RESET_VALUE;
-  ADCx->LTRL =  ADC_LTRL_RESET_VALUE;
+    /*  Set the low threshold registers to their reset values */
+    ADCx->LTRH =  ADC_LTRH_RESET_VALUE;
+    ADCx->LTRL =  ADC_LTRL_RESET_VALUE;
 
-  /*  Set the channels sequence registers to their reset values */
-  ADCx->SQR[0] =  ADC_SQR1_RESET_VALUE;
-  ADCx->SQR[1] =  ADC_SQR2_RESET_VALUE;
-  ADCx->SQR[2] =  ADC_SQR3_RESET_VALUE;
-  ADCx->SQR[3] =  ADC_SQR4_RESET_VALUE;
+    /*  Set the channels sequence registers to their reset values */
+    ADCx->SQR[0] =  ADC_SQR1_RESET_VALUE;
+    ADCx->SQR[1] =  ADC_SQR2_RESET_VALUE;
+    ADCx->SQR[2] =  ADC_SQR3_RESET_VALUE;
+    ADCx->SQR[3] =  ADC_SQR4_RESET_VALUE;
 
-  /*  Set the channels Trigger registers to their reset values */
-  ADCx->TRIGR[0] =  ADC_TRIGR1_RESET_VALUE;
-  ADCx->TRIGR[1] =  ADC_TRIGR2_RESET_VALUE;
-  ADCx->TRIGR[2] =  ADC_TRIGR3_RESET_VALUE;
-  ADCx->TRIGR[3] =  ADC_TRIGR4_RESET_VALUE;
+    /*  Set the channels Trigger registers to their reset values */
+    ADCx->TRIGR[0] =  ADC_TRIGR1_RESET_VALUE;
+    ADCx->TRIGR[1] =  ADC_TRIGR2_RESET_VALUE;
+    ADCx->TRIGR[2] =  ADC_TRIGR3_RESET_VALUE;
+    ADCx->TRIGR[3] =  ADC_TRIGR4_RESET_VALUE;
 }
 
 /**
-  * @brief  Initializes the specified ADC peripheral according to the specified 
+  * @brief  Initializes the specified ADC peripheral according to the specified
   *         parameters.
   * @param  ADCx where x can be 1 to select the specified ADC peripheral.
   * @param  ADC_ConversionMode : specifies the ADC conversion mode,
@@ -170,7 +170,7 @@ void ADC_DeInit(ADC_TypeDef* ADCx)
   *            @arg ADC_Resolution_12Bit: 12 bit resolution
   *            @arg ADC_Resolution_10Bit: 10 bit resolution
   *            @arg ADC_Resolution_8Bit: 8 bit resolution
-  *            @arg ADC_Resolution_6Bit: 6 bit resolution      
+  *            @arg ADC_Resolution_6Bit: 6 bit resolution
   * @param  ADC_Prescaler : specifies the ADC Prescaler,
   *          This parameter can be one of the following values:
   *            @arg ADC_Prescaler_1: ADC Clock frequency is divided by 1
@@ -182,22 +182,22 @@ void ADC_Init(ADC_TypeDef* ADCx,
               ADC_Resolution_TypeDef ADC_Resolution,
               ADC_Prescaler_TypeDef ADC_Prescaler)
 {
-  /* Check the parameters */
-  assert_param(IS_ADC_CONVERSION_MODE(ADC_ConversionMode));
-  assert_param(IS_ADC_RESOLUTION(ADC_Resolution));
-  assert_param(IS_ADC_PRESCALER(ADC_Prescaler));
+    /* Check the parameters */
+    assert_param(IS_ADC_CONVERSION_MODE(ADC_ConversionMode));
+    assert_param(IS_ADC_RESOLUTION(ADC_Resolution));
+    assert_param(IS_ADC_PRESCALER(ADC_Prescaler));
 
-  /*clear CR1 register */
-  ADCx->CR1 &= (uint8_t)~(ADC_CR1_CONT | ADC_CR1_RES);
+    /*clear CR1 register */
+    ADCx->CR1 &= (uint8_t)~(ADC_CR1_CONT | ADC_CR1_RES);
 
-  /* set the resolution and the conversion mode */
-  ADCx->CR1 |= (uint8_t)((uint8_t)ADC_ConversionMode | (uint8_t)ADC_Resolution);
+    /* set the resolution and the conversion mode */
+    ADCx->CR1 |= (uint8_t)((uint8_t)ADC_ConversionMode | (uint8_t)ADC_Resolution);
 
-  /*clear CR2 register */
-  ADCx->CR2 &= (uint8_t)~(ADC_CR2_PRESC);
+    /*clear CR2 register */
+    ADCx->CR2 &= (uint8_t)~(ADC_CR2_PRESC);
 
-  /* set the Prescaler */
-  ADCx->CR2 |= (uint8_t) ADC_Prescaler;
+    /* set the Prescaler */
+    ADCx->CR2 |= (uint8_t) ADC_Prescaler;
 }
 
 /**
@@ -210,19 +210,16 @@ void ADC_Init(ADC_TypeDef* ADCx,
 void ADC_Cmd(ADC_TypeDef* ADCx,
              FunctionalState NewState)
 {
-  /* Check the parameters */
-  assert_param(IS_FUNCTIONAL_STATE(NewState));
+    /* Check the parameters */
+    assert_param(IS_FUNCTIONAL_STATE(NewState));
 
-  if (NewState != DISABLE)
-  {
-    /* Set the ADON bit to wake up the specified ADC from power down mode */
-    ADCx->CR1 |= ADC_CR1_ADON;
-  }
-  else
-  {
-    /* Disable the selected ADC peripheral */
-    ADCx->CR1 &= (uint8_t)~ADC_CR1_ADON;
-  }
+    if (NewState != DISABLE) {
+        /* Set the ADON bit to wake up the specified ADC from power down mode */
+        ADCx->CR1 |= ADC_CR1_ADON;
+    } else {
+        /* Disable the selected ADC peripheral */
+        ADCx->CR1 &= (uint8_t)~ADC_CR1_ADON;
+    }
 }
 
 /**
@@ -232,8 +229,8 @@ void ADC_Cmd(ADC_TypeDef* ADCx,
   */
 void ADC_SoftwareStartConv(ADC_TypeDef* ADCx)
 {
-  /*  Start the ADC software conversion */
-  ADCx->CR1 |= ADC_CR1_START;
+    /*  Start the ADC software conversion */
+    ADCx->CR1 |= ADC_CR1_START;
 }
 
 /**
@@ -244,7 +241,7 @@ void ADC_SoftwareStartConv(ADC_TypeDef* ADCx)
   *            @arg ADC_ExtEventSelection_None: Conversion starts only by software start
   *            @arg ADC_ExtEventSelection_Trigger1: Trigger 1  Enables conversion
   *            @arg ADC_ExtEventSelection_Trigger2: Trigger 2  Enables conversion
-  *            @arg ADC_ExtEventSelection_Trigger3: Trigger 3  Enables conversion      
+  *            @arg ADC_ExtEventSelection_Trigger3: Trigger 3  Enables conversion
   * @param  ADC_ExtTRGSensitivity : Specifies the external trigger sensitivity.
   *          This parameter can be one of the following values:
   *            @arg ADC_ExtTRGSensitivity_Rising: External Trigger Sensitivity is Rising Edge
@@ -256,42 +253,42 @@ void ADC_ExternalTrigConfig(ADC_TypeDef* ADCx,
                             ADC_ExtEventSelection_TypeDef ADC_ExtEventSelection,
                             ADC_ExtTRGSensitivity_TypeDef ADC_ExtTRGSensitivity)
 {
-  /* Check the parameters */
-  assert_param(IS_ADC_EXT_EVENT_SELECTION(ADC_ExtEventSelection));
-  assert_param(IS_ADC_EXT_TRG_SENSITIVITY(ADC_ExtTRGSensitivity));
+    /* Check the parameters */
+    assert_param(IS_ADC_EXT_EVENT_SELECTION(ADC_ExtEventSelection));
+    assert_param(IS_ADC_EXT_TRG_SENSITIVITY(ADC_ExtTRGSensitivity));
 
-  /*clear old configuration of CR2 register */
-  ADCx->CR2 &= (uint8_t)~(ADC_CR2_TRIGEDGE | ADC_CR2_EXTSEL);
+    /*clear old configuration of CR2 register */
+    ADCx->CR2 &= (uint8_t)~(ADC_CR2_TRIGEDGE | ADC_CR2_EXTSEL);
 
-  /* set the External Trigger Edge Sensitivity  and the external event 
-     selection */
-  ADCx->CR2 |= (uint8_t)( (uint8_t)ADC_ExtTRGSensitivity | \
-                          (uint8_t)ADC_ExtEventSelection);
+    /* set the External Trigger Edge Sensitivity  and the external event
+       selection */
+    ADCx->CR2 |= (uint8_t)( (uint8_t)ADC_ExtTRGSensitivity | \
+                            (uint8_t)ADC_ExtEventSelection);
 }
 
- /**
-  * @}
-  */
+/**
+ * @}
+ */
 
 /** @defgroup ADC_Group2 Analog Watchdog configuration functions
- *  @brief   Analog Watchdog configuration functions 
+ *  @brief   Analog Watchdog configuration functions
  *
-@verbatim   
+@verbatim
  ===============================================================================
                     Analog Watchdog configuration functions
- ===============================================================================  
+ ===============================================================================
 
   This section provides functions allowing to configure the Analog Watchdog
   (AWD) feature in the ADC.
-  
+
   A typical configuration Analog Watchdog is done following these steps :
-   1. the ADC guarded channel is selected using the 
+   1. the ADC guarded channel is selected using the
       ADC_AnalogWatchdogChannelSelect() function.
-   2. The Analog watchdog lower and higher threshold are configured using the  
+   2. The Analog watchdog lower and higher threshold are configured using the
       ADC_AnalogWatchdogThresholdsConfig() function.
-   
-   Note : Both AWD selection and thresholds can be configured with one unique 
-          function ADC_AnalogWatchdogConfig(), which is kept for firmware 
+
+   Note : Both AWD selection and thresholds can be configured with one unique
+          function ADC_AnalogWatchdogConfig(), which is kept for firmware
           compatibility reason.
 
 @endverbatim
@@ -300,7 +297,7 @@ void ADC_ExternalTrigConfig(ADC_TypeDef* ADCx,
 /**
   * @brief  Configures the channel to be checked by the Analog watchdog.
   * @param  ADCx where x can be 1 to select the specified ADC peripheral.
-  * @param  ADC_AnalogWatchdogSelection : Specifies the channel to be checked 
+  * @param  ADC_AnalogWatchdogSelection : Specifies the channel to be checked
   *         by the Analog watchdog.
   *          This parameter can be one of the following values:
   *            @arg ADC_AnalogWatchdogSelection_Channel0: AWD affected to Channel 0
@@ -333,14 +330,14 @@ void ADC_ExternalTrigConfig(ADC_TypeDef* ADCx,
 void ADC_AnalogWatchdogChannelSelect(ADC_TypeDef* ADCx,
                                      ADC_AnalogWatchdogSelection_TypeDef ADC_AnalogWatchdogSelection)
 {
-  /* Check the parameters */
-  assert_param(IS_ADC_ANALOGWATCHDOG_SELECTION(ADC_AnalogWatchdogSelection));
+    /* Check the parameters */
+    assert_param(IS_ADC_ANALOGWATCHDOG_SELECTION(ADC_AnalogWatchdogSelection));
 
-  /* Reset the CHSEL bits */
-  ADCx->CR3 &= ((uint8_t)~ADC_CR3_CHSEL);
+    /* Reset the CHSEL bits */
+    ADCx->CR3 &= ((uint8_t)~ADC_CR3_CHSEL);
 
-  /* Select the channel to be checked by the Analog watchdog */
-  ADCx->CR3 |= (uint8_t)ADC_AnalogWatchdogSelection;
+    /* Select the channel to be checked by the Analog watchdog */
+    ADCx->CR3 |= (uint8_t)ADC_AnalogWatchdogSelection;
 }
 
 /**
@@ -354,23 +351,23 @@ void ADC_AnalogWatchdogChannelSelect(ADC_TypeDef* ADCx,
   */
 void ADC_AnalogWatchdogThresholdsConfig(ADC_TypeDef* ADCx, uint16_t HighThreshold, uint16_t LowThreshold)
 {
-  /* Check the parameters */
-  assert_param(IS_ADC_THRESHOLD(HighThreshold));
-  assert_param(IS_ADC_THRESHOLD(LowThreshold));
+    /* Check the parameters */
+    assert_param(IS_ADC_THRESHOLD(HighThreshold));
+    assert_param(IS_ADC_THRESHOLD(LowThreshold));
 
-  /* Set the ADC high threshold */
-  ADCx->HTRH = (uint8_t)(HighThreshold >> 8);
-  ADCx->HTRL = (uint8_t)(HighThreshold);
+    /* Set the ADC high threshold */
+    ADCx->HTRH = (uint8_t)(HighThreshold >> 8);
+    ADCx->HTRL = (uint8_t)(HighThreshold);
 
-  /* Set the ADC low threshold */
-  ADCx->LTRH = (uint8_t)(LowThreshold >> 8);
-  ADCx->LTRL = (uint8_t)(LowThreshold);
+    /* Set the ADC low threshold */
+    ADCx->LTRH = (uint8_t)(LowThreshold >> 8);
+    ADCx->LTRL = (uint8_t)(LowThreshold);
 }
 
 /**
   * @brief  Configures the Analog watchdog.
   * @param  ADCx where x can be 1 to select the specified ADC peripheral.
-  * @param  ADC_AnalogWatchdogSelection : Specifies the channel to be checked 
+  * @param  ADC_AnalogWatchdogSelection : Specifies the channel to be checked
   *         by the Analog watchdog.
   *          This parameter can be one of the following values:
   *            @arg ADC_AnalogWatchdogSelection_Channel0: AWD affected to Channel 0
@@ -396,7 +393,7 @@ void ADC_AnalogWatchdogThresholdsConfig(ADC_TypeDef* ADCx, uint16_t HighThreshol
   *            @arg ADC_AnalogWatchdogSelection_Channel20: AWD affected to Channel 20
   *            @arg ADC_AnalogWatchdogSelection_Channel21: AWD affected to Channel 21
   *            @arg ADC_AnalogWatchdogSelection_Channel22: AWD affected to Channel 22
-  *            @arg ADC_AnalogWatchdogSelection_Channel23: AWD affected to Channel 23  
+  *            @arg ADC_AnalogWatchdogSelection_Channel23: AWD affected to Channel 23
   * @param  HighThreshold: Analog watchdog High threshold value.
     *       This parameter must be a 12bit value.
   * @param  LowThreshold: Analog watchdog Low threshold value.
@@ -408,57 +405,57 @@ void ADC_AnalogWatchdogConfig(ADC_TypeDef* ADCx,
                               uint16_t HighThreshold,
                               uint16_t LowThreshold)
 {
-  /* Check the parameters */
-  assert_param(IS_ADC_ANALOGWATCHDOG_SELECTION(ADC_AnalogWatchdogSelection));
-  assert_param(IS_ADC_THRESHOLD(HighThreshold));
-  assert_param(IS_ADC_THRESHOLD(LowThreshold));
+    /* Check the parameters */
+    assert_param(IS_ADC_ANALOGWATCHDOG_SELECTION(ADC_AnalogWatchdogSelection));
+    assert_param(IS_ADC_THRESHOLD(HighThreshold));
+    assert_param(IS_ADC_THRESHOLD(LowThreshold));
 
-  /*Reset the CHSEL bits */
-  ADCx->CR3 &= ((uint8_t)~ADC_CR3_CHSEL);
+    /*Reset the CHSEL bits */
+    ADCx->CR3 &= ((uint8_t)~ADC_CR3_CHSEL);
 
-  /* Select the channel to be checked by the Analog watchdog.*/
-  ADCx->CR3 |= (uint8_t)ADC_AnalogWatchdogSelection;
+    /* Select the channel to be checked by the Analog watchdog.*/
+    ADCx->CR3 |= (uint8_t)ADC_AnalogWatchdogSelection;
 
-  /* Set the ADC high threshold */
-  ADCx->HTRH = (uint8_t)(HighThreshold >> 8);
-  ADCx->HTRL = (uint8_t)(HighThreshold);
+    /* Set the ADC high threshold */
+    ADCx->HTRH = (uint8_t)(HighThreshold >> 8);
+    ADCx->HTRL = (uint8_t)(HighThreshold);
 
-  /* Set the ADC low threshold */
-  ADCx->LTRH = (uint8_t)(LowThreshold >> 8);
-  ADCx->LTRL = (uint8_t)LowThreshold;
+    /* Set the ADC low threshold */
+    ADCx->LTRH = (uint8_t)(LowThreshold >> 8);
+    ADCx->LTRL = (uint8_t)LowThreshold;
 }
 
- /**
-  * @}
-  */
+/**
+ * @}
+ */
 
-/** @defgroup ADC_Group3 Temperature Sensor & Vrefint (Voltage Reference 
+/** @defgroup ADC_Group3 Temperature Sensor & Vrefint (Voltage Reference
  *            internal) management functions
- *  @brief   Temperature Sensor & Vrefint (Voltage Reference internal) 
- *            management functions 
+ *  @brief   Temperature Sensor & Vrefint (Voltage Reference internal)
+ *            management functions
  *
-@verbatim   
+@verbatim
  ===============================================================================
   Temperature Sensor & Vrefint (Voltage Reference internal) management functions
- ===============================================================================  
+ ===============================================================================
 
-  This section provides functions allowing to enable/ disable the internal 
+  This section provides functions allowing to enable/ disable the internal
   connections between the ADC and the Temperature Sensor and the Vrefint source.
-     
-  A typical configuration to get the Temperature sensor or/and Vrefint channels 
+
+  A typical configuration to get the Temperature sensor or/and Vrefint channels
   voltages is done following these steps :
-   1. Enable the internal connection of Temperature sensor or/and Vrefint sources 
-      with the ADC channels: 
+   1. Enable the internal connection of Temperature sensor or/and Vrefint sources
+      with the ADC channels:
       - for the Temperature sensor using ADC_TempSensorCmd() function.
-      - for the Internal Voltage reference using ADC_VrefintCmd() function. 
-   2. Enable the ADC_Channel_TempSensor and/or ADC_Channel_Vrefint channels 
-      using ADC_ChannelCmd()function. 
+      - for the Internal Voltage reference using ADC_VrefintCmd() function.
+   2. Enable the ADC_Channel_TempSensor and/or ADC_Channel_Vrefint channels
+      using ADC_ChannelCmd()function.
    3. Get the voltage values, using ADC_GetConversionValue().
- 
+
 @endverbatim
   * @{
   */
-  
+
 /**
   * @brief  Enables or disables the Temperature sensor internal reference.
   * @param  NewState : new state of the Temperature sensor internal reference.
@@ -467,19 +464,16 @@ void ADC_AnalogWatchdogConfig(ADC_TypeDef* ADCx,
   */
 void ADC_TempSensorCmd(FunctionalState NewState)
 {
-  /* Check the parameters */
-  assert_param(IS_FUNCTIONAL_STATE(NewState));
+    /* Check the parameters */
+    assert_param(IS_FUNCTIONAL_STATE(NewState));
 
-  if (NewState != DISABLE)
-  {
-    /*Enable the Temperature sensor internal reference.*/
-    ADC1->TRIGR[0] |= (uint8_t)(ADC_TRIGR1_TSON);
-  }
-  else
-  {
-    /*Disable the Temperature sensor internal reference.*/
-    ADC1->TRIGR[0] &= (uint8_t)(~ADC_TRIGR1_TSON);
-  }
+    if (NewState != DISABLE) {
+        /*Enable the Temperature sensor internal reference.*/
+        ADC1->TRIGR[0] |= (uint8_t)(ADC_TRIGR1_TSON);
+    } else {
+        /*Disable the Temperature sensor internal reference.*/
+        ADC1->TRIGR[0] &= (uint8_t)(~ADC_TRIGR1_TSON);
+    }
 }
 
 /**
@@ -490,47 +484,44 @@ void ADC_TempSensorCmd(FunctionalState NewState)
   */
 void ADC_VrefintCmd(FunctionalState NewState)
 {
-  /* Check the parameters */
-  assert_param(IS_FUNCTIONAL_STATE(NewState));
+    /* Check the parameters */
+    assert_param(IS_FUNCTIONAL_STATE(NewState));
 
-  if (NewState != DISABLE)
-  {
-    /* Enable the Internal Voltage reference.*/
-    ADC1->TRIGR[0] |= (uint8_t)(ADC_TRIGR1_VREFINTON);
-  }
-  else
-  {
-    /* Disable the Internal Voltage reference.*/
-    ADC1->TRIGR[0] &= (uint8_t)(~ADC_TRIGR1_VREFINTON);
-  }
+    if (NewState != DISABLE) {
+        /* Enable the Internal Voltage reference.*/
+        ADC1->TRIGR[0] |= (uint8_t)(ADC_TRIGR1_VREFINTON);
+    } else {
+        /* Disable the Internal Voltage reference.*/
+        ADC1->TRIGR[0] &= (uint8_t)(~ADC_TRIGR1_VREFINTON);
+    }
 }
 
- /**
-  * @}
-  */
+/**
+ * @}
+ */
 /** @defgroup ADC_Group4 Channels Configuration functions
  *  @brief   Channels Configuration functions
  *
-@verbatim    
+@verbatim
  ===============================================================================
                       Channels Configuration functions
- ===============================================================================  
+ ===============================================================================
   This section provides functions allowing to:
    - Enable or disable the ADC channel using ADC_ChannelCmd() function,
-   - Configure the channels sampling times using ADC_SamplingTimeConfig() 
+   - Configure the channels sampling times using ADC_SamplingTimeConfig()
      function.
-     Note: there are 2 sampling times configuration values : 
-            - 1st Group value : for channels 0..23  
-            - 2nd Group value : for channels 24..27 (depending on the MCU 
-              package density) and Temperature Sensor and Vrefint channels. 
-   - Configure the channels Schmitt Trigger for each channel using 
+     Note: there are 2 sampling times configuration values :
+            - 1st Group value : for channels 0..23
+            - 2nd Group value : for channels 24..27 (depending on the MCU
+              package density) and Temperature Sensor and Vrefint channels.
+   - Configure the channels Schmitt Trigger for each channel using
      ADC_SchmittTriggerConfig() function.
    - Get the current ADC conversion value.
-   
+
  @endverbatim
   * @{
   */
-    
+
 /**
   * @brief  Enables or disables the selected ADC channel(s).
   * @param  ADCx where x can be 1 to select the specified ADC peripheral.
@@ -576,22 +567,19 @@ void ADC_VrefintCmd(FunctionalState NewState)
   */
 void ADC_ChannelCmd(ADC_TypeDef* ADCx, ADC_Channel_TypeDef ADC_Channels, FunctionalState NewState)
 {
-  uint8_t regindex = 0;
-  /* Check the parameters */
-  assert_param(IS_FUNCTIONAL_STATE(NewState));
+    uint8_t regindex = 0;
+    /* Check the parameters */
+    assert_param(IS_FUNCTIONAL_STATE(NewState));
 
-  regindex = (uint8_t)((uint16_t)ADC_Channels >> 8);
+    regindex = (uint8_t)((uint16_t)ADC_Channels >> 8);
 
-  if (NewState != DISABLE)
-  {
-    /* Enable the selected ADC channel(s). */
-    ADCx->SQR[regindex] |= (uint8_t)(ADC_Channels);
-  }
-  else
-  {
-    /* Disable the selected ADC channel(s). */
-    ADCx->SQR[regindex] &= (uint8_t)(~(uint8_t)(ADC_Channels));
-  }
+    if (NewState != DISABLE) {
+        /* Enable the selected ADC channel(s). */
+        ADCx->SQR[regindex] |= (uint8_t)(ADC_Channels);
+    } else {
+        /* Disable the selected ADC channel(s). */
+        ADCx->SQR[regindex] &= (uint8_t)(~(uint8_t)(ADC_Channels));
+    }
 }
 
 /**
@@ -600,10 +588,10 @@ void ADC_ChannelCmd(ADC_TypeDef* ADCx, ADC_Channel_TypeDef ADC_Channels, Functio
   * @param  ADC_GroupChannels : ADC channel group to configure.
   *          This parameter can be one of the following values:
   *            @arg ADC_Group_SlowChannels: Slow Channels group
-  *            @arg ADC_Group_FastChannels: Fast Channels group  
-  * @note   The channels of 1st ADC Group can be channels 0..23  
-  * @note   The channels of 2nd ADC Group can be channels 24..27 (depending on the MCU 
-  *         package density) and Temperature Sensor and Vrefint channels.  
+  *            @arg ADC_Group_FastChannels: Fast Channels group
+  * @note   The channels of 1st ADC Group can be channels 0..23
+  * @note   The channels of 2nd ADC Group can be channels 24..27 (depending on the MCU
+  *         package density) and Temperature Sensor and Vrefint channels.
   * @param  ADC_SamplingTime : Specifies the sample time value
   *          This parameter can be one of the following values:
   *            @arg ADC_SamplingTime_4Cycles: Sampling Time Cycles is 4
@@ -620,26 +608,23 @@ void ADC_SamplingTimeConfig(ADC_TypeDef* ADCx,
                             ADC_Group_TypeDef ADC_GroupChannels,
                             ADC_SamplingTime_TypeDef ADC_SamplingTime)
 {
-  /* Check the parameters */
-  assert_param(IS_ADC_GROUP(ADC_GroupChannels));
-  assert_param(IS_ADC_SAMPLING_TIME_CYCLES(ADC_SamplingTime));
+    /* Check the parameters */
+    assert_param(IS_ADC_GROUP(ADC_GroupChannels));
+    assert_param(IS_ADC_SAMPLING_TIME_CYCLES(ADC_SamplingTime));
 
-  if ( ADC_GroupChannels != ADC_Group_SlowChannels)
-  {
-    /* Configures the sampling time for the Fast ADC channel group. */
-    ADCx->CR3 &= (uint8_t)~ADC_CR3_SMPT2;
-    ADCx->CR3 |= (uint8_t)(ADC_SamplingTime << 5);
-  }
-  else
-  {
-    /* Configures the sampling time for the Slow ADC channel group. */
-    ADCx->CR2 &= (uint8_t)~ADC_CR2_SMPT1;
-    ADCx->CR2 |= (uint8_t)ADC_SamplingTime;
-  }
+    if ( ADC_GroupChannels != ADC_Group_SlowChannels) {
+        /* Configures the sampling time for the Fast ADC channel group. */
+        ADCx->CR3 &= (uint8_t)~ADC_CR3_SMPT2;
+        ADCx->CR3 |= (uint8_t)(ADC_SamplingTime << 5);
+    } else {
+        /* Configures the sampling time for the Slow ADC channel group. */
+        ADCx->CR2 &= (uint8_t)~ADC_CR2_SMPT1;
+        ADCx->CR2 |= (uint8_t)ADC_SamplingTime;
+    }
 }
 
 /**
-  * @brief  Configures the status of the Schmitt Trigger for the selected ADC 
+  * @brief  Configures the status of the Schmitt Trigger for the selected ADC
   *         channel(s).
   * @param  ADCx where x can be 1 to select the specified ADC peripheral.
   * @param  ADC_Channels: specifies the ADC channels to be initialized,
@@ -685,22 +670,19 @@ void ADC_SamplingTimeConfig(ADC_TypeDef* ADCx,
 void ADC_SchmittTriggerConfig(ADC_TypeDef* ADCx, ADC_Channel_TypeDef ADC_Channels,
                               FunctionalState NewState)
 {
-  uint8_t regindex = 0;
-  /* Check the parameters */
-  assert_param(IS_FUNCTIONAL_STATE(NewState));
+    uint8_t regindex = 0;
+    /* Check the parameters */
+    assert_param(IS_FUNCTIONAL_STATE(NewState));
 
-  regindex = (uint8_t)((uint16_t)ADC_Channels >> 8);
+    regindex = (uint8_t)((uint16_t)ADC_Channels >> 8);
 
-  if (NewState != DISABLE)
-  {
-    /* Enable the Schmitt Trigger for the selected ADC channel(s).*/
-    ADCx->TRIGR[regindex] &= (uint8_t)(~(uint8_t)ADC_Channels);
-  }
-  else
-  {
-    /* Disable the Schmitt Trigger for the selected ADC channel(s).*/
-    ADCx->TRIGR[regindex] |= (uint8_t)(ADC_Channels);
-  }
+    if (NewState != DISABLE) {
+        /* Enable the Schmitt Trigger for the selected ADC channel(s).*/
+        ADCx->TRIGR[regindex] &= (uint8_t)(~(uint8_t)ADC_Channels);
+    } else {
+        /* Disable the Schmitt Trigger for the selected ADC channel(s).*/
+        ADCx->TRIGR[regindex] |= (uint8_t)(ADC_Channels);
+    }
 }
 
 /**
@@ -710,34 +692,34 @@ void ADC_SchmittTriggerConfig(ADC_TypeDef* ADCx, ADC_Channel_TypeDef ADC_Channel
   */
 uint16_t ADC_GetConversionValue(ADC_TypeDef* ADCx)
 {
-  uint16_t tmpreg = 0;
+    uint16_t tmpreg = 0;
 
-  /* Get last ADC converted data.*/
-  tmpreg = (uint16_t)(ADCx->DRH);
-  tmpreg = (uint16_t)((uint16_t)((uint16_t)tmpreg << 8) | ADCx->DRL);
+    /* Get last ADC converted data.*/
+    tmpreg = (uint16_t)(ADCx->DRH);
+    tmpreg = (uint16_t)((uint16_t)((uint16_t)tmpreg << 8) | ADCx->DRL);
 
-  /* Return the selected ADC conversion value */
-  return (uint16_t)(tmpreg) ;
+    /* Return the selected ADC conversion value */
+    return (uint16_t)(tmpreg) ;
 }
 
- /**
-  * @}
-  */
+/**
+ * @}
+ */
 
 /** @defgroup ADC_Group5 ADC Channels DMA Configuration function
- *  @brief   ADC Channels DMA Configuration function 
+ *  @brief   ADC Channels DMA Configuration function
  *
-@verbatim   
+@verbatim
  ===============================================================================
                    ADC Channels DMA Configuration function
- ===============================================================================  
+ ===============================================================================
 
-  This section provides a function allowing to configure the DMA for ADC 
+  This section provides a function allowing to configure the DMA for ADC
   channel.
-  Since converted channel values are stored into a unique data register, 
-  it is useful to use DMA for conversion of more than one channel. This 
-  avoids the loss of the data already stored in the ADC Data register. 
-  
+  Since converted channel values are stored into a unique data register,
+  it is useful to use DMA for conversion of more than one channel. This
+  avoids the loss of the data already stored in the ADC Data register.
+
   When the DMA mode is enabled (using the ADC_DMACmd() function), after each
   conversion of a channel, a DMA request is generated.
 
@@ -753,19 +735,16 @@ uint16_t ADC_GetConversionValue(ADC_TypeDef* ADCx)
   */
 void ADC_DMACmd(ADC_TypeDef* ADCx, FunctionalState NewState)
 {
-  /* Check the parameters */
-  assert_param(IS_FUNCTIONAL_STATE(NewState));
+    /* Check the parameters */
+    assert_param(IS_FUNCTIONAL_STATE(NewState));
 
-  if (NewState != DISABLE)
-  {
-    /* Enable the specified ADC DMA request */
-    ADCx->SQR[0] &= (uint8_t)~ADC_SQR1_DMAOFF;
-  }
-  else
-  {
-    /* Disable the specified ADC DMA request */
-    ADCx->SQR[0] |= ADC_SQR1_DMAOFF;
-  }
+    if (NewState != DISABLE) {
+        /* Enable the specified ADC DMA request */
+        ADCx->SQR[0] &= (uint8_t)~ADC_SQR1_DMAOFF;
+    } else {
+        /* Disable the specified ADC DMA request */
+        ADCx->SQR[0] |= ADC_SQR1_DMAOFF;
+    }
 }
 
 /**
@@ -775,30 +754,30 @@ void ADC_DMACmd(ADC_TypeDef* ADCx, FunctionalState NewState)
 /** @defgroup ADC_Group6 Interrupts and flags management functions
  *  @brief   Interrupts and flags management functions
  *
-@verbatim   
+@verbatim
  ===============================================================================
                    Interrupts and flags management functions
- ===============================================================================  
+ ===============================================================================
 
-  This section provides functions allowing to configure the ADC Interrupts and 
+  This section provides functions allowing to configure the ADC Interrupts and
   get the status and clear flags and Interrupts pending bits.
-  
+
   The ADC provides 3 Interrupt sources and 3 Flags:
-  
+
   Flags :
-  ---------- 
+  ----------
      1. ADC_FLAG_OVR : Overrun detection when ADC channel converted data is lost
 
-     2. ADC_FLAG_EOC : End of conversion - to indicate the end of a regular 
-                  CHANNEL conversion or a GROUP conversions, depending of the 
-                  ADC Continuous Conversion Mode (Continuous or Single 
+     2. ADC_FLAG_EOC : End of conversion - to indicate the end of a regular
+                  CHANNEL conversion or a GROUP conversions, depending of the
+                  ADC Continuous Conversion Mode (Continuous or Single
                   conversion) and of the DMA usage.
-                  Note : if DMA is used, EOC occurs at the end of the sequence 
+                  Note : if DMA is used, EOC occurs at the end of the sequence
                          conversion, else it occurs after each conversion
-     3. ADC_FLAG_AWD: to indicate if the converted voltage crosses the 
+     3. ADC_FLAG_AWD: to indicate if the converted voltage crosses the
                 programmed Analog watchdog thresholds values.
 
-     
+
   Interrupts :
   ------------
      1. ADC_IT_OVR : specifies the interrupt source for the Overrun detection event.
@@ -807,13 +786,13 @@ void ADC_DMACmd(ADC_TypeDef* ADCx, FunctionalState NewState)
 
 @endverbatim
   * @{
-  */ 
+  */
 
 /**
   * @brief  Enables or disables the specified ADC interrupts.
   * @param  ADCx where x can be 1 to select the specified ADC peripheral.
-  * @param  ADC_IT : specifies the ADC interrupt sources to be enabled or 
-  *         disabled. 
+  * @param  ADC_IT : specifies the ADC interrupt sources to be enabled or
+  *         disabled.
   *          This parameter can be one of the following values:
   *            @arg ADC_IT_EOC: End of Conversion Interrupt
   *            @arg ADC_IT_AWD: Analog WatchDog Interrupt
@@ -824,20 +803,17 @@ void ADC_DMACmd(ADC_TypeDef* ADCx, FunctionalState NewState)
   */
 void ADC_ITConfig(ADC_TypeDef* ADCx, ADC_IT_TypeDef ADC_IT, FunctionalState NewState)
 {
-  /* Check the parameters */
-  assert_param(IS_FUNCTIONAL_STATE(NewState));
-  assert_param(IS_ADC_IT(ADC_IT));
+    /* Check the parameters */
+    assert_param(IS_FUNCTIONAL_STATE(NewState));
+    assert_param(IS_ADC_IT(ADC_IT));
 
-  if (NewState != DISABLE)
-  {
-    /* Enable the selected ADC interrupts */
-    ADCx->CR1 |= (uint8_t) ADC_IT;
-  }
-  else
-  {
-    /* Disable the selected ADC interrupts */
-    ADCx->CR1 &= (uint8_t)(~ADC_IT);
-  }
+    if (NewState != DISABLE) {
+        /* Enable the selected ADC interrupts */
+        ADCx->CR1 |= (uint8_t) ADC_IT;
+    } else {
+        /* Disable the selected ADC interrupts */
+        ADCx->CR1 &= (uint8_t)(~ADC_IT);
+    }
 }
 
 /**
@@ -847,30 +823,27 @@ void ADC_ITConfig(ADC_TypeDef* ADCx, ADC_IT_TypeDef ADC_IT, FunctionalState NewS
   *          This parameter can be one of the following values:
   *            @arg ADC_FLAG_EOC: End of Conversion flag
   *            @arg ADC_FLAG_AWD: Analog WatchDog flag
-  *            @arg ADC_FLAG_OVER: Over Run flag    
+  *            @arg ADC_FLAG_OVER: Over Run flag
   * @retval The new state of ADC_FLAG (SET or RESET).
   */
 FlagStatus ADC_GetFlagStatus(ADC_TypeDef* ADCx, ADC_FLAG_TypeDef ADC_FLAG)
 {
-  FlagStatus flagstatus = RESET;
+    FlagStatus flagstatus = RESET;
 
-  /* Check the parameters */
-  assert_param(IS_ADC_GET_FLAG(ADC_FLAG));
+    /* Check the parameters */
+    assert_param(IS_ADC_GET_FLAG(ADC_FLAG));
 
-  /* Check the status of the specified ADC flag */
-  if ((ADCx->SR & ADC_FLAG) != (uint8_t)RESET)
-  {
-    /* ADC_FLAG is set */
-    flagstatus = SET;
-  }
-  else
-  {
-    /* ADC_FLAG is reset */
-    flagstatus = RESET;
-  }
+    /* Check the status of the specified ADC flag */
+    if ((ADCx->SR & ADC_FLAG) != (uint8_t)RESET) {
+        /* ADC_FLAG is set */
+        flagstatus = SET;
+    } else {
+        /* ADC_FLAG is reset */
+        flagstatus = RESET;
+    }
 
-  /* Return the ADC_FLAG status */
-  return  flagstatus;
+    /* Return the ADC_FLAG status */
+    return  flagstatus;
 }
 
 /**
@@ -880,17 +853,17 @@ FlagStatus ADC_GetFlagStatus(ADC_TypeDef* ADCx, ADC_FLAG_TypeDef ADC_FLAG)
   *          This parameter can be one of the following values:
   *            @arg ADC_FLAG_EOC: End of Conversion flag
   *            @arg ADC_FLAG_AWD: Analog WatchDog flag
-  *            @arg ADC_FLAG_OVER: Over Run flag 
+  *            @arg ADC_FLAG_OVER: Over Run flag
   * @retval None
   */
 void ADC_ClearFlag(ADC_TypeDef* ADCx,
                    ADC_FLAG_TypeDef ADC_FLAG)
 {
-  /* Check the parameters */
-  assert_param(IS_ADC_CLEAR_FLAG(ADC_FLAG));
+    /* Check the parameters */
+    assert_param(IS_ADC_CLEAR_FLAG(ADC_FLAG));
 
-  /* Clear the selected ADC flags */
-  ADCx->SR = (uint8_t)~ADC_FLAG;
+    /* Clear the selected ADC flags */
+    ADCx->SR = (uint8_t)~ADC_FLAG;
 }
 
 /**
@@ -906,34 +879,31 @@ void ADC_ClearFlag(ADC_TypeDef* ADCx,
 ITStatus ADC_GetITStatus(ADC_TypeDef* ADCx,
                          ADC_IT_TypeDef ADC_IT)
 {
-  ITStatus itstatus = RESET;
-  uint8_t itmask = 0, enablestatus = 0;
+    ITStatus itstatus = RESET;
+    uint8_t itmask = 0, enablestatus = 0;
 
-  /* Check the parameters */
-  assert_param(IS_ADC_GET_IT(ADC_IT));
+    /* Check the parameters */
+    assert_param(IS_ADC_GET_IT(ADC_IT));
 
-  /* Get the ADC IT index */
-  itmask = (uint8_t)(ADC_IT >> 3);
-  itmask =  (uint8_t)((uint8_t)((uint8_t)(itmask & (uint8_t)0x10) >> 2) | \
-                                (uint8_t)(itmask & (uint8_t)0x03));
+    /* Get the ADC IT index */
+    itmask = (uint8_t)(ADC_IT >> 3);
+    itmask =  (uint8_t)((uint8_t)((uint8_t)(itmask & (uint8_t)0x10) >> 2) | \
+                        (uint8_t)(itmask & (uint8_t)0x03));
 
-  /* Get the ADC_IT enable bit status */
-  enablestatus = (uint8_t)(ADCx->CR1 & (uint8_t)ADC_IT) ;
+    /* Get the ADC_IT enable bit status */
+    enablestatus = (uint8_t)(ADCx->CR1 & (uint8_t)ADC_IT) ;
 
-  /* Check the status of the specified ADC interrupt */
-  if (((ADCx->SR & itmask) != (uint8_t)RESET) && enablestatus)
-  {
-    /* ADC_IT is set */
-    itstatus = SET;
-  }
-  else
-  {
-    /* ADC_IT is reset */
-    itstatus = RESET;
-  }
+    /* Check the status of the specified ADC interrupt */
+    if (((ADCx->SR & itmask) != (uint8_t)RESET) && enablestatus) {
+        /* ADC_IT is set */
+        itstatus = SET;
+    } else {
+        /* ADC_IT is reset */
+        itstatus = RESET;
+    }
 
-  /* Return the ADC_IT status */
-  return  itstatus;
+    /* Return the ADC_IT status */
+    return  itstatus;
 }
 
 /**
@@ -949,23 +919,19 @@ ITStatus ADC_GetITStatus(ADC_TypeDef* ADCx,
 void ADC_ClearITPendingBit(ADC_TypeDef* ADCx,
                            ADC_IT_TypeDef ADC_IT)
 {
-  uint8_t itmask = 0;
+    uint8_t itmask = 0;
 
-  /* Check the parameters */
-  assert_param(IS_ADC_IT(ADC_IT));
+    /* Check the parameters */
+    assert_param(IS_ADC_IT(ADC_IT));
 
-  /* Get the ADC IT index */
-  itmask = (uint8_t)(ADC_IT >> 3);
-  itmask =  (uint8_t)((uint8_t)(((uint8_t)(itmask & (uint8_t)0x10)) >> 2) | \
-                                 (uint8_t)(itmask & (uint8_t)0x03));
+    /* Get the ADC IT index */
+    itmask = (uint8_t)(ADC_IT >> 3);
+    itmask =  (uint8_t)((uint8_t)(((uint8_t)(itmask & (uint8_t)0x10)) >> 2) | \
+                        (uint8_t)(itmask & (uint8_t)0x03));
 
-  /* Clear the selected ADC interrupt pending bits */
-  ADCx->SR = (uint8_t)~itmask;
+    /* Clear the selected ADC interrupt pending bits */
+    ADCx->SR = (uint8_t)~itmask;
 }
-
-/**
-  * @}
-  */ 
 
 /**
   * @}
@@ -973,10 +939,14 @@ void ADC_ClearITPendingBit(ADC_TypeDef* ADCx,
 
 /**
   * @}
-  */ 
+  */
 
 /**
   * @}
-  */ 
+  */
+
+/**
+  * @}
+  */
 
 /******************* (C) COPYRIGHT 2011 STMicroelectronics *****END OF FILE****/

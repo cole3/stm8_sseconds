@@ -49,8 +49,7 @@ static uint8_t test_thread_stack[NUM_TEST_THREADS][TEST_THREAD_STACK_SIZE];
 
 
 /* Test message values (more values than can fit in an entire 8 message queue) */
-uint32_t test_values[] =
-{
+uint32_t test_values[] = {
     0x12345678,
     0xFF000000,
     0x00FF0000,
@@ -99,23 +98,19 @@ uint32_t test_start (void)
     g_result = 0;
 
     /* Create test queue */
-    if (atomQueueCreate (&queue1, (uint8_t *)&queue1_storage[0], sizeof(queue1_storage[0]), QUEUE_ENTRIES) != ATOM_OK)
-    {
+    if (atomQueueCreate (&queue1, (uint8_t *)&queue1_storage[0], sizeof(queue1_storage[0]), QUEUE_ENTRIES) != ATOM_OK) {
         ATOMLOG (_STR("Error creating test queue\n"));
         failures++;
     }
 
     /* Create a test thread that will block because the queue is empty */
     else if (atomThreadCreate(&tcb[0], TEST_THREAD_PRIO + 1, test1_thread_func, 0,
-              &test_thread_stack[0][TEST_THREAD_STACK_SIZE - 1],
-              TEST_THREAD_STACK_SIZE) != ATOM_OK)
-    {
+                              &test_thread_stack[0][TEST_THREAD_STACK_SIZE - 1],
+                              TEST_THREAD_STACK_SIZE) != ATOM_OK) {
         /* Fail */
         ATOMLOG (_STR("Error creating test thread 1\n"));
         failures++;
-    }
-    else
-    {
+    } else {
 
         /*
          * We have created an empty queue and a thread which should now
@@ -124,13 +119,10 @@ uint32_t test_start (void)
          */
 
         /* Wait for the other thread to start blocking on queue1 */
-        if (atomTimerDelay(SYSTEM_TICKS_PER_SEC) != ATOM_OK)
-        {
+        if (atomTimerDelay(SYSTEM_TICKS_PER_SEC) != ATOM_OK) {
             ATOMLOG (_STR("Failed timer delay\n"));
             failures++;
-        }
-        else
-        {
+        } else {
             /*
              * Post all entries in the test array to the queue.
              * Because the second thread is lower priority than
@@ -149,12 +141,10 @@ uint32_t test_start (void)
              * to the queue at all possible fill levels.
              */
             num_entries = sizeof(test_values) / sizeof(test_values[0]);
-            for (count = 0; count < num_entries; count++)
-            {
+            for (count = 0; count < num_entries; count++) {
                 /* Increment through and post all test values to the queue */
                 msg = test_values[count];
-                if (atomQueuePut (&queue1, 0, (uint8_t *)&msg) != ATOM_OK)
-                {
+                if (atomQueuePut (&queue1, 0, (uint8_t *)&msg) != ATOM_OK) {
                     ATOMLOG (_STR("Failed post\n"));
                     failures++;
                 }
@@ -164,8 +154,7 @@ uint32_t test_start (void)
             atomTimerDelay (SYSTEM_TICKS_PER_SEC);
 
             /* Check that the second thread has found all test values */
-            if (g_result != 1)
-            {
+            if (g_result != 1) {
                 ATOMLOG (_STR("Bad test vals\n"));
                 failures++;
             }
@@ -179,19 +168,14 @@ uint32_t test_start (void)
         int thread;
 
         /* Check all threads */
-        for (thread = 0; thread < NUM_TEST_THREADS; thread++)
-        {
+        for (thread = 0; thread < NUM_TEST_THREADS; thread++) {
             /* Check thread stack usage */
-            if (atomThreadStackCheck (&tcb[thread], &used_bytes, &free_bytes) != ATOM_OK)
-            {
+            if (atomThreadStackCheck (&tcb[thread], &used_bytes, &free_bytes) != ATOM_OK) {
                 ATOMLOG (_STR("StackCheck\n"));
                 failures++;
-            }
-            else
-            {
+            } else {
                 /* Check the thread did not use up to the end of stack */
-                if (free_bytes == 0)
-                {
+                if (free_bytes == 0) {
                     ATOMLOG (_STR("StackOverflow %d\n"), thread);
                     failures++;
                 }
@@ -235,18 +219,15 @@ static void test1_thread_func (uint32_t param)
      * values in the test array.
      */
     num_entries = sizeof(test_values) / sizeof(test_values[0]);
-    for (count = 0; count < num_entries; count++)
-    {
+    for (count = 0; count < num_entries; count++) {
         /* Receive a value from the queue */
-        if (atomQueueGet (&queue1, 0, (uint8_t *)&msg) != ATOM_OK)
-        {
+        if (atomQueueGet (&queue1, 0, (uint8_t *)&msg) != ATOM_OK) {
             ATOMLOG (_STR("Failed get\n"));
             failures++;
         }
 
         /* Check that we received the expected value */
-        else if (msg != test_values[count])
-        {
+        else if (msg != test_values[count]) {
             ATOMLOG (_STR("Val%d\n"), count);
             failures++;
         }
@@ -257,15 +238,13 @@ static void test1_thread_func (uint32_t param)
      * Thread-protection is not required on g_result because it
      * is only ever set by this thread.
      */
-    if (failures == 0)
-    {
+    if (failures == 0) {
         /* No failures */
         g_result = 1;
     }
 
     /* Wait forever */
-    while (1)
-    {
+    while (1) {
         atomTimerDelay (SYSTEM_TICKS_PER_SEC);
     }
 }

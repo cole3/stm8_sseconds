@@ -63,22 +63,19 @@ uint32_t test_start (void)
     failures = 0;
 
     /* Create queue */
-    if (atomQueueCreate (&queue1, &queue1_storage[0], sizeof(queue1_storage[0]), QUEUE_ENTRIES) != ATOM_OK)
-    {
+    if (atomQueueCreate (&queue1, &queue1_storage[0], sizeof(queue1_storage[0]), QUEUE_ENTRIES) != ATOM_OK) {
         ATOMLOG (_STR("Error creating Q\n"));
         failures++;
     }
 
-    else
-    {
+    else {
         /* The queue is empty so atomQueueGet() calls will block */
 
         /* Take note of the start time */
         start_time = atomTimeGet();
 
         /* Block on the queue with two second timeout */
-        if (atomQueueGet (&queue1, 2 * SYSTEM_TICKS_PER_SEC, &msg) != ATOM_TIMEOUT)
-        {
+        if (atomQueueGet (&queue1, 2 * SYSTEM_TICKS_PER_SEC, &msg) != ATOM_TIMEOUT) {
             ATOMLOG (_STR("Failed get\n"));
             failures++;
         }
@@ -88,15 +85,13 @@ uint32_t test_start (void)
 
         /* Now check that two seconds have passed */
         if ((end_time < (start_time + (2 * SYSTEM_TICKS_PER_SEC)))
-            || (end_time > (start_time + (2 * SYSTEM_TICKS_PER_SEC) + 1)))
-        {
+            || (end_time > (start_time + (2 * SYSTEM_TICKS_PER_SEC) + 1))) {
             ATOMLOG (_STR("Bad time\n"));
             failures++;
         }
 
         /* Delete queue, test finished */
-        if (atomQueueDelete (&queue1) != ATOM_OK)
-        {
+        if (atomQueueDelete (&queue1) != ATOM_OK) {
             ATOMLOG (_STR("Delete failed\n"));
             failures++;
         }

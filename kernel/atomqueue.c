@@ -28,7 +28,7 @@
  */
 
 
-/** 
+/**
  * \file
  * Queue library.
  *
@@ -83,13 +83,13 @@
  * call can be made in which case the call will return with a status code
  * indicating that the queue is full. This allows messages to be received
  * by interrupt handlers or threads which you do not wish to block.
- * 
+ *
  * A queue which is no longer required can be deleted using atomQueueDelete().
  * This function automatically wakes up any threads which are waiting on the
  * deleted queue.
  *
  */
- 
+
 
 #include <stdio.h>
 #include <string.h>
@@ -101,8 +101,7 @@
 
 /* Local data types */
 
-typedef struct queue_timer
-{
+typedef struct queue_timer {
     ATOM_TCB   *tcb_ptr;    /* Thread which is suspended with timeout */
     ATOM_QUEUE *queue_ptr;  /* Queue the thread is interested in */
     ATOM_TCB   **suspQ;     /* TCB queue which thread is suspended on */
@@ -148,19 +147,14 @@ uint8_t atomQueueCreate (ATOM_QUEUE *qptr, uint8_t *buff_ptr, uint32_t unit_size
     uint8_t status;
 
     /* Parameter check */
-    if ((qptr == NULL) || (buff_ptr == NULL))
-    {
+    if ((qptr == NULL) || (buff_ptr == NULL)) {
         /* Bad pointers */
         status = ATOM_ERR_PARAM;
-    }
-    else if ((unit_size == 0) || (max_num_msgs == 0))
-    {
+    } else if ((unit_size == 0) || (max_num_msgs == 0)) {
         /* Bad values */
         status = ATOM_ERR_PARAM;
-    }
-    else
-    {
-       /* Store the queue details */
+    } else {
+        /* Store the queue details */
         qptr->buff_ptr = buff_ptr;
         qptr->unit_size = unit_size;
         qptr->max_num_msgs = max_num_msgs;
@@ -210,34 +204,28 @@ uint8_t atomQueueDelete (ATOM_QUEUE *qptr)
     uint8_t woken_threads = FALSE;
 
     /* Parameter check */
-    if (qptr == NULL)
-    {
+    if (qptr == NULL) {
         /* Bad pointer */
         status = ATOM_ERR_PARAM;
-    }
-    else
-    {
+    } else {
         /* Default to success status unless errors occur during wakeup */
         status = ATOM_OK;
 
         /* Wake up all suspended tasks */
-        while (1)
-        {
+        while (1) {
             /* Enter critical region */
             CRITICAL_START ();
 
             /* Check if any threads are suspended */
             if (((tcb_ptr = tcbDequeueHead (&qptr->getSuspQ)) != NULL)
-                || ((tcb_ptr = tcbDequeueHead (&qptr->putSuspQ)) != NULL))
-            {
+                || ((tcb_ptr = tcbDequeueHead (&qptr->putSuspQ)) != NULL)) {
                 /* A thread is waiting on a suspend queue */
 
                 /* Return error status to the waiting thread */
                 tcb_ptr->suspend_wake_status = ATOM_ERR_DELETED;
 
                 /* Put the thread on the ready queue */
-                if (tcbEnqueuePriority (&tcbReadyQ, tcb_ptr) != ATOM_OK)
-                {
+                if (tcbEnqueuePriority (&tcbReadyQ, tcb_ptr) != ATOM_OK) {
                     /* Exit critical region */
                     CRITICAL_END ();
 
@@ -247,11 +235,9 @@ uint8_t atomQueueDelete (ATOM_QUEUE *qptr)
                 }
 
                 /* If there's a timeout on this suspension, cancel it */
-                if (tcb_ptr->suspend_timo_cb)
-                {
+                if (tcb_ptr->suspend_timo_cb) {
                     /* Cancel the callback */
-                    if (atomTimerCancel (tcb_ptr->suspend_timo_cb) != ATOM_OK)
-                    {
+                    if (atomTimerCancel (tcb_ptr->suspend_timo_cb) != ATOM_OK) {
                         /* Exit critical region */
                         CRITICAL_END ();
 
@@ -273,8 +259,7 @@ uint8_t atomQueueDelete (ATOM_QUEUE *qptr)
             }
 
             /* No more suspended threads */
-            else
-            {
+            else {
                 /* Exit critical region and quit the loop */
                 CRITICAL_END ();
                 break;
@@ -282,8 +267,7 @@ uint8_t atomQueueDelete (ATOM_QUEUE *qptr)
         }
 
         /* Call scheduler if any threads were woken up */
-        if (woken_threads == TRUE)
-        {
+        if (woken_threads == TRUE) {
             /**
              * Only call the scheduler if we are in thread context, otherwise
              * it will be called on exiting the ISR by atomIntExit().
@@ -343,33 +327,26 @@ uint8_t atomQueueGet (ATOM_QUEUE *qptr, int32_t timeout, uint8_t *msgptr)
     ATOM_TCB *curr_tcb_ptr;
 
     /* Check parameters */
-    if ((qptr == NULL) || (msgptr == NULL))
-    {
+    if ((qptr == NULL) || (msgptr == NULL)) {
         /* Bad pointer */
         status = ATOM_ERR_PARAM;
-    }
-    else
-    {
+    } else {
         /* Protect access to the queue object and OS queues */
         CRITICAL_START ();
 
         /* If no messages on the queue, block the calling thread */
-        if (qptr->num_msgs_stored == 0)
-        {
+        if (qptr->num_msgs_stored == 0) {
             /* If called with timeout >= 0, we should block */
-            if (timeout >= 0)
-            {
+            if (timeout >= 0) {
                 /* Queue is empty, block the calling thread */
 
                 /* Get the current TCB */
                 curr_tcb_ptr = atomCurrentContext();
 
                 /* Check we are actually in thread context */
-                if (curr_tcb_ptr)
-                {
+                if (curr_tcb_ptr) {
                     /* Add current thread to the list suspended on receives */
-                    if (tcbEnqueuePriority (&qptr->getSuspQ, curr_tcb_ptr) == ATOM_OK)
-                    {
+                    if (tcbEnqueuePriority (&qptr->getSuspQ, curr_tcb_ptr) == ATOM_OK) {
                         /* Set suspended status for the current thread */
                         curr_tcb_ptr->suspended = TRUE;
 
@@ -377,8 +354,7 @@ uint8_t atomQueueGet (ATOM_QUEUE *qptr, int32_t timeout, uint8_t *msgptr)
                         status = ATOM_OK;
 
                         /* Register a timer callback if requested */
-                        if (timeout)
-                        {
+                        if (timeout) {
                             /**
                              * Fill out the data needed by the callback to
                              * wake us up.
@@ -400,8 +376,7 @@ uint8_t atomQueueGet (ATOM_QUEUE *qptr, int32_t timeout, uint8_t *msgptr)
                             curr_tcb_ptr->suspend_timo_cb = &timer_cb;
 
                             /* Register a callback on timeout */
-                            if (atomTimerRegister (&timer_cb) != ATOM_OK)
-                            {
+                            if (atomTimerRegister (&timer_cb) != ATOM_OK) {
                                 /* Timer registration failed */
                                 status = ATOM_ERR_TIMER;
 
@@ -413,8 +388,7 @@ uint8_t atomQueueGet (ATOM_QUEUE *qptr, int32_t timeout, uint8_t *msgptr)
                         }
 
                         /* Set no timeout requested */
-                        else
-                        {
+                        else {
                             /* No need to cancel timeouts on this one */
                             curr_tcb_ptr->suspend_timo_cb = NULL;
                         }
@@ -423,8 +397,7 @@ uint8_t atomQueueGet (ATOM_QUEUE *qptr, int32_t timeout, uint8_t *msgptr)
                         CRITICAL_END ();
 
                         /* Check no errors occurred */
-                        if (status == ATOM_OK)
-                        {
+                        if (status == ATOM_OK) {
                             /**
                              * Current thread now blocking, schedule in a new
                              * one. We already know we are in thread context
@@ -447,8 +420,7 @@ uint8_t atomQueueGet (ATOM_QUEUE *qptr, int32_t timeout, uint8_t *msgptr)
                              * waiting for a message, or the queue was
                              * deleted, so we should just quit.
                              */
-                            if (status == ATOM_OK)
-                            {
+                            if (status == ATOM_OK) {
                                 /* Enter critical region */
                                 CRITICAL_START();
 
@@ -459,30 +431,22 @@ uint8_t atomQueueGet (ATOM_QUEUE *qptr, int32_t timeout, uint8_t *msgptr)
                                 CRITICAL_END();
                             }
                         }
-                    }
-                    else
-                    {
+                    } else {
                         /* There was an error putting this thread on the suspend list */
                         CRITICAL_END ();
                         status = ATOM_ERR_QUEUE;
                     }
-                }
-                else
-                {
+                } else {
                     /* Not currently in thread context, can't suspend */
                     CRITICAL_END ();
                     status = ATOM_ERR_CONTEXT;
                 }
-            }
-            else
-            {
+            } else {
                 /* timeout == -1, requested not to block and queue is empty */
                 CRITICAL_END();
                 status = ATOM_WOULDBLOCK;
             }
-        }
-        else
-        {
+        } else {
             /* No need to block, there is a message to copy out of the queue */
             status = queue_remove (qptr, msgptr);
 
@@ -549,33 +513,26 @@ uint8_t atomQueuePut (ATOM_QUEUE *qptr, int32_t timeout, uint8_t *msgptr)
     ATOM_TCB *curr_tcb_ptr;
 
     /* Check parameters */
-    if ((qptr == NULL) || (msgptr == NULL))
-    {
+    if ((qptr == NULL) || (msgptr == NULL)) {
         /* Bad pointer */
         status = ATOM_ERR_PARAM;
-    }
-    else
-    {
+    } else {
         /* Protect access to the queue object and OS queues */
         CRITICAL_START ();
 
         /* If queue is full, block the calling thread */
-        if (qptr->num_msgs_stored == qptr->max_num_msgs)
-        {
+        if (qptr->num_msgs_stored == qptr->max_num_msgs) {
             /* If called with timeout >= 0, we should block */
-            if (timeout >= 0)
-            {
+            if (timeout >= 0) {
                 /* Queue is full, block the calling thread */
 
                 /* Get the current TCB */
                 curr_tcb_ptr = atomCurrentContext();
 
                 /* Check we are actually in thread context */
-                if (curr_tcb_ptr)
-                {
+                if (curr_tcb_ptr) {
                     /* Add current thread to the suspend list on sends */
-                    if (tcbEnqueuePriority (&qptr->putSuspQ, curr_tcb_ptr) == ATOM_OK)
-                    {
+                    if (tcbEnqueuePriority (&qptr->putSuspQ, curr_tcb_ptr) == ATOM_OK) {
                         /* Set suspended status for the current thread */
                         curr_tcb_ptr->suspended = TRUE;
 
@@ -583,8 +540,7 @@ uint8_t atomQueuePut (ATOM_QUEUE *qptr, int32_t timeout, uint8_t *msgptr)
                         status = ATOM_OK;
 
                         /* Register a timer callback if requested */
-                        if (timeout)
-                        {
+                        if (timeout) {
                             /**
                              * Fill out the data needed by the callback to
                              * wake us up.
@@ -608,8 +564,7 @@ uint8_t atomQueuePut (ATOM_QUEUE *qptr, int32_t timeout, uint8_t *msgptr)
                             curr_tcb_ptr->suspend_timo_cb = &timer_cb;
 
                             /* Register a callback on timeout */
-                            if (atomTimerRegister (&timer_cb) != ATOM_OK)
-                            {
+                            if (atomTimerRegister (&timer_cb) != ATOM_OK) {
                                 /* Timer registration failed */
                                 status = ATOM_ERR_TIMER;
 
@@ -621,8 +576,7 @@ uint8_t atomQueuePut (ATOM_QUEUE *qptr, int32_t timeout, uint8_t *msgptr)
                         }
 
                         /* Set no timeout requested */
-                        else
-                        {
+                        else {
                             /* No need to cancel timeouts on this one */
                             curr_tcb_ptr->suspend_timo_cb = NULL;
                         }
@@ -631,8 +585,7 @@ uint8_t atomQueuePut (ATOM_QUEUE *qptr, int32_t timeout, uint8_t *msgptr)
                         CRITICAL_END ();
 
                         /* Check timer registration was successful */
-                        if (status == ATOM_OK)
-                        {
+                        if (status == ATOM_OK) {
                             /**
                              * Current thread now blocking, schedule in a new
                              * one. We already know we are in thread context
@@ -655,8 +608,7 @@ uint8_t atomQueuePut (ATOM_QUEUE *qptr, int32_t timeout, uint8_t *msgptr)
                              * waiting for a message, or the queue was
                              * deleted, so we should just quit.
                              */
-                            if (status == ATOM_OK)
-                            {
+                            if (status == ATOM_OK) {
                                 /* Enter critical region */
                                 CRITICAL_START();
 
@@ -667,30 +619,22 @@ uint8_t atomQueuePut (ATOM_QUEUE *qptr, int32_t timeout, uint8_t *msgptr)
                                 CRITICAL_END();
                             }
                         }
-                    }
-                    else
-                    {
+                    } else {
                         /* There was an error putting this thread on the suspend list */
                         CRITICAL_END ();
                         status = ATOM_ERR_QUEUE;
                     }
-                }
-                else
-                {
+                } else {
                     /* Not currently in thread context, can't suspend */
                     CRITICAL_END ();
                     status = ATOM_ERR_CONTEXT;
                 }
-            }
-            else
-            {
+            } else {
                 /* timeout == -1, cannot block. Just return queue is full */
                 CRITICAL_END();
                 status = ATOM_WOULDBLOCK;
             }
-        }
-        else
-        {
+        } else {
             /* No need to block, there is space to copy into the queue */
             status = queue_insert (qptr, msgptr);
 
@@ -732,8 +676,7 @@ static void atomQueueTimerCallback (POINTER cb_data)
     timer_data_ptr = (QUEUE_TIMER *)cb_data;
 
     /* Check parameter is valid */
-    if (timer_data_ptr)
-    {
+    if (timer_data_ptr) {
         /* Enter critical region */
         CRITICAL_START ();
 
@@ -791,13 +734,10 @@ static uint8_t queue_remove (ATOM_QUEUE *qptr, uint8_t* msgptr)
     ATOM_TCB *tcb_ptr;
 
     /* Check parameters */
-    if ((qptr == NULL) || (msgptr == NULL))
-    {
+    if ((qptr == NULL) || (msgptr == NULL)) {
         /* Bad pointer */
         status = ATOM_ERR_PARAM;
-    }
-    else
-    {
+    } else {
         /* There is a message on the queue, copy it out */
         memcpy (msgptr, (qptr->buff_ptr + qptr->remove_index), qptr->unit_size);
         qptr->remove_index += qptr->unit_size;
@@ -813,41 +753,32 @@ static uint8_t queue_remove (ATOM_QUEUE *qptr, uint8_t* msgptr)
          * threads woken up in FIFO order.
          */
         tcb_ptr = tcbDequeueHead (&qptr->putSuspQ);
-        if (tcb_ptr)
-        {
+        if (tcb_ptr) {
             /* Move the waiting thread to the ready queue */
-            if (tcbEnqueuePriority (&tcbReadyQ, tcb_ptr) == ATOM_OK)
-            {
+            if (tcbEnqueuePriority (&tcbReadyQ, tcb_ptr) == ATOM_OK) {
                 /* Set OK status to be returned to the waiting thread */
                 tcb_ptr->suspend_wake_status = ATOM_OK;
 
                 /* If there's a timeout on this suspension, cancel it */
                 if ((tcb_ptr->suspend_timo_cb != NULL)
-                    && (atomTimerCancel (tcb_ptr->suspend_timo_cb) != ATOM_OK))
-                {
+                    && (atomTimerCancel (tcb_ptr->suspend_timo_cb) != ATOM_OK)) {
                     /* There was a problem cancelling a timeout */
                     status = ATOM_ERR_TIMER;
-                }
-                else
-                {
+                } else {
                     /* Flag as no timeout registered */
                     tcb_ptr->suspend_timo_cb = NULL;
 
                     /* Successful */
                     status = ATOM_OK;
                 }
-            }
-            else
-            {
+            } else {
                 /**
                  * There was a problem putting the thread on the ready
                  * queue.
                  */
                 status = ATOM_ERR_QUEUE;
             }
-        }
-        else
-        {
+        } else {
             /* There were no threads waiting to send */
             status = ATOM_OK;
         }
@@ -885,13 +816,10 @@ static uint8_t queue_insert (ATOM_QUEUE *qptr, uint8_t* msgptr)
     ATOM_TCB *tcb_ptr;
 
     /* Check parameters */
-    if ((qptr == NULL) || (msgptr == NULL))
-    {
+    if ((qptr == NULL) || (msgptr == NULL)) {
         /* Bad pointer */
         status = ATOM_ERR_PARAM;
-    }
-    else
-    {
+    } else {
         /* There is space in the queue, copy it in */
         memcpy ((qptr->buff_ptr + qptr->insert_index), msgptr, qptr->unit_size);
         qptr->insert_index += qptr->unit_size;
@@ -907,41 +835,32 @@ static uint8_t queue_insert (ATOM_QUEUE *qptr, uint8_t* msgptr)
          * threads woken up in FIFO order.
          */
         tcb_ptr = tcbDequeueHead (&qptr->getSuspQ);
-        if (tcb_ptr)
-        {
+        if (tcb_ptr) {
             /* Move the waiting thread to the ready queue */
-            if (tcbEnqueuePriority (&tcbReadyQ, tcb_ptr) == ATOM_OK)
-            {
+            if (tcbEnqueuePriority (&tcbReadyQ, tcb_ptr) == ATOM_OK) {
                 /* Set OK status to be returned to the waiting thread */
                 tcb_ptr->suspend_wake_status = ATOM_OK;
 
                 /* If there's a timeout on this suspension, cancel it */
                 if ((tcb_ptr->suspend_timo_cb != NULL)
-                    && (atomTimerCancel (tcb_ptr->suspend_timo_cb) != ATOM_OK))
-                {
+                    && (atomTimerCancel (tcb_ptr->suspend_timo_cb) != ATOM_OK)) {
                     /* There was a problem cancelling a timeout */
                     status = ATOM_ERR_TIMER;
-                }
-                else
-                {
+                } else {
                     /* Flag as no timeout registered */
                     tcb_ptr->suspend_timo_cb = NULL;
 
                     /* Successful */
                     status = ATOM_OK;
                 }
-            }
-            else
-            {
+            } else {
                 /**
                  * There was a problem putting the thread on the ready
                  * queue.
                  */
                 status = ATOM_ERR_QUEUE;
             }
-        }
-        else
-        {
+        } else {
             /* There were no threads waiting to send */
             status = ATOM_OK;
         }

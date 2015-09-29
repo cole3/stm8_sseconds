@@ -17,7 +17,7 @@
   * CODING INFORMATION CONTAINED HEREIN IN CONNECTION WITH THEIR PRODUCTS.
   *
   * <h2><center>&copy; COPYRIGHT 2011 STMicroelectronics</center></h2>
-  ******************************************************************************  
+  ******************************************************************************
   */
 
 /* Define to prevent recursive inclusion -------------------------------------*/
@@ -33,9 +33,9 @@
 
 /** @addtogroup TIM1
   * @{
-  */ 
-  
-/* Exported types ------------------------------------------------------------*/  
+  */
+
+/* Exported types ------------------------------------------------------------*/
 /** @defgroup TIM1_Exported_Types
   * @{
   */
@@ -43,191 +43,177 @@
 /** @defgroup TIM1_Output_Compare_Mode
   * @{
   */
-typedef enum
-{
-  TIM1_OCMode_Timing     = ((uint8_t)0x00),
-  TIM1_OCMode_Active     = ((uint8_t)0x10),
-  TIM1_OCMode_Inactive   = ((uint8_t)0x20),
-  TIM1_OCMode_Toggle     = ((uint8_t)0x30),
-  TIM1_OCMode_PWM1       = ((uint8_t)0x60),
-  TIM1_OCMode_PWM2       = ((uint8_t)0x70)
-}TIM1_OCMode_TypeDef;
+typedef enum {
+    TIM1_OCMode_Timing     = ((uint8_t)0x00),
+    TIM1_OCMode_Active     = ((uint8_t)0x10),
+    TIM1_OCMode_Inactive   = ((uint8_t)0x20),
+    TIM1_OCMode_Toggle     = ((uint8_t)0x30),
+    TIM1_OCMode_PWM1       = ((uint8_t)0x60),
+    TIM1_OCMode_PWM2       = ((uint8_t)0x70)
+} TIM1_OCMode_TypeDef;
 
 /**
   * @}
   */
-  
+
 /** @defgroup TIM1_One_Pulse_Mode
   * @{
   */
-typedef enum
-{
-  TIM1_OPMode_Single                 = ((uint8_t)0x01),
-  TIM1_OPMode_Repetitive             = ((uint8_t)0x00)
-}TIM1_OPMode_TypeDef;
+typedef enum {
+    TIM1_OPMode_Single                 = ((uint8_t)0x01),
+    TIM1_OPMode_Repetitive             = ((uint8_t)0x00)
+} TIM1_OPMode_TypeDef;
 
 /**
   * @}
   */
-  
+
 /** @defgroup TIM1_Channels
   * @{
   */
-typedef enum
-{
-  TIM1_Channel_1                     = ((uint8_t)0x00),
-  TIM1_Channel_2                     = ((uint8_t)0x01),
-  TIM1_Channel_3                     = ((uint8_t)0x02),
-  TIM1_Channel_4                     = ((uint8_t)0x03)
-}TIM1_Channel_TypeDef;
+typedef enum {
+    TIM1_Channel_1                     = ((uint8_t)0x00),
+    TIM1_Channel_2                     = ((uint8_t)0x01),
+    TIM1_Channel_3                     = ((uint8_t)0x02),
+    TIM1_Channel_4                     = ((uint8_t)0x03)
+} TIM1_Channel_TypeDef;
 
 /**
   * @}
   */
-  
+
 /** @defgroup TIM1_Counter_Mode
   * @{
   */
-typedef enum
-{
-  TIM1_CounterMode_Up                = ((uint8_t)0x00),
-  TIM1_CounterMode_Down              = ((uint8_t)0x10),
-  TIM1_CounterMode_CenterAligned1    = ((uint8_t)0x20),
-  TIM1_CounterMode_CenterAligned2    = ((uint8_t)0x40),
-  TIM1_CounterMode_CenterAligned3    = ((uint8_t)0x60)
-}TIM1_CounterMode_TypeDef;
+typedef enum {
+    TIM1_CounterMode_Up                = ((uint8_t)0x00),
+    TIM1_CounterMode_Down              = ((uint8_t)0x10),
+    TIM1_CounterMode_CenterAligned1    = ((uint8_t)0x20),
+    TIM1_CounterMode_CenterAligned2    = ((uint8_t)0x40),
+    TIM1_CounterMode_CenterAligned3    = ((uint8_t)0x60)
+} TIM1_CounterMode_TypeDef;
 
 /**
   * @}
   */
-  
+
 /** @defgroup TIM1_Output_Compare_Polarity
   * @{
   */
-typedef enum
-{
-  TIM1_OCPolarity_High               = ((uint8_t)0x00),
-  TIM1_OCPolarity_Low                = ((uint8_t)0x22)
-}TIM1_OCPolarity_TypeDef;
+typedef enum {
+    TIM1_OCPolarity_High               = ((uint8_t)0x00),
+    TIM1_OCPolarity_Low                = ((uint8_t)0x22)
+} TIM1_OCPolarity_TypeDef;
 
 /**
   * @}
   */
-  
+
 /** @defgroup TIM1_Output_Compare_N_Polarity
   * @{
   */
-typedef enum
-{
-  TIM1_OCNPolarity_High              = ((uint8_t)0x00),
-  TIM1_OCNPolarity_Low               = ((uint8_t)0x88)
-}TIM1_OCNPolarity_TypeDef;
+typedef enum {
+    TIM1_OCNPolarity_High              = ((uint8_t)0x00),
+    TIM1_OCNPolarity_Low               = ((uint8_t)0x88)
+} TIM1_OCNPolarity_TypeDef;
 
 /**
   * @}
   */
-  
+
 /** @defgroup TIM1_Output_State
   * @{
   */
-typedef enum
-{
-  TIM1_OutputState_Disable           = ((uint8_t)0x00),
-  TIM1_OutputState_Enable            = ((uint8_t)0x11)
-}TIM1_OutputState_TypeDef;
+typedef enum {
+    TIM1_OutputState_Disable           = ((uint8_t)0x00),
+    TIM1_OutputState_Enable            = ((uint8_t)0x11)
+} TIM1_OutputState_TypeDef;
 
 /**
   * @}
   */
-  
+
 /** @defgroup TIM1_Output_N_State
   * @{
   */
-typedef enum
-{
-  TIM1_OutputNState_Disable = ((uint8_t)0x00),
-  TIM1_OutputNState_Enable  = ((uint8_t)0x44)
+typedef enum {
+    TIM1_OutputNState_Disable = ((uint8_t)0x00),
+    TIM1_OutputNState_Enable  = ((uint8_t)0x44)
 } TIM1_OutputNState_TypeDef;
 
 /**
   * @}
   */
-  
+
 /** @defgroup TIM1_Break_State
   * @{
   */
-typedef enum
-{
-  TIM1_BreakState_Enable             = ((uint8_t)0x10),
-  TIM1_BreakState_Disable            = ((uint8_t)0x00)
-}TIM1_BreakState_TypeDef;
+typedef enum {
+    TIM1_BreakState_Enable             = ((uint8_t)0x10),
+    TIM1_BreakState_Disable            = ((uint8_t)0x00)
+} TIM1_BreakState_TypeDef;
 
 /**
   * @}
   */
-  
+
 /** @defgroup TIM1_Break_Polarity
   * @{
   */
-typedef enum
-{
-  TIM1_BreakPolarity_Low             = ((uint8_t)0x00),
-  TIM1_BreakPolarity_High            = ((uint8_t)0x20)
-}TIM1_BreakPolarity_TypeDef;
+typedef enum {
+    TIM1_BreakPolarity_Low             = ((uint8_t)0x00),
+    TIM1_BreakPolarity_High            = ((uint8_t)0x20)
+} TIM1_BreakPolarity_TypeDef;
 
 /**
   * @}
   */
-  
+
 /** @defgroup TIM1_Automatic_Output
   * @{
   */
-typedef enum
-{
-  TIM1_AutomaticOutput_Enable        = ((uint8_t)0x40),
-  TIM1_AutomaticOutput_Disable       = ((uint8_t)0x00)
-}TIM1_AutomaticOutput_TypeDef;
+typedef enum {
+    TIM1_AutomaticOutput_Enable        = ((uint8_t)0x40),
+    TIM1_AutomaticOutput_Disable       = ((uint8_t)0x00)
+} TIM1_AutomaticOutput_TypeDef;
 
 /**
   * @}
   */
-  
+
 /** @defgroup TIM1_Lock_Level
   * @{
   */
-typedef enum
-{
-  TIM1_LockLevel_Off                 = ((uint8_t)0x00),
-  TIM1_LockLevel_1                   = ((uint8_t)0x01),
-  TIM1_LockLevel_2                   = ((uint8_t)0x02),
-  TIM1_LockLevel_3                   = ((uint8_t)0x03)
-}TIM1_LockLevel_TypeDef;
+typedef enum {
+    TIM1_LockLevel_Off                 = ((uint8_t)0x00),
+    TIM1_LockLevel_1                   = ((uint8_t)0x01),
+    TIM1_LockLevel_2                   = ((uint8_t)0x02),
+    TIM1_LockLevel_3                   = ((uint8_t)0x03)
+} TIM1_LockLevel_TypeDef;
 
 /**
   * @}
   */
-  
+
 /** @defgroup TIM1_OSSI_State
   * @{
   */
-typedef enum
-{
-  TIM1_OSSIState_Enable              = ((uint8_t)0x04),
-  TIM1_OSSIState_Disable             = ((uint8_t)0x00)
-}TIM1_OSSIState_TypeDef;
+typedef enum {
+    TIM1_OSSIState_Enable              = ((uint8_t)0x04),
+    TIM1_OSSIState_Disable             = ((uint8_t)0x00)
+} TIM1_OSSIState_TypeDef;
 
 /**
   * @}
   */
-  
+
 /** @defgroup TIM1_Output_Compare_Idle_state
   * @{
   */
-typedef enum
-{
-  TIM1_OCIdleState_Set               = ((uint8_t)0x55),
-  TIM1_OCIdleState_Reset             = ((uint8_t)0x00)
-}TIM1_OCIdleState_TypeDef;
+typedef enum {
+    TIM1_OCIdleState_Set               = ((uint8_t)0x55),
+    TIM1_OCIdleState_Reset             = ((uint8_t)0x00)
+} TIM1_OCIdleState_TypeDef;
 
 /**
   * @}
@@ -236,11 +222,10 @@ typedef enum
 /** @defgroup TIM1_Output_Compare_N_Idle_state
   * @{
   */
-typedef enum
-{
-  TIM1_OCNIdleState_Set             = ((uint8_t)0x2A),
-  TIM1_OCNIdleState_Reset           = ((uint8_t)0x00)
-}TIM1_OCNIdleState_TypeDef;
+typedef enum {
+    TIM1_OCNIdleState_Set             = ((uint8_t)0x2A),
+    TIM1_OCNIdleState_Reset           = ((uint8_t)0x00)
+} TIM1_OCNIdleState_TypeDef;
 
 /**
   * @}
@@ -249,227 +234,212 @@ typedef enum
 /** @defgroup TIM1_Input_Capture_Polarity
   * @{
   */
-typedef enum
-{
-  TIM1_ICPolarity_Rising            = ((uint8_t)0x00),
-  TIM1_ICPolarity_Falling           = ((uint8_t)0x01)
-}TIM1_ICPolarity_TypeDef;
+typedef enum {
+    TIM1_ICPolarity_Rising            = ((uint8_t)0x00),
+    TIM1_ICPolarity_Falling           = ((uint8_t)0x01)
+} TIM1_ICPolarity_TypeDef;
 
 /**
   * @}
   */
-  
+
 /** @defgroup TIM1_Input_Capture_Selection
   * @{
   */
-typedef enum
-{
-  TIM1_ICSelection_DirectTI          = ((uint8_t)0x01),
-  TIM1_ICSelection_IndirectTI        = ((uint8_t)0x02),
-  TIM1_ICSelection_TRGI              = ((uint8_t)0x03)
-}TIM1_ICSelection_TypeDef;
+typedef enum {
+    TIM1_ICSelection_DirectTI          = ((uint8_t)0x01),
+    TIM1_ICSelection_IndirectTI        = ((uint8_t)0x02),
+    TIM1_ICSelection_TRGI              = ((uint8_t)0x03)
+} TIM1_ICSelection_TypeDef;
 
 /**
   * @}
   */
-  
+
 /** @defgroup TIM1_Input_Capture_Prescaler
   * @{
   */
-typedef enum
-{
-  TIM1_ICPSC_DIV1                    = ((uint8_t)0x00),
-  TIM1_ICPSC_DIV2                    = ((uint8_t)0x04),
-  TIM1_ICPSC_DIV4                    = ((uint8_t)0x08),
-  TIM1_ICPSC_DIV8                    = ((uint8_t)0x0C)
-}TIM1_ICPSC_TypeDef;
+typedef enum {
+    TIM1_ICPSC_DIV1                    = ((uint8_t)0x00),
+    TIM1_ICPSC_DIV2                    = ((uint8_t)0x04),
+    TIM1_ICPSC_DIV4                    = ((uint8_t)0x08),
+    TIM1_ICPSC_DIV8                    = ((uint8_t)0x0C)
+} TIM1_ICPSC_TypeDef;
 
 /**
   * @}
   */
-  
+
 /** @defgroup TIM1_Output_Compare_Reference_Clear
   * @{
   */
-typedef enum
-{
-  TIM1_OCReferenceClear_ETRF       = ((uint8_t)0x08),
-  TIM1_OCReferenceClear_OCREFCLR   = ((uint8_t)0x00)
+typedef enum {
+    TIM1_OCReferenceClear_ETRF       = ((uint8_t)0x08),
+    TIM1_OCReferenceClear_OCREFCLR   = ((uint8_t)0x00)
 }
 TIM1_OCReferenceClear_TypeDef;
 
 /**
   * @}
   */
-  
+
 /** @defgroup TIM1_Interrupts
   * @{
   */
-typedef enum
-{
-  TIM1_IT_Update                     = ((uint8_t)0x01),
-  TIM1_IT_CC1                        = ((uint8_t)0x02),
-  TIM1_IT_CC2                        = ((uint8_t)0x04),
-  TIM1_IT_CC3                        = ((uint8_t)0x08),
-  TIM1_IT_CC4                        = ((uint8_t)0x10),
-  TIM1_IT_COM                        = ((uint8_t)0x20),
-  TIM1_IT_Trigger                    = ((uint8_t)0x40),
-  TIM1_IT_Break                      = ((uint8_t)0x80)
-}TIM1_IT_TypeDef;
+typedef enum {
+    TIM1_IT_Update                     = ((uint8_t)0x01),
+    TIM1_IT_CC1                        = ((uint8_t)0x02),
+    TIM1_IT_CC2                        = ((uint8_t)0x04),
+    TIM1_IT_CC3                        = ((uint8_t)0x08),
+    TIM1_IT_CC4                        = ((uint8_t)0x10),
+    TIM1_IT_COM                        = ((uint8_t)0x20),
+    TIM1_IT_Trigger                    = ((uint8_t)0x40),
+    TIM1_IT_Break                      = ((uint8_t)0x80)
+} TIM1_IT_TypeDef;
 
 /**
   * @}
   */
-  
+
 /** @defgroup TIM1_External_Trigger_Prescaler
   * @{
   */
-typedef enum
-{
-  TIM1_ExtTRGPSC_OFF                 = ((uint8_t)0x00),
-  TIM1_ExtTRGPSC_DIV2                = ((uint8_t)0x10),
-  TIM1_ExtTRGPSC_DIV4                = ((uint8_t)0x20),
-  TIM1_ExtTRGPSC_DIV8                = ((uint8_t)0x30)
-}TIM1_ExtTRGPSC_TypeDef;
+typedef enum {
+    TIM1_ExtTRGPSC_OFF                 = ((uint8_t)0x00),
+    TIM1_ExtTRGPSC_DIV2                = ((uint8_t)0x10),
+    TIM1_ExtTRGPSC_DIV4                = ((uint8_t)0x20),
+    TIM1_ExtTRGPSC_DIV8                = ((uint8_t)0x30)
+} TIM1_ExtTRGPSC_TypeDef;
 
 /**
   * @}
   */
-  
+
 /** @defgroup TIM1_Internal_Trigger_Selection
   * @{
   */
-typedef enum
-{
-  TIM1_TRGSelection_TIM4             = ((uint8_t)0x00),  /*!< TRIG Input source =  TIM TRIG Output  */
-  TIM1_TRGSelection_TIM5             = ((uint8_t)0x10),  /*!< TRIG Input source =  TIM TRIG Output  */
-  TIM1_TRGSelection_TIM3             = ((uint8_t)0x20),  /*!< TRIG Input source =  TIM TRIG Output  */
-  TIM1_TRGSelection_TIM2             = ((uint8_t)0x30),  /*!< TRIG Input source =  TIM TRIG Output  */
-  TIM1_TRGSelection_TI1F_ED          = ((uint8_t)0x40),
-  TIM1_TRGSelection_TI1FP1           = ((uint8_t)0x50),
-  TIM1_TRGSelection_TI2FP2           = ((uint8_t)0x60),
-  TIM1_TRGSelection_ETRF             = ((uint8_t)0x70)
-}TIM1_TRGSelection_TypeDef;
+typedef enum {
+    TIM1_TRGSelection_TIM4             = ((uint8_t)0x00),  /*!< TRIG Input source =  TIM TRIG Output  */
+    TIM1_TRGSelection_TIM5             = ((uint8_t)0x10),  /*!< TRIG Input source =  TIM TRIG Output  */
+    TIM1_TRGSelection_TIM3             = ((uint8_t)0x20),  /*!< TRIG Input source =  TIM TRIG Output  */
+    TIM1_TRGSelection_TIM2             = ((uint8_t)0x30),  /*!< TRIG Input source =  TIM TRIG Output  */
+    TIM1_TRGSelection_TI1F_ED          = ((uint8_t)0x40),
+    TIM1_TRGSelection_TI1FP1           = ((uint8_t)0x50),
+    TIM1_TRGSelection_TI2FP2           = ((uint8_t)0x60),
+    TIM1_TRGSelection_ETRF             = ((uint8_t)0x70)
+} TIM1_TRGSelection_TypeDef;
 
 /**
   * @}
   */
-  
+
 /** @defgroup TIM1_TI_External_Clock_Source
   * @{
   */
-typedef enum
-{
-  TIM1_TIxExternalCLK1Source_TI1ED   = ((uint8_t)0x40),
-  TIM1_TIxExternalCLK1Source_TI1     = ((uint8_t)0x50),
-  TIM1_TIxExternalCLK1Source_TI2     = ((uint8_t)0x60)
-}TIM1_TIxExternalCLK1Source_TypeDef;
+typedef enum {
+    TIM1_TIxExternalCLK1Source_TI1ED   = ((uint8_t)0x40),
+    TIM1_TIxExternalCLK1Source_TI1     = ((uint8_t)0x50),
+    TIM1_TIxExternalCLK1Source_TI2     = ((uint8_t)0x60)
+} TIM1_TIxExternalCLK1Source_TypeDef;
 
 /**
   * @}
   */
-  
+
 /** @defgroup TIM1_External_Trigger_Polarity
   * @{
   */
-typedef enum
-{
-  TIM1_ExtTRGPolarity_Inverted       = ((uint8_t)0x80),
-  TIM1_ExtTRGPolarity_NonInverted    = ((uint8_t)0x00)
-}TIM1_ExtTRGPolarity_TypeDef;
+typedef enum {
+    TIM1_ExtTRGPolarity_Inverted       = ((uint8_t)0x80),
+    TIM1_ExtTRGPolarity_NonInverted    = ((uint8_t)0x00)
+} TIM1_ExtTRGPolarity_TypeDef;
 
 /**
   * @}
   */
-  
+
 /** @defgroup TIM1_Prescaler_Reload_Mode
   * @{
   */
-typedef enum
-{
-  TIM1_PSCReloadMode_Update          = ((uint8_t)0x00),
-  TIM1_PSCReloadMode_Immediate       = ((uint8_t)0x01)
-}TIM1_PSCReloadMode_TypeDef;
+typedef enum {
+    TIM1_PSCReloadMode_Update          = ((uint8_t)0x00),
+    TIM1_PSCReloadMode_Immediate       = ((uint8_t)0x01)
+} TIM1_PSCReloadMode_TypeDef;
 
 /**
   * @}
   */
-  
+
 /** @defgroup TIM1_Encoder_Mode
   * @{
   */
-typedef enum
-{
-  TIM1_EncoderMode_TI1               = ((uint8_t)0x01),
-  TIM1_EncoderMode_TI2               = ((uint8_t)0x02),
-  TIM1_EncoderMode_TI12              = ((uint8_t)0x03)
-}TIM1_EncoderMode_TypeDef;
+typedef enum {
+    TIM1_EncoderMode_TI1               = ((uint8_t)0x01),
+    TIM1_EncoderMode_TI2               = ((uint8_t)0x02),
+    TIM1_EncoderMode_TI12              = ((uint8_t)0x03)
+} TIM1_EncoderMode_TypeDef;
 
 /**
   * @}
   */
-  
+
 /** @defgroup TIM1_Event_Source
   * @{
   */
-typedef enum
-{
-  TIM1_EventSource_Update            = ((uint8_t)0x01),
-  TIM1_EventSource_CC1               = ((uint8_t)0x02),
-  TIM1_EventSource_CC2               = ((uint8_t)0x04),
-  TIM1_EventSource_CC3               = ((uint8_t)0x08),
-  TIM1_EventSource_CC4               = ((uint8_t)0x10),
-  TIM1_EventSource_COM               = ((uint8_t)0x20),
-  TIM1_EventSource_Trigger           = ((uint8_t)0x40),
-  TIM1_EventSource_Break             = ((uint8_t)0x80)
-}TIM1_EventSource_TypeDef;
+typedef enum {
+    TIM1_EventSource_Update            = ((uint8_t)0x01),
+    TIM1_EventSource_CC1               = ((uint8_t)0x02),
+    TIM1_EventSource_CC2               = ((uint8_t)0x04),
+    TIM1_EventSource_CC3               = ((uint8_t)0x08),
+    TIM1_EventSource_CC4               = ((uint8_t)0x10),
+    TIM1_EventSource_COM               = ((uint8_t)0x20),
+    TIM1_EventSource_Trigger           = ((uint8_t)0x40),
+    TIM1_EventSource_Break             = ((uint8_t)0x80)
+} TIM1_EventSource_TypeDef;
 
 /**
   * @}
   */
-  
+
 /** @defgroup TIM1_Update_Source
   * @{
   */
-typedef enum
-{
-  TIM1_UpdateSource_Global           = ((uint8_t)0x00),
-  TIM1_UpdateSource_Regular          = ((uint8_t)0x01)
-}TIM1_UpdateSource_TypeDef;
+typedef enum {
+    TIM1_UpdateSource_Global           = ((uint8_t)0x00),
+    TIM1_UpdateSource_Regular          = ((uint8_t)0x01)
+} TIM1_UpdateSource_TypeDef;
 
 /**
   * @}
   */
-  
+
 /** @defgroup TIM1_Trigger_Output_Source
   * @{
   */
-typedef enum
-{
-  TIM1_TRGOSource_Reset              = ((uint8_t)0x00),
-  TIM1_TRGOSource_Enable             = ((uint8_t)0x10),
-  TIM1_TRGOSource_Update             = ((uint8_t)0x20),
-  TIM1_TRGOSource_OC1                = ((uint8_t)0x30),
-  TIM1_TRGOSource_OC1REF             = ((uint8_t)0x40),
-  TIM1_TRGOSource_OC2REF             = ((uint8_t)0x50),
-  TIM1_TRGOSource_OC3REF             = ((uint8_t)0x60),
-  TIM1_TRGOSource_OC4REF             = ((uint8_t)0x70)
-}TIM1_TRGOSource_TypeDef;
+typedef enum {
+    TIM1_TRGOSource_Reset              = ((uint8_t)0x00),
+    TIM1_TRGOSource_Enable             = ((uint8_t)0x10),
+    TIM1_TRGOSource_Update             = ((uint8_t)0x20),
+    TIM1_TRGOSource_OC1                = ((uint8_t)0x30),
+    TIM1_TRGOSource_OC1REF             = ((uint8_t)0x40),
+    TIM1_TRGOSource_OC2REF             = ((uint8_t)0x50),
+    TIM1_TRGOSource_OC3REF             = ((uint8_t)0x60),
+    TIM1_TRGOSource_OC4REF             = ((uint8_t)0x70)
+} TIM1_TRGOSource_TypeDef;
 
 /**
   * @}
   */
-  
+
 /** @defgroup TIM1_Slave_Mode
   * @{
   */
-typedef enum
-{
-  TIM1_SlaveMode_Reset               = ((uint8_t)0x04),
-  TIM1_SlaveMode_Gated               = ((uint8_t)0x05),
-  TIM1_SlaveMode_Trigger             = ((uint8_t)0x06),
-  TIM1_SlaveMode_External1           = ((uint8_t)0x07)
-}TIM1_SlaveMode_TypeDef;
+typedef enum {
+    TIM1_SlaveMode_Reset               = ((uint8_t)0x04),
+    TIM1_SlaveMode_Gated               = ((uint8_t)0x05),
+    TIM1_SlaveMode_Trigger             = ((uint8_t)0x06),
+    TIM1_SlaveMode_External1           = ((uint8_t)0x07)
+} TIM1_SlaveMode_TypeDef;
 
 /**
   * @}
@@ -478,144 +448,139 @@ typedef enum
 /** @defgroup TIM1_Flags
   * @{
   */
-typedef enum
-{
-  TIM1_FLAG_Update                   = ((uint16_t)0x0001),
-  TIM1_FLAG_CC1                      = ((uint16_t)0x0002),
-  TIM1_FLAG_CC2                      = ((uint16_t)0x0004),
-  TIM1_FLAG_CC3                      = ((uint16_t)0x0008),
-  TIM1_FLAG_CC4                      = ((uint16_t)0x0010),
-  TIM1_FLAG_COM                      = ((uint16_t)0x0020),
-  TIM1_FLAG_Trigger                  = ((uint16_t)0x0040),
-  TIM1_FLAG_Break                    = ((uint16_t)0x0080),
-  TIM1_FLAG_CC1OF                    = ((uint16_t)0x0200),
-  TIM1_FLAG_CC2OF                    = ((uint16_t)0x0400),
-  TIM1_FLAG_CC3OF                    = ((uint16_t)0x0800),
-  TIM1_FLAG_CC4OF                    = ((uint16_t)0x1000)
-}TIM1_FLAG_TypeDef;
+typedef enum {
+    TIM1_FLAG_Update                   = ((uint16_t)0x0001),
+    TIM1_FLAG_CC1                      = ((uint16_t)0x0002),
+    TIM1_FLAG_CC2                      = ((uint16_t)0x0004),
+    TIM1_FLAG_CC3                      = ((uint16_t)0x0008),
+    TIM1_FLAG_CC4                      = ((uint16_t)0x0010),
+    TIM1_FLAG_COM                      = ((uint16_t)0x0020),
+    TIM1_FLAG_Trigger                  = ((uint16_t)0x0040),
+    TIM1_FLAG_Break                    = ((uint16_t)0x0080),
+    TIM1_FLAG_CC1OF                    = ((uint16_t)0x0200),
+    TIM1_FLAG_CC2OF                    = ((uint16_t)0x0400),
+    TIM1_FLAG_CC3OF                    = ((uint16_t)0x0800),
+    TIM1_FLAG_CC4OF                    = ((uint16_t)0x1000)
+} TIM1_FLAG_TypeDef;
 
 /**
   * @}
   */
-  
+
 /** @defgroup TIM1_Forced_Action
   * @{
   */
-typedef enum
-{
-  TIM1_ForcedAction_Active           = ((uint8_t)0x50),
-  TIM1_ForcedAction_Inactive         = ((uint8_t)0x40)
-}TIM1_ForcedAction_TypeDef;
+typedef enum {
+    TIM1_ForcedAction_Active           = ((uint8_t)0x50),
+    TIM1_ForcedAction_Inactive         = ((uint8_t)0x40)
+} TIM1_ForcedAction_TypeDef;
 
 /**
   * @}
   */
-  
+
 /** @defgroup TIM1_DMA_Source_Requests
   * @{
   */
-typedef enum
-{
-  TIM1_DMASource_Update     = ((uint8_t)0x01),  /*!< TIM1 DMA Update Request*/
-  TIM1_DMASource_CC1        = ((uint8_t)0x02),  /*!< TIM1 DMA CC1 Request*/
-  TIM1_DMASource_CC2        = ((uint8_t)0x04),  /*!< TIM1 DMA CC2 Request*/
-  TIM1_DMASource_CC3        = ((uint8_t)0x08),  /*!< TIM1 DMA CC3 Request*/
-  TIM1_DMASource_CC4        = ((uint8_t)0x10),  /*!< TIM1 DMA CC4 Request*/
-  TIM1_DMASource_COM        = ((uint8_t)0x20)  /*!< TIM1 DMA COM Req */
+typedef enum {
+    TIM1_DMASource_Update     = ((uint8_t)0x01),  /*!< TIM1 DMA Update Request*/
+    TIM1_DMASource_CC1        = ((uint8_t)0x02),  /*!< TIM1 DMA CC1 Request*/
+    TIM1_DMASource_CC2        = ((uint8_t)0x04),  /*!< TIM1 DMA CC2 Request*/
+    TIM1_DMASource_CC3        = ((uint8_t)0x08),  /*!< TIM1 DMA CC3 Request*/
+    TIM1_DMASource_CC4        = ((uint8_t)0x10),  /*!< TIM1 DMA CC4 Request*/
+    TIM1_DMASource_COM        = ((uint8_t)0x20)  /*!< TIM1 DMA COM Req */
 } TIM1_DMASource_TypeDef;
 
 /**
   * @}
   */
-  
+
 /** @defgroup TIM1_DMA_Base_Address
   * @{
   */
-typedef enum
-{
-  TIM1_DMABase_CR1      = ((uint8_t)0x00),
-  TIM1_DMABase_CR2      = ((uint8_t)0x01),
-  TIM1_DMABase_SMCR     = ((uint8_t)0x02),
-  TIM1_DMABase_ETR      = ((uint8_t)0x03),
-  TIM1_DMABase_DER      = ((uint8_t)0x04),
-  TIM1_DMABase_IER      = ((uint8_t)0x05),
-  TIM1_DMABase_SR1      = ((uint8_t)0x06),
-  TIM1_DMABase_SR2      = ((uint8_t)0x07),
-  TIM1_DMABase_EGR      = ((uint8_t)0x08),
-  TIM1_DMABase_CCMR1    = ((uint8_t)0x09),
-  TIM1_DMABase_CCMR2    = ((uint8_t)0x0A),
-  TIM1_DMABase_CCMR3    = ((uint8_t)0x0B),
-  TIM1_DMABase_CCMR4    = ((uint8_t)0x0C),
-  TIM1_DMABase_CCER1    = ((uint8_t)0x0D),
-  TIM1_DMABase_CCER2    = ((uint8_t)0x0E),
-  TIM1_DMABase_CNTH     = ((uint8_t)0x0F),
-  TIM1_DMABase_CNTL     = ((uint8_t)0x10),
-  TIM1_DMABase_PSCH     = ((uint8_t)0x11),
-  TIM1_DMABase_PSCL     = ((uint8_t)0x12),
-  TIM1_DMABase_ARRH     = ((uint8_t)0x13),
-  TIM1_DMABase_ARRL     = ((uint8_t)0x14),
-  TIM1_DMABase_RCR      = ((uint8_t)0x15),
-  TIM1_DMABase_CCR1H    = ((uint8_t)0x16),
-  TIM1_DMABase_CCR1L    = ((uint8_t)0x17),
-  TIM1_DMABase_CCR2H    = ((uint8_t)0x18),
-  TIM1_DMABase_CCR2L    = ((uint8_t)0x19),
-  TIM1_DMABase_CCR3H    = ((uint8_t)0x1A),
-  TIM1_DMABase_CCR3L    = ((uint8_t)0x1B),
-  TIM1_DMABase_CCR4H    = ((uint8_t)0x1C),
-  TIM1_DMABase_CCR4L    = ((uint8_t)0x1D),
-  TIM1_DMABase_BKR      = ((uint8_t)0x1E),
-  TIM1_DMABase_DTR      = ((uint8_t)0x1F)
+typedef enum {
+    TIM1_DMABase_CR1      = ((uint8_t)0x00),
+    TIM1_DMABase_CR2      = ((uint8_t)0x01),
+    TIM1_DMABase_SMCR     = ((uint8_t)0x02),
+    TIM1_DMABase_ETR      = ((uint8_t)0x03),
+    TIM1_DMABase_DER      = ((uint8_t)0x04),
+    TIM1_DMABase_IER      = ((uint8_t)0x05),
+    TIM1_DMABase_SR1      = ((uint8_t)0x06),
+    TIM1_DMABase_SR2      = ((uint8_t)0x07),
+    TIM1_DMABase_EGR      = ((uint8_t)0x08),
+    TIM1_DMABase_CCMR1    = ((uint8_t)0x09),
+    TIM1_DMABase_CCMR2    = ((uint8_t)0x0A),
+    TIM1_DMABase_CCMR3    = ((uint8_t)0x0B),
+    TIM1_DMABase_CCMR4    = ((uint8_t)0x0C),
+    TIM1_DMABase_CCER1    = ((uint8_t)0x0D),
+    TIM1_DMABase_CCER2    = ((uint8_t)0x0E),
+    TIM1_DMABase_CNTH     = ((uint8_t)0x0F),
+    TIM1_DMABase_CNTL     = ((uint8_t)0x10),
+    TIM1_DMABase_PSCH     = ((uint8_t)0x11),
+    TIM1_DMABase_PSCL     = ((uint8_t)0x12),
+    TIM1_DMABase_ARRH     = ((uint8_t)0x13),
+    TIM1_DMABase_ARRL     = ((uint8_t)0x14),
+    TIM1_DMABase_RCR      = ((uint8_t)0x15),
+    TIM1_DMABase_CCR1H    = ((uint8_t)0x16),
+    TIM1_DMABase_CCR1L    = ((uint8_t)0x17),
+    TIM1_DMABase_CCR2H    = ((uint8_t)0x18),
+    TIM1_DMABase_CCR2L    = ((uint8_t)0x19),
+    TIM1_DMABase_CCR3H    = ((uint8_t)0x1A),
+    TIM1_DMABase_CCR3L    = ((uint8_t)0x1B),
+    TIM1_DMABase_CCR4H    = ((uint8_t)0x1C),
+    TIM1_DMABase_CCR4L    = ((uint8_t)0x1D),
+    TIM1_DMABase_BKR      = ((uint8_t)0x1E),
+    TIM1_DMABase_DTR      = ((uint8_t)0x1F)
 
 } TIM1_DMABase_TypeDef;
 
 /**
   * @}
   */
-  
+
 /** @defgroup TIM1_DMA_Burst_Length
   * @{
   */
-typedef enum
-{
-  TIM1_DMABurstLength_1Byte      = ((uint8_t)0x00),
-  TIM1_DMABurstLength_2Byte      = ((uint8_t)0x01),
-  TIM1_DMABurstLength_3Byte      = ((uint8_t)0x02),
-  TIM1_DMABurstLength_4Byte      = ((uint8_t)0x03),
-  TIM1_DMABurstLength_5Byte      = ((uint8_t)0x04),
-  TIM1_DMABurstLength_6Byte      = ((uint8_t)0x05),
-  TIM1_DMABurstLength_7Byte      = ((uint8_t)0x06),
-  TIM1_DMABurstLength_8Byte      = ((uint8_t)0x07),
-  TIM1_DMABurstLength_9Byte      = ((uint8_t)0x08),
-  TIM1_DMABurstLength_10Byte     = ((uint8_t)0x09),
-  TIM1_DMABurstLength_11Byte     = ((uint8_t)0x0A),
-  TIM1_DMABurstLength_12Byte     = ((uint8_t)0x0B),
-  TIM1_DMABurstLength_13Byte     = ((uint8_t)0x0C),
-  TIM1_DMABurstLength_14Byte     = ((uint8_t)0x0D),
-  TIM1_DMABurstLength_15Byte     = ((uint8_t)0x0E),
-  TIM1_DMABurstLength_16Byte     = ((uint8_t)0x0F),
-  TIM1_DMABurstLength_17Byte     = ((uint8_t)0x10),
-  TIM1_DMABurstLength_18Byte     = ((uint8_t)0x11),
-  TIM1_DMABurstLength_19Byte     = ((uint8_t)0x12),
-  TIM1_DMABurstLength_20Byte     = ((uint8_t)0x13),
-  TIM1_DMABurstLength_21Byte     = ((uint8_t)0x14),
-  TIM1_DMABurstLength_22Byte     = ((uint8_t)0x15),
-  TIM1_DMABurstLength_23Byte     = ((uint8_t)0x16),
-  TIM1_DMABurstLength_24Byte     = ((uint8_t)0x17),
-  TIM1_DMABurstLength_25Byte     = ((uint8_t)0x18),
-  TIM1_DMABurstLength_26Byte     = ((uint8_t)0x19),
-  TIM1_DMABurstLength_27Byte     = ((uint8_t)0x1A),
-  TIM1_DMABurstLength_28Byte     = ((uint8_t)0x1B),
-  TIM1_DMABurstLength_29Byte     = ((uint8_t)0x1C),
-  TIM1_DMABurstLength_30Byte     = ((uint8_t)0x1D),
-  TIM1_DMABurstLength_31Byte     = ((uint8_t)0x1E),
-  TIM1_DMABurstLength_32Byte     = ((uint8_t)0x1F)
+typedef enum {
+    TIM1_DMABurstLength_1Byte      = ((uint8_t)0x00),
+    TIM1_DMABurstLength_2Byte      = ((uint8_t)0x01),
+    TIM1_DMABurstLength_3Byte      = ((uint8_t)0x02),
+    TIM1_DMABurstLength_4Byte      = ((uint8_t)0x03),
+    TIM1_DMABurstLength_5Byte      = ((uint8_t)0x04),
+    TIM1_DMABurstLength_6Byte      = ((uint8_t)0x05),
+    TIM1_DMABurstLength_7Byte      = ((uint8_t)0x06),
+    TIM1_DMABurstLength_8Byte      = ((uint8_t)0x07),
+    TIM1_DMABurstLength_9Byte      = ((uint8_t)0x08),
+    TIM1_DMABurstLength_10Byte     = ((uint8_t)0x09),
+    TIM1_DMABurstLength_11Byte     = ((uint8_t)0x0A),
+    TIM1_DMABurstLength_12Byte     = ((uint8_t)0x0B),
+    TIM1_DMABurstLength_13Byte     = ((uint8_t)0x0C),
+    TIM1_DMABurstLength_14Byte     = ((uint8_t)0x0D),
+    TIM1_DMABurstLength_15Byte     = ((uint8_t)0x0E),
+    TIM1_DMABurstLength_16Byte     = ((uint8_t)0x0F),
+    TIM1_DMABurstLength_17Byte     = ((uint8_t)0x10),
+    TIM1_DMABurstLength_18Byte     = ((uint8_t)0x11),
+    TIM1_DMABurstLength_19Byte     = ((uint8_t)0x12),
+    TIM1_DMABurstLength_20Byte     = ((uint8_t)0x13),
+    TIM1_DMABurstLength_21Byte     = ((uint8_t)0x14),
+    TIM1_DMABurstLength_22Byte     = ((uint8_t)0x15),
+    TIM1_DMABurstLength_23Byte     = ((uint8_t)0x16),
+    TIM1_DMABurstLength_24Byte     = ((uint8_t)0x17),
+    TIM1_DMABurstLength_25Byte     = ((uint8_t)0x18),
+    TIM1_DMABurstLength_26Byte     = ((uint8_t)0x19),
+    TIM1_DMABurstLength_27Byte     = ((uint8_t)0x1A),
+    TIM1_DMABurstLength_28Byte     = ((uint8_t)0x1B),
+    TIM1_DMABurstLength_29Byte     = ((uint8_t)0x1C),
+    TIM1_DMABurstLength_30Byte     = ((uint8_t)0x1D),
+    TIM1_DMABurstLength_31Byte     = ((uint8_t)0x1E),
+    TIM1_DMABurstLength_32Byte     = ((uint8_t)0x1F)
 
 } TIM1_DMABurstLength_TypeDef;
 
 /**
   * @}
   */
-  
+
 /**
   * @}
   */
@@ -1009,7 +974,7 @@ void TIM1_ETRClockMode1Config(TIM1_ExtTRGPSC_TypeDef TIM1_ExtTRGPrescaler,
 void TIM1_ETRClockMode2Config(TIM1_ExtTRGPSC_TypeDef TIM1_ExtTRGPrescaler,
                               TIM1_ExtTRGPolarity_TypeDef TIM1_ExtTRGPolarity,
                               uint8_t ExtTRGFilter);
-                              
+
 /* Synchronization management *************************************************/
 void TIM1_SelectInputTrigger(TIM1_TRGSelection_TypeDef TIM1_InputTriggerSource);
 void TIM1_SelectOutputTrigger(TIM1_TRGOSource_TypeDef TIM1_TRGOSource);
@@ -1030,7 +995,7 @@ void TIM1_SelectHallSensor(FunctionalState NewState);
 /**
   * @}
   */
-  
+
 /**
   * @}
   */

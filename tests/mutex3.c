@@ -90,27 +90,23 @@ uint32_t test_start (void)
     failures = 0;
 
     /* Create mutex */
-    if (atomMutexCreate (&mutex1) != ATOM_OK)
-    {
+    if (atomMutexCreate (&mutex1) != ATOM_OK) {
         ATOMLOG (_STR("Error creating test mutex 1\n"));
         failures++;
     }
 
     /* Take ownership of the mutex so all threads will block to begin with */
-    else if (atomMutexGet (&mutex1, 0) != ATOM_OK)
-    {
+    else if (atomMutexGet (&mutex1, 0) != ATOM_OK) {
         ATOMLOG (_STR("Get error\n"));
         failures++;
     }
 
     /* Start the threads */
-    else
-    {
+    else {
         /* Create Thread 1 (lower priority thread A) */
         if (atomThreadCreate(&tcb[0], TEST_THREAD_PRIO+1, test_thread_func, 1,
-              &test_thread_stack[0][TEST_THREAD_STACK_SIZE - 1],
-              TEST_THREAD_STACK_SIZE) != ATOM_OK)
-        {
+                             &test_thread_stack[0][TEST_THREAD_STACK_SIZE - 1],
+                             TEST_THREAD_STACK_SIZE) != ATOM_OK) {
             /* Fail */
             ATOMLOG (_STR("Error creating test thread\n"));
             failures++;
@@ -121,9 +117,8 @@ uint32_t test_start (void)
 
         /* Create Thread 2 (lower priority thread B) */
         if (atomThreadCreate(&tcb[1], TEST_THREAD_PRIO+1, test_thread_func, 2,
-              &test_thread_stack[1][TEST_THREAD_STACK_SIZE - 1],
-              TEST_THREAD_STACK_SIZE) != ATOM_OK)
-        {
+                             &test_thread_stack[1][TEST_THREAD_STACK_SIZE - 1],
+                             TEST_THREAD_STACK_SIZE) != ATOM_OK) {
             /* Fail */
             ATOMLOG (_STR("Error creating test thread\n"));
             failures++;
@@ -134,9 +129,8 @@ uint32_t test_start (void)
 
         /* Create Thread 3 (higher priority thread A) */
         if (atomThreadCreate(&tcb[2], TEST_THREAD_PRIO, test_thread_func, 3,
-              &test_thread_stack[2][TEST_THREAD_STACK_SIZE - 1],
-              TEST_THREAD_STACK_SIZE) != ATOM_OK)
-        {
+                             &test_thread_stack[2][TEST_THREAD_STACK_SIZE - 1],
+                             TEST_THREAD_STACK_SIZE) != ATOM_OK) {
             /* Fail */
             ATOMLOG (_STR("Error creating test thread\n"));
             failures++;
@@ -147,9 +141,8 @@ uint32_t test_start (void)
 
         /* Create Thread 4 (higher priority thread B) */
         if (atomThreadCreate(&tcb[3], TEST_THREAD_PRIO, test_thread_func, 4,
-              &test_thread_stack[3][TEST_THREAD_STACK_SIZE - 1],
-              TEST_THREAD_STACK_SIZE) != ATOM_OK)
-        {
+                             &test_thread_stack[3][TEST_THREAD_STACK_SIZE - 1],
+                             TEST_THREAD_STACK_SIZE) != ATOM_OK) {
             /* Fail */
             ATOMLOG (_STR("Error creating test thread\n"));
             failures++;
@@ -174,8 +167,7 @@ uint32_t test_start (void)
          * four test threads have taken and released the mutex, noting their
          * wake order.
          */
-        if (atomMutexPut (&mutex1) != ATOM_OK)
-        {
+        if (atomMutexPut (&mutex1) != ATOM_OK) {
             ATOMLOG (_STR("Post fail\n"));
             failures++;
         }
@@ -185,16 +177,14 @@ uint32_t test_start (void)
 
         /* All four threads now woken up, check they woke in correct order */
         if ((wake_order[0] != 3) && (wake_order[1] != 4)
-            && (wake_order[2] != 1) && (wake_order[3] != 2))
-        {
+            && (wake_order[2] != 1) && (wake_order[3] != 2)) {
             ATOMLOG (_STR("Bad order %d,%d,%d,%d\n"),
-                wake_order[0], wake_order[1], wake_order[2], wake_order[3]);
+                     wake_order[0], wake_order[1], wake_order[2], wake_order[3]);
             failures++;
         }
 
         /* Delete mutex, test finished */
-        if (atomMutexDelete (&mutex1) != ATOM_OK)
-        {
+        if (atomMutexDelete (&mutex1) != ATOM_OK) {
             ATOMLOG (_STR("Delete failed\n"));
             failures++;
         }
@@ -207,19 +197,14 @@ uint32_t test_start (void)
         int thread;
 
         /* Check all threads */
-        for (thread = 0; thread < NUM_TEST_THREADS; thread++)
-        {
+        for (thread = 0; thread < NUM_TEST_THREADS; thread++) {
             /* Check thread stack usage */
-            if (atomThreadStackCheck (&tcb[thread], &used_bytes, &free_bytes) != ATOM_OK)
-            {
+            if (atomThreadStackCheck (&tcb[thread], &used_bytes, &free_bytes) != ATOM_OK) {
                 ATOMLOG (_STR("StackCheck\n"));
                 failures++;
-            }
-            else
-            {
+            } else {
                 /* Check the thread did not use up to the end of stack */
-                if (free_bytes == 0)
-                {
+                if (free_bytes == 0) {
                     ATOMLOG (_STR("StackOverflow %d\n"), thread);
                     failures++;
                 }
@@ -261,12 +246,9 @@ static void test_thread_func (uint32_t param)
      * Wait for mutex1 to be posted. At creation of all test threads the mutex
      * is owned by the parent thread, so all four threads will block here.
      */
-    if (atomMutexGet (&mutex1, 0) != ATOM_OK)
-    {
+    if (atomMutexGet (&mutex1, 0) != ATOM_OK) {
         ATOMLOG (_STR("Get fail\n"));
-    }
-    else
-    {
+    } else {
         /*
          * Store our thread ID in the array using the current
          * wake_cnt order. The threads are holding ownership
@@ -276,16 +258,14 @@ static void test_thread_func (uint32_t param)
         wake_order[wake_cnt++] = thread_id;
 
         /* Release the mutex so that the next thread wakes up */
-        if (atomMutexPut (&mutex1) != ATOM_OK)
-        {
+        if (atomMutexPut (&mutex1) != ATOM_OK) {
             ATOMLOG (_STR("Put fail\n"));
         }
 
     }
 
     /* Loop forever */
-    while (1)
-    {
+    while (1) {
         atomTimerDelay (SYSTEM_TICKS_PER_SEC);
     }
 }

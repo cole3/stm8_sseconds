@@ -4,7 +4,7 @@
   * @author  MCD Application Team
   * @version V1.5.0
   * @date    13-May-2011
-  * @brief   This file provides firmware functions to manage the following 
+  * @brief   This file provides firmware functions to manage the following
   *          functionalities of the TIM4 peripheral:
   *            - TimeBase management
   *            - Interrupts, DMA and flags management
@@ -12,43 +12,43 @@
   *            - Synchronization management
   *
   *  @verbatim
-  *  
+  *
   *          ===================================================================
   *                                 How to use this driver
   *          ===================================================================
-  *          This driver provides functions to configure and initialise the TIM4 
+  *          This driver provides functions to configure and initialise the TIM4
   *          peripheral
-  *          These functions are split in 4 groups: 
-  *   
-  *          1. TIM4 TimeBase management: this group includes all needed functions 
+  *          These functions are split in 4 groups:
+  *
+  *          1. TIM4 TimeBase management: this group includes all needed functions
   *             to configure the TIM Timebase unit:
   *                   - Set/Get Prescaler
-  *                   - Set/Get Autoreload  
+  *                   - Set/Get Autoreload
   *                   - Select the One Pulse mode
   *                   - Update Request Configuration
   *                   - Update Disable Configuration
-  *                   - Auto-Preload Configuration 
+  *                   - Auto-Preload Configuration
   *                   - Enable/Disable the counter
-  *                         
+  *
   *          2. TIM4 interrupts, DMA and flags management
   *                   - Enable/Disable interrupt sources
   *                   - Get flags status
   *                   - Clear flags/ Pending bits
-  *                   - Enable/Disable DMA requests 
-  *              
-  *          3. TIM4 clocks management: this group includes all needed functions 
+  *                   - Enable/Disable DMA requests
+  *
+  *          3. TIM4 clocks management: this group includes all needed functions
   *             to configure the clock controller unit:
   *                   - Select internal clock
-  *         
-  *          4. TIM4 synchronization management: this group includes all needed 
+  *
+  *          4. TIM4 synchronization management: this group includes all needed
   *             functions to configure the Synchronization unit:
-  *                   - Select Input Trigger  
-  *                   - Select Output Trigger  
-  *                   - Select Master Slave Mode    
-  *      
-  *   
+  *                   - Select Input Trigger
+  *                   - Select Output Trigger
+  *                   - Select Master Slave Mode
+  *
+  *
   *  @endverbatim
-  *    
+  *
   ******************************************************************************
   * @attention
   *
@@ -60,7 +60,7 @@
   * CODING INFORMATION CONTAINED HEREIN IN CONNECTION WITH THEIR PRODUCTS.
   *
   * <h2><center>&copy; COPYRIGHT 2011 STMicroelectronics</center></h2>
-  ******************************************************************************  
+  ******************************************************************************
   */
 
 
@@ -75,7 +75,7 @@
   * @brief TIM4 driver modules
   * @{
   */
-  
+
 /* Private typedef -----------------------------------------------------------*/
 /* Private define ------------------------------------------------------------*/
 /* Private macro -------------------------------------------------------------*/
@@ -86,31 +86,31 @@
   */
 
 /** @defgroup TIM4_Group1 TimeBase management functions
- *  @brief   TimeBase management functions 
+ *  @brief   TimeBase management functions
  *
-@verbatim   
+@verbatim
  ===============================================================================
                        TimeBase management functions
- ===============================================================================  
-  
-       ===================================================================      
+ ===============================================================================
+
+       ===================================================================
               TIM4 Driver: how to use it in Timing(Time base) Mode
-       =================================================================== 
+       ===================================================================
        To use the Timer in Timing(Time base) mode, the following steps are mandatory:
-       
+
        1. Enable TIM4 clock using CLK_PeripheralClockConfig(CLK_Peripheral_TIM4, ENABLE) function.
-        
+
        2. Call TIM4_TimeBaseInit() to configure the Time Base unit with the
           corresponding configuration.
-          
+
        3. Enable global interrupts if you need to generate the update interrupt.
-          
-       4. Enable the corresponding interrupt using the function TIM4_ITConfig(TIM4_IT_Update) 
-          
+
+       4. Enable the corresponding interrupt using the function TIM4_ITConfig(TIM4_IT_Update)
+
        5. Call the TIM4_Cmd(ENABLE) function to enable the TIM4 counter.
-       
+
        Note1: All other functions can be used separately to modify, if needed,
-          a specific feature of the Timer. 
+          a specific feature of the Timer.
 
 @endverbatim
   * @{
@@ -123,14 +123,14 @@
   */
 void TIM4_DeInit(void)
 {
-  TIM4->CR1   = TIM4_CR1_RESET_VALUE;
-  TIM4->CR2   = TIM4_CR2_RESET_VALUE;
-  TIM4->SMCR   = TIM4_SMCR_RESET_VALUE;
-  TIM4->IER   = TIM4_IER_RESET_VALUE;
-  TIM4->CNTR   = TIM4_CNTR_RESET_VALUE;
-  TIM4->PSCR  = TIM4_PSCR_RESET_VALUE;
-  TIM4->ARR   = TIM4_ARR_RESET_VALUE;
-  TIM4->SR1   = TIM4_SR1_RESET_VALUE;
+    TIM4->CR1   = TIM4_CR1_RESET_VALUE;
+    TIM4->CR2   = TIM4_CR2_RESET_VALUE;
+    TIM4->SMCR   = TIM4_SMCR_RESET_VALUE;
+    TIM4->IER   = TIM4_IER_RESET_VALUE;
+    TIM4->CNTR   = TIM4_CNTR_RESET_VALUE;
+    TIM4->PSCR  = TIM4_PSCR_RESET_VALUE;
+    TIM4->ARR   = TIM4_ARR_RESET_VALUE;
+    TIM4->SR1   = TIM4_SR1_RESET_VALUE;
 }
 
 /**
@@ -152,22 +152,22 @@ void TIM4_DeInit(void)
   *            @arg TIM4_Prescaler_4096: Time base Prescaler = 4096
   *            @arg TIM4_Prescaler_8192: Time base Prescaler = 8192
   *            @arg TIM4_Prescaler_16384: Time base Prescaler = 16384
-  *            @arg TIM4_Prescaler_32768: Time base Prescaler = 32768                              
+  *            @arg TIM4_Prescaler_32768: Time base Prescaler = 32768
   * @param  TIM4_Period: This parameter must be a value between 0x00 and 0xFF.
   * @retval None
   */
 void TIM4_TimeBaseInit(TIM4_Prescaler_TypeDef TIM4_Prescaler,
                        uint8_t TIM4_Period)
 {
-  /* Check TIM4 prescaler value */
-  assert_param(IS_TIM4_Prescaler(TIM4_Prescaler));
-  /* Set the Autoreload value */
-  TIM4->ARR = (uint8_t)(TIM4_Period);
-  /* Set the Prescaler value */
-  TIM4->PSCR = (uint8_t)(TIM4_Prescaler);
+    /* Check TIM4 prescaler value */
+    assert_param(IS_TIM4_Prescaler(TIM4_Prescaler));
+    /* Set the Autoreload value */
+    TIM4->ARR = (uint8_t)(TIM4_Period);
+    /* Set the Prescaler value */
+    TIM4->PSCR = (uint8_t)(TIM4_Prescaler);
 
-  /* Generate an update event to reload the Prescaler value immediately */
-  TIM4->EGR = TIM4_EventSource_Update;
+    /* Generate an update event to reload the Prescaler value immediately */
+    TIM4->EGR = TIM4_EventSource_Update;
 }
 
 /**
@@ -189,7 +189,7 @@ void TIM4_TimeBaseInit(TIM4_Prescaler_TypeDef TIM4_Prescaler,
   *            @arg TIM4_Prescaler_4096: Time base Prescaler = 4096
   *            @arg TIM4_Prescaler_8192: Time base Prescaler = 8192
   *            @arg TIM4_Prescaler_16384: Time base Prescaler = 16384
-  *            @arg TIM4_Prescaler_32768: Time base Prescaler = 32768 
+  *            @arg TIM4_Prescaler_32768: Time base Prescaler = 32768
   * @param  TIM4_PSCReloadMode: Specifies the TIM4 Prescaler Reload mode.
   *          This parameter can be one of the following values:
   *            @arg TIM4_PSCReloadMode_Update: Prescaler value is reloaded at every update
@@ -199,22 +199,19 @@ void TIM4_TimeBaseInit(TIM4_Prescaler_TypeDef TIM4_Prescaler,
 void TIM4_PrescalerConfig(TIM4_Prescaler_TypeDef Prescaler,
                           TIM4_PSCReloadMode_TypeDef TIM4_PSCReloadMode)
 {
-  /* Check the parameters */
-  assert_param(IS_TIM4_Prescaler_RELOAD(TIM4_PSCReloadMode));
-  assert_param(IS_TIM4_Prescaler(Prescaler));
+    /* Check the parameters */
+    assert_param(IS_TIM4_Prescaler_RELOAD(TIM4_PSCReloadMode));
+    assert_param(IS_TIM4_Prescaler(Prescaler));
 
-  /* Set the Prescaler value */
-  TIM4->PSCR = (uint8_t) Prescaler;
+    /* Set the Prescaler value */
+    TIM4->PSCR = (uint8_t) Prescaler;
 
-  /* Set or reset the UG Bit */
-  if (TIM4_PSCReloadMode == TIM4_PSCReloadMode_Immediate)
-  {
-    TIM4->EGR |= TIM4_EGR_UG ;
-  }
-  else
-  {
-    TIM4->EGR &= (uint8_t)(~TIM4_EGR_UG) ;
-  }
+    /* Set or reset the UG Bit */
+    if (TIM4_PSCReloadMode == TIM4_PSCReloadMode_Immediate) {
+        TIM4->EGR |= TIM4_EGR_UG ;
+    } else {
+        TIM4->EGR &= (uint8_t)(~TIM4_EGR_UG) ;
+    }
 }
 
 /**
@@ -225,8 +222,8 @@ void TIM4_PrescalerConfig(TIM4_Prescaler_TypeDef Prescaler,
   */
 void TIM4_SetCounter(uint8_t Counter)
 {
-  /* Set the Counter Register value */
-  TIM4->CNTR = (uint8_t)(Counter);
+    /* Set the Counter Register value */
+    TIM4->CNTR = (uint8_t)(Counter);
 }
 
 /**
@@ -237,8 +234,8 @@ void TIM4_SetCounter(uint8_t Counter)
   */
 void TIM4_SetAutoreload(uint8_t Autoreload)
 {
-  /* Set the Autoreload Register value */
-  TIM4->ARR = (uint8_t)(Autoreload);
+    /* Set the Autoreload Register value */
+    TIM4->ARR = (uint8_t)(Autoreload);
 }
 
 /**
@@ -248,10 +245,10 @@ void TIM4_SetAutoreload(uint8_t Autoreload)
   */
 uint8_t TIM4_GetCounter(void)
 {
-  uint8_t tmpcntr = 0;
-  tmpcntr = TIM4->CNTR;
-  /* Get the Counter Register value */
-  return ((uint8_t)tmpcntr);
+    uint8_t tmpcntr = 0;
+    tmpcntr = TIM4->CNTR;
+    /* Get the Counter Register value */
+    return ((uint8_t)tmpcntr);
 }
 
 /**
@@ -273,12 +270,12 @@ uint8_t TIM4_GetCounter(void)
   *            - TIM4_Prescaler_4096: Time base Prescaler = 4096
   *            - TIM4_Prescaler_8192: Time base Prescaler = 8192
   *            - TIM4_Prescaler_16384: Time base Prescaler = 16384
-  *            - TIM4_Prescaler_32768: Time base Prescaler = 32768  
+  *            - TIM4_Prescaler_32768: Time base Prescaler = 32768
   */
 TIM4_Prescaler_TypeDef TIM4_GetPrescaler(void)
 {
-  /* Get the Prescaler Register value */
-  return ((TIM4_Prescaler_TypeDef)TIM4->PSCR);
+    /* Get the Prescaler Register value */
+    return ((TIM4_Prescaler_TypeDef)TIM4->PSCR);
 }
 
 /**
@@ -289,18 +286,15 @@ TIM4_Prescaler_TypeDef TIM4_GetPrescaler(void)
   */
 void TIM4_UpdateDisableConfig(FunctionalState NewState)
 {
-  /* Check the parameters */
-  assert_param(IS_FUNCTIONAL_STATE(NewState));
+    /* Check the parameters */
+    assert_param(IS_FUNCTIONAL_STATE(NewState));
 
-  /* Set or Reset the UDIS Bit */
-  if (NewState != DISABLE)
-  {
-    TIM4->CR1 |= TIM4_CR1_UDIS ;
-  }
-  else
-  {
-    TIM4->CR1 &= (uint8_t)(~TIM4_CR1_UDIS) ;
-  }
+    /* Set or Reset the UDIS Bit */
+    if (NewState != DISABLE) {
+        TIM4->CR1 |= TIM4_CR1_UDIS ;
+    } else {
+        TIM4->CR1 &= (uint8_t)(~TIM4_CR1_UDIS) ;
+    }
 }
 
 /**
@@ -313,18 +307,15 @@ void TIM4_UpdateDisableConfig(FunctionalState NewState)
   */
 void TIM4_UpdateRequestConfig(TIM4_UpdateSource_TypeDef TIM4_UpdateSource)
 {
-  /* Check the parameters */
-  assert_param(IS_TIM4_UPDATE_SOURCE(TIM4_UpdateSource));
+    /* Check the parameters */
+    assert_param(IS_TIM4_UPDATE_SOURCE(TIM4_UpdateSource));
 
-  /* Set or Reset the URS Bit */
-  if (TIM4_UpdateSource == TIM4_UpdateSource_Regular)
-  {
-    TIM4->CR1 |= TIM4_CR1_URS ;
-  }
-  else
-  {
-    TIM4->CR1 &= (uint8_t)(~TIM4_CR1_URS) ;
-  }
+    /* Set or Reset the URS Bit */
+    if (TIM4_UpdateSource == TIM4_UpdateSource_Regular) {
+        TIM4->CR1 |= TIM4_CR1_URS ;
+    } else {
+        TIM4->CR1 &= (uint8_t)(~TIM4_CR1_URS) ;
+    }
 }
 
 /**
@@ -335,18 +326,15 @@ void TIM4_UpdateRequestConfig(TIM4_UpdateSource_TypeDef TIM4_UpdateSource)
   */
 void TIM4_ARRPreloadConfig(FunctionalState NewState)
 {
-  /* Check the parameters */
-  assert_param(IS_FUNCTIONAL_STATE(NewState));
+    /* Check the parameters */
+    assert_param(IS_FUNCTIONAL_STATE(NewState));
 
-  /* Set or Reset the ARPE Bit */
-  if (NewState != DISABLE)
-  {
-    TIM4->CR1 |= TIM4_CR1_ARPE ;
-  }
-  else
-  {
-    TIM4->CR1 &= (uint8_t)(~TIM4_CR1_ARPE) ;
-  }
+    /* Set or Reset the ARPE Bit */
+    if (NewState != DISABLE) {
+        TIM4->CR1 |= TIM4_CR1_ARPE ;
+    } else {
+        TIM4->CR1 &= (uint8_t)(~TIM4_CR1_ARPE) ;
+    }
 }
 
 /**
@@ -359,18 +347,15 @@ void TIM4_ARRPreloadConfig(FunctionalState NewState)
   */
 void TIM4_SelectOnePulseMode(TIM4_OPMode_TypeDef TIM4_OPMode)
 {
-  /* Check the parameters */
-  assert_param(IS_TIM4_OPM_MODE(TIM4_OPMode));
+    /* Check the parameters */
+    assert_param(IS_TIM4_OPM_MODE(TIM4_OPMode));
 
-  /* Set or Reset the OPM Bit */
-  if (TIM4_OPMode == TIM4_OPMode_Single)
-  {
-    TIM4->CR1 |= TIM4_CR1_OPM ;
-  }
-  else
-  {
-    TIM4->CR1 &= (uint8_t)(~TIM4_CR1_OPM) ;
-  }
+    /* Set or Reset the OPM Bit */
+    if (TIM4_OPMode == TIM4_OPMode_Single) {
+        TIM4->CR1 |= TIM4_CR1_OPM ;
+    } else {
+        TIM4->CR1 &= (uint8_t)(~TIM4_CR1_OPM) ;
+    }
 }
 
 /**
@@ -381,18 +366,15 @@ void TIM4_SelectOnePulseMode(TIM4_OPMode_TypeDef TIM4_OPMode)
   */
 void TIM4_Cmd(FunctionalState NewState)
 {
-  /* Check the parameters */
-  assert_param(IS_FUNCTIONAL_STATE(NewState));
+    /* Check the parameters */
+    assert_param(IS_FUNCTIONAL_STATE(NewState));
 
-  /* set or Reset the CEN Bit */
-  if (NewState != DISABLE)
-  {
-    TIM4->CR1 |= TIM4_CR1_CEN ;
-  }
-  else
-  {
-    TIM4->CR1 &= (uint8_t)(~TIM4_CR1_CEN) ;
-  }
+    /* set or Reset the CEN Bit */
+    if (NewState != DISABLE) {
+        TIM4->CR1 |= TIM4_CR1_CEN ;
+    } else {
+        TIM4->CR1 &= (uint8_t)(~TIM4_CR1_CEN) ;
+    }
 }
 
 /**
@@ -400,12 +382,12 @@ void TIM4_Cmd(FunctionalState NewState)
   */
 
 /** @defgroup TIM4_Group2 Interrupts DMA and flags management functions
- *  @brief    Interrupts, DMA and flags management functions 
+ *  @brief    Interrupts, DMA and flags management functions
  *
-@verbatim   
+@verbatim
  ===============================================================================
                  Interrupts, DMA and flags management functions
- ===============================================================================  
+ ===============================================================================
 
 @endverbatim
   * @{
@@ -423,20 +405,17 @@ void TIM4_Cmd(FunctionalState NewState)
   */
 void TIM4_ITConfig(TIM4_IT_TypeDef TIM4_IT, FunctionalState NewState)
 {
-  /* Check the parameters */
-  assert_param(IS_TIM4_IT(TIM4_IT));
-  assert_param(IS_FUNCTIONAL_STATE(NewState));
+    /* Check the parameters */
+    assert_param(IS_TIM4_IT(TIM4_IT));
+    assert_param(IS_FUNCTIONAL_STATE(NewState));
 
-  if (NewState != DISABLE)
-  {
-    /* Enable the Interrupt sources */
-    TIM4->IER |= (uint8_t)TIM4_IT;
-  }
-  else
-  {
-    /* Disable the Interrupt sources */
-    TIM4->IER &= (uint8_t)(~(uint8_t)TIM4_IT);
-  }
+    if (NewState != DISABLE) {
+        /* Enable the Interrupt sources */
+        TIM4->IER |= (uint8_t)TIM4_IT;
+    } else {
+        /* Disable the Interrupt sources */
+        TIM4->IER &= (uint8_t)(~(uint8_t)TIM4_IT);
+    }
 }
 
 /**
@@ -449,11 +428,11 @@ void TIM4_ITConfig(TIM4_IT_TypeDef TIM4_IT, FunctionalState NewState)
   */
 void TIM4_GenerateEvent(TIM4_EventSource_TypeDef TIM4_EventSource)
 {
-  /* Check the parameters */
-  assert_param(IS_TIM4_EVENT_SOURCE((uint8_t)TIM4_EventSource));
+    /* Check the parameters */
+    assert_param(IS_TIM4_EVENT_SOURCE((uint8_t)TIM4_EventSource));
 
-  /* Set the event sources */
-  TIM4->EGR |= (uint8_t)TIM4_EventSource;
+    /* Set the event sources */
+    TIM4->EGR |= (uint8_t)TIM4_EventSource;
 }
 
 /**
@@ -467,20 +446,17 @@ void TIM4_GenerateEvent(TIM4_EventSource_TypeDef TIM4_EventSource)
   */
 FlagStatus TIM4_GetFlagStatus(TIM4_FLAG_TypeDef TIM4_FLAG)
 {
-  FlagStatus bitstatus = RESET;
+    FlagStatus bitstatus = RESET;
 
-  /* Check the parameters */
-  assert_param(IS_TIM4_GET_FLAG(TIM4_FLAG));
+    /* Check the parameters */
+    assert_param(IS_TIM4_GET_FLAG(TIM4_FLAG));
 
-  if ((TIM4->SR1 & (uint8_t)TIM4_FLAG)  != 0)
-  {
-    bitstatus = SET;
-  }
-  else
-  {
-    bitstatus = RESET;
-  }
-  return ((FlagStatus)bitstatus);
+    if ((TIM4->SR1 & (uint8_t)TIM4_FLAG)  != 0) {
+        bitstatus = SET;
+    } else {
+        bitstatus = RESET;
+    }
+    return ((FlagStatus)bitstatus);
 }
 
 /**
@@ -493,10 +469,10 @@ FlagStatus TIM4_GetFlagStatus(TIM4_FLAG_TypeDef TIM4_FLAG)
   */
 void TIM4_ClearFlag(TIM4_FLAG_TypeDef TIM4_FLAG)
 {
-  /* Check the parameters */
-  assert_param(IS_TIM4_CLEAR_FLAG((uint8_t)TIM4_FLAG));
-  /* Clear the flags (rc_w0) clear this bit by writing 0. Writing ‘1’ has no effect*/
-  TIM4->SR1 = (uint8_t)(~((uint8_t)TIM4_FLAG));
+    /* Check the parameters */
+    assert_param(IS_TIM4_CLEAR_FLAG((uint8_t)TIM4_FLAG));
+    /* Clear the flags (rc_w0) clear this bit by writing 0. Writing ‘1’ has no effect*/
+    TIM4->SR1 = (uint8_t)(~((uint8_t)TIM4_FLAG));
 }
 
 /**
@@ -511,26 +487,23 @@ void TIM4_ClearFlag(TIM4_FLAG_TypeDef TIM4_FLAG)
 
 ITStatus TIM4_GetITStatus(TIM4_IT_TypeDef TIM4_IT)
 {
-  ITStatus bitstatus = RESET;
+    ITStatus bitstatus = RESET;
 
-  uint8_t itStatus = 0x0, itEnable = 0x0;
+    uint8_t itStatus = 0x0, itEnable = 0x0;
 
-  /* Check the parameters */
-  assert_param(IS_TIM4_GET_IT(TIM4_IT));
+    /* Check the parameters */
+    assert_param(IS_TIM4_GET_IT(TIM4_IT));
 
-  itStatus = (uint8_t)(TIM4->SR1 & (uint8_t)TIM4_IT);
+    itStatus = (uint8_t)(TIM4->SR1 & (uint8_t)TIM4_IT);
 
-  itEnable = (uint8_t)(TIM4->IER & (uint8_t)TIM4_IT);
+    itEnable = (uint8_t)(TIM4->IER & (uint8_t)TIM4_IT);
 
-  if ((itStatus != (uint8_t)RESET ) && (itEnable != (uint8_t)RESET ))
-  {
-    bitstatus = (ITStatus)SET;
-  }
-  else
-  {
-    bitstatus = (ITStatus)RESET;
-  }
-  return ((ITStatus)bitstatus);
+    if ((itStatus != (uint8_t)RESET ) && (itEnable != (uint8_t)RESET )) {
+        bitstatus = (ITStatus)SET;
+    } else {
+        bitstatus = (ITStatus)RESET;
+    }
+    return ((ITStatus)bitstatus);
 }
 
 /**
@@ -543,11 +516,11 @@ ITStatus TIM4_GetITStatus(TIM4_IT_TypeDef TIM4_IT)
   */
 void TIM4_ClearITPendingBit(TIM4_IT_TypeDef TIM4_IT)
 {
-  /* Check the parameters */
-  assert_param(IS_TIM4_IT(TIM4_IT));
+    /* Check the parameters */
+    assert_param(IS_TIM4_IT(TIM4_IT));
 
-  /* Clear the IT pending Bit */
-  TIM4->SR1 = (uint8_t)(~(uint8_t)TIM4_IT);
+    /* Clear the IT pending Bit */
+    TIM4->SR1 = (uint8_t)(~(uint8_t)TIM4_IT);
 }
 
 /**
@@ -561,20 +534,17 @@ void TIM4_ClearITPendingBit(TIM4_IT_TypeDef TIM4_IT)
   */
 void TIM4_DMACmd( TIM4_DMASource_TypeDef TIM4_DMASource, FunctionalState NewState)
 {
-  /* Check the parameters */
-  assert_param(IS_FUNCTIONAL_STATE(NewState));
-  assert_param(IS_TIM4_DMA_SOURCE(TIM4_DMASource));
+    /* Check the parameters */
+    assert_param(IS_FUNCTIONAL_STATE(NewState));
+    assert_param(IS_TIM4_DMA_SOURCE(TIM4_DMASource));
 
-  if (NewState != DISABLE)
-  {
-    /* Enable the DMA sources */
-    TIM4->DER |= (uint8_t)TIM4_DMASource;
-  }
-  else
-  {
-    /* Disable the DMA sources */
-    TIM4->DER &= (uint8_t)~TIM4_DMASource;
-  }
+    if (NewState != DISABLE) {
+        /* Enable the DMA sources */
+        TIM4->DER |= (uint8_t)TIM4_DMASource;
+    } else {
+        /* Disable the DMA sources */
+        TIM4->DER &= (uint8_t)~TIM4_DMASource;
+    }
 }
 
 /**
@@ -584,10 +554,10 @@ void TIM4_DMACmd( TIM4_DMASource_TypeDef TIM4_DMASource, FunctionalState NewStat
 /** @defgroup TIM4_Group3 Clocks management functions
  *  @brief    Clocks management functions
  *
-@verbatim   
+@verbatim
  ===============================================================================
                          Clocks management functions
- ===============================================================================  
+ ===============================================================================
 
 @endverbatim
   * @{
@@ -600,8 +570,8 @@ void TIM4_DMACmd( TIM4_DMASource_TypeDef TIM4_DMASource, FunctionalState NewStat
   */
 void TIM4_InternalClockConfig(void)
 {
-  /* Disable slave mode to clock the prescaler directly with the internal clock */
-  TIM4->SMCR &=  (uint8_t)(~TIM4_SMCR_SMS);
+    /* Disable slave mode to clock the prescaler directly with the internal clock */
+    TIM4->SMCR &=  (uint8_t)(~TIM4_SMCR_SMS);
 }
 
 /**
@@ -609,16 +579,16 @@ void TIM4_InternalClockConfig(void)
   */
 
 /** @defgroup TIM4_Group4 Synchronization management functions
- *  @brief    Synchronization management functions 
+ *  @brief    Synchronization management functions
  *
-@verbatim   
+@verbatim
  ===============================================================================
                        Synchronization management functions
- ===============================================================================  
-                   
-       ===================================================================      
+ ===============================================================================
+
+       ===================================================================
               TIM4 Driver: how to use it in synchronization Mode
-       =================================================================== 
+       ===================================================================
        Case of two/several Timers
        **************************
        1. If TIM4 is used as master to other timers use the following functions:
@@ -627,7 +597,7 @@ void TIM4_InternalClockConfig(void)
        2. If TIM4 is used as slave to other timers use the following functions:
           - TIM4_SelectInputTrigger()
           - TIM4_SelectSlaveMode()
-          
+
 @endverbatim
   * @{
   */
@@ -644,18 +614,18 @@ void TIM4_InternalClockConfig(void)
   */
 void TIM4_SelectInputTrigger(TIM4_TRGSelection_TypeDef TIM4_InputTriggerSource)
 {
-  uint8_t tmpsmcr = 0;
+    uint8_t tmpsmcr = 0;
 
-  /* Check the parameters */
-  assert_param(IS_TIM4_TRIGGER_SELECTION(TIM4_InputTriggerSource));
+    /* Check the parameters */
+    assert_param(IS_TIM4_TRIGGER_SELECTION(TIM4_InputTriggerSource));
 
-  tmpsmcr = TIM4->SMCR;
+    tmpsmcr = TIM4->SMCR;
 
-  /* Select the Trigger Source */
-  tmpsmcr &= (uint8_t)(~TIM4_SMCR_TS);
-  tmpsmcr |= (uint8_t)TIM4_InputTriggerSource;
+    /* Select the Trigger Source */
+    tmpsmcr &= (uint8_t)(~TIM4_SMCR_TS);
+    tmpsmcr |= (uint8_t)TIM4_InputTriggerSource;
 
-  TIM4->SMCR = (uint8_t)tmpsmcr;
+    TIM4->SMCR = (uint8_t)tmpsmcr;
 }
 
 /**
@@ -669,20 +639,20 @@ void TIM4_SelectInputTrigger(TIM4_TRGSelection_TypeDef TIM4_InputTriggerSource)
   */
 void TIM4_SelectOutputTrigger(TIM4_TRGOSource_TypeDef TIM4_TRGOSource)
 {
-  uint8_t tmpcr2 = 0;
+    uint8_t tmpcr2 = 0;
 
-  /* Check the parameters */
-  assert_param(IS_TIM4_TRGO_SOURCE(TIM4_TRGOSource));
+    /* Check the parameters */
+    assert_param(IS_TIM4_TRGO_SOURCE(TIM4_TRGOSource));
 
-  tmpcr2 = TIM4->CR2;
+    tmpcr2 = TIM4->CR2;
 
-  /* Reset the MMS Bits */
-  tmpcr2 &= (uint8_t)(~TIM4_CR2_MMS);
+    /* Reset the MMS Bits */
+    tmpcr2 &= (uint8_t)(~TIM4_CR2_MMS);
 
-  /* Select the TRGO source */
-  tmpcr2 |=  (uint8_t)TIM4_TRGOSource;
+    /* Select the TRGO source */
+    tmpcr2 |=  (uint8_t)TIM4_TRGOSource;
 
-  TIM4->CR2 = tmpcr2;
+    TIM4->CR2 = tmpcr2;
 }
 
 /**
@@ -694,25 +664,25 @@ void TIM4_SelectOutputTrigger(TIM4_TRGOSource_TypeDef TIM4_TRGOSource)
   *            @arg TIM4_SlaveMode_Reset: Slave Mode Selection  = Reset
   *            @arg TIM4_SlaveMode_Gated: Slave Mode Selection  = Gated
   *            @arg TIM4_SlaveMode_Trigger: Slave Mode Selection  = Trigger
-  *            @arg TIM4_SlaveMode_External1: Slave Mode Selection  = External 1  
+  *            @arg TIM4_SlaveMode_External1: Slave Mode Selection  = External 1
   * @retval None
   */
 void TIM4_SelectSlaveMode(TIM4_SlaveMode_TypeDef TIM4_SlaveMode)
 {
-  uint8_t tmpsmcr = 0;
+    uint8_t tmpsmcr = 0;
 
-  /* Check the parameters */
-  assert_param(IS_TIM4_SLAVE_MODE(TIM4_SlaveMode));
+    /* Check the parameters */
+    assert_param(IS_TIM4_SLAVE_MODE(TIM4_SlaveMode));
 
-  tmpsmcr = TIM4->SMCR;
+    tmpsmcr = TIM4->SMCR;
 
-  /* Reset the SMS Bits */
-  tmpsmcr &= (uint8_t)(~TIM4_SMCR_SMS);
+    /* Reset the SMS Bits */
+    tmpsmcr &= (uint8_t)(~TIM4_SMCR_SMS);
 
-  /* Select the Slave Mode */
-  tmpsmcr |= (uint8_t)TIM4_SlaveMode;
+    /* Select the Slave Mode */
+    tmpsmcr |= (uint8_t)TIM4_SlaveMode;
 
-  TIM4->SMCR = tmpsmcr;
+    TIM4->SMCR = tmpsmcr;
 }
 
 /**
@@ -723,28 +693,25 @@ void TIM4_SelectSlaveMode(TIM4_SlaveMode_TypeDef TIM4_SlaveMode)
   */
 void TIM4_SelectMasterSlaveMode(FunctionalState NewState)
 {
-  /* Check the parameters */
-  assert_param(IS_FUNCTIONAL_STATE(NewState));
+    /* Check the parameters */
+    assert_param(IS_FUNCTIONAL_STATE(NewState));
 
-  /* Set or Reset the MSM Bit */
-  if (NewState != DISABLE)
-  {
-    TIM4->SMCR |= TIM4_SMCR_MSM;
-  }
-  else
-  {
-    TIM4->SMCR &= (uint8_t)(~TIM4_SMCR_MSM);
-  }
+    /* Set or Reset the MSM Bit */
+    if (NewState != DISABLE) {
+        TIM4->SMCR |= TIM4_SMCR_MSM;
+    } else {
+        TIM4->SMCR &= (uint8_t)(~TIM4_SMCR_MSM);
+    }
 }
 
 /**
   * @}
-  */ 
+  */
 
 /**
   * @}
-  */ 
-  
+  */
+
 /**
   * @}
   */

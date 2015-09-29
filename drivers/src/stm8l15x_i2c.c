@@ -134,16 +134,16 @@
   */
 void I2C_DeInit(I2C_TypeDef* I2Cx)
 {
-  I2Cx->CR1 = I2C_CR1_RESET_VALUE;
-  I2Cx->CR2 = I2C_CR2_RESET_VALUE;
-  I2Cx->FREQR = I2C_FREQR_RESET_VALUE;
-  I2Cx->OARL = I2C_OARL_RESET_VALUE;
-  I2Cx->OARH = I2C_OARH_RESET_VALUE;
-  I2Cx->OAR2 = I2C_OAR2_RESET_VALUE;
-  I2Cx->ITR = I2C_ITR_RESET_VALUE;
-  I2Cx->CCRL = I2C_CCRL_RESET_VALUE;
-  I2Cx->CCRH = I2C_CCRH_RESET_VALUE;
-  I2Cx->TRISER = I2C_TRISER_RESET_VALUE;
+    I2Cx->CR1 = I2C_CR1_RESET_VALUE;
+    I2Cx->CR2 = I2C_CR2_RESET_VALUE;
+    I2Cx->FREQR = I2C_FREQR_RESET_VALUE;
+    I2Cx->OARL = I2C_OARL_RESET_VALUE;
+    I2Cx->OARH = I2C_OARH_RESET_VALUE;
+    I2Cx->OAR2 = I2C_OAR2_RESET_VALUE;
+    I2Cx->ITR = I2C_ITR_RESET_VALUE;
+    I2Cx->CCRL = I2C_CCRL_RESET_VALUE;
+    I2Cx->CCRH = I2C_CCRH_RESET_VALUE;
+    I2Cx->TRISER = I2C_TRISER_RESET_VALUE;
 }
 
 /**
@@ -179,104 +179,96 @@ void I2C_Init(I2C_TypeDef* I2Cx, uint32_t OutputClockFrequency, uint16_t OwnAddr
               I2C_Mode_TypeDef I2C_Mode, I2C_DutyCycle_TypeDef I2C_DutyCycle,
               I2C_Ack_TypeDef I2C_Ack, I2C_AcknowledgedAddress_TypeDef I2C_AcknowledgedAddress)
 {
-  uint32_t result = 0x0004;
-  uint16_t tmpval = 0;
-  uint8_t tmpccrh = 0;
-  uint8_t input_clock = 0;
+    uint32_t result = 0x0004;
+    uint16_t tmpval = 0;
+    uint8_t tmpccrh = 0;
+    uint8_t input_clock = 0;
 
-  /* Check the parameters */
-  assert_param(IS_I2C_MODE(I2C_Mode));
-  assert_param(IS_I2C_ACK_STATE(I2C_Ack));
-  assert_param(IS_I2C_ACKNOWLEDGE_ADDRESS(I2C_AcknowledgedAddress));
-  assert_param(IS_I2C_DUTY_CYCLE(I2C_DutyCycle));
-  assert_param(IS_I2C_OWN_ADDRESS(OwnAddress));
-  assert_param(IS_I2C_OUTPUT_CLOCK_FREQ(OutputClockFrequency));
+    /* Check the parameters */
+    assert_param(IS_I2C_MODE(I2C_Mode));
+    assert_param(IS_I2C_ACK_STATE(I2C_Ack));
+    assert_param(IS_I2C_ACKNOWLEDGE_ADDRESS(I2C_AcknowledgedAddress));
+    assert_param(IS_I2C_DUTY_CYCLE(I2C_DutyCycle));
+    assert_param(IS_I2C_OWN_ADDRESS(OwnAddress));
+    assert_param(IS_I2C_OUTPUT_CLOCK_FREQ(OutputClockFrequency));
 
 
-  /* Get system clock frequency */
-  input_clock = (uint8_t) (CLK_GetClockFreq() / 1000000);
+    /* Get system clock frequency */
+    input_clock = (uint8_t) (CLK_GetClockFreq() / 1000000);
 
-  /*------------------------- I2C FREQ Configuration ------------------------*/
-  /* Clear frequency bits */
-  I2Cx->FREQR &= (uint8_t)(~I2C_FREQR_FREQ);
-  /* Write new value */
-  I2Cx->FREQR |= input_clock;
+    /*------------------------- I2C FREQ Configuration ------------------------*/
+    /* Clear frequency bits */
+    I2Cx->FREQR &= (uint8_t)(~I2C_FREQR_FREQ);
+    /* Write new value */
+    I2Cx->FREQR |= input_clock;
 
-  /*--------------------------- I2C CCR Configuration ------------------------*/
-  /* Disable I2C to configure TRISER */
-  I2Cx->CR1 &= (uint8_t)(~I2C_CR1_PE);
+    /*--------------------------- I2C CCR Configuration ------------------------*/
+    /* Disable I2C to configure TRISER */
+    I2Cx->CR1 &= (uint8_t)(~I2C_CR1_PE);
 
-  /* Clear CCRH & CCRL */
-  I2Cx->CCRH &= (uint8_t)(~(I2C_CCRH_FS | I2C_CCRH_DUTY | I2C_CCRH_CCR));
-  I2Cx->CCRL &= (uint8_t)(~I2C_CCRL_CCR);
+    /* Clear CCRH & CCRL */
+    I2Cx->CCRH &= (uint8_t)(~(I2C_CCRH_FS | I2C_CCRH_DUTY | I2C_CCRH_CCR));
+    I2Cx->CCRL &= (uint8_t)(~I2C_CCRL_CCR);
 
-  /* Detect Fast or Standard mode depending on the Output clock frequency selected */
-  if (OutputClockFrequency > I2C_MAX_STANDARD_FREQ) /* FAST MODE */
-  {
-    /* Set F/S bit for fast mode */
-    tmpccrh = I2C_CCRH_FS;
+    /* Detect Fast or Standard mode depending on the Output clock frequency selected */
+    if (OutputClockFrequency > I2C_MAX_STANDARD_FREQ) { /* FAST MODE */
+        /* Set F/S bit for fast mode */
+        tmpccrh = I2C_CCRH_FS;
 
-    if (I2C_DutyCycle == I2C_DutyCycle_2)
-    {
-      /* Fast mode speed calculate: Tlow/Thigh = 2 */
-      result = (uint32_t) ((input_clock * 1000000) / (OutputClockFrequency * 3));
+        if (I2C_DutyCycle == I2C_DutyCycle_2) {
+            /* Fast mode speed calculate: Tlow/Thigh = 2 */
+            result = (uint32_t) ((input_clock * 1000000) / (OutputClockFrequency * 3));
+        } else { /* I2C_DUTYCYCLE_16_9 */
+            /* Fast mode speed calculate: Tlow/Thigh = 16/9 */
+            result = (uint32_t) ((input_clock * 1000000) / (OutputClockFrequency * 25));
+            /* Set DUTY bit */
+            tmpccrh |= I2C_CCRH_DUTY;
+        }
+
+        /* Verify and correct CCR value if below minimum value */
+        if (result < (uint16_t)0x01) {
+            /* Set the minimum allowed value */
+            result = (uint16_t)0x0001;
+        }
+
+        /* Set Maximum Rise Time: 300ns max in Fast Mode
+        = [300ns/(1/input_clock.10e6)]+1
+        = [(input_clock * 3)/10]+1 */
+        tmpval = ((input_clock * 3) / 10) + 1;
+        I2Cx->TRISER = (uint8_t)tmpval;
+
+    } else { /* STANDARD MODE */
+
+        /* Calculate standard mode speed */
+        result = (uint16_t)((input_clock * 1000000) / (OutputClockFrequency << (uint8_t)1));
+
+        /* Verify and correct CCR value if below minimum value */
+        if (result < (uint16_t)0x0004) {
+            /* Set the minimum allowed value */
+            result = (uint16_t)0x0004;
+        }
+
+        /* Set Maximum Rise Time: 1000ns max in Standard Mode
+        = [1000ns/(1/input_clock.10e6)]+1
+        = input_clock+1 */
+        I2Cx->TRISER = (uint8_t)((uint8_t)input_clock + (uint8_t)1);
+
     }
-    else /* I2C_DUTYCYCLE_16_9 */
-    {
-      /* Fast mode speed calculate: Tlow/Thigh = 16/9 */
-      result = (uint32_t) ((input_clock * 1000000) / (OutputClockFrequency * 25));
-      /* Set DUTY bit */
-      tmpccrh |= I2C_CCRH_DUTY;
-    }
 
-    /* Verify and correct CCR value if below minimum value */
-    if (result < (uint16_t)0x01)
-    {
-      /* Set the minimum allowed value */
-      result = (uint16_t)0x0001;
-    }
+    /* Write CCR with new calculated value */
+    I2Cx->CCRL = (uint8_t)result;
+    I2Cx->CCRH = (uint8_t)((uint8_t)((uint8_t)((uint8_t)result >> 8) & I2C_CCRH_CCR) | tmpccrh);
 
-    /* Set Maximum Rise Time: 300ns max in Fast Mode
-    = [300ns/(1/input_clock.10e6)]+1
-    = [(input_clock * 3)/10]+1 */
-    tmpval = ((input_clock * 3) / 10) + 1;
-    I2Cx->TRISER = (uint8_t)tmpval;
+    /* Enable I2C and  Configure its mode*/
+    I2Cx->CR1 |= (uint8_t)(I2C_CR1_PE | I2C_Mode);
 
-  }
-  else /* STANDARD MODE */
-  {
+    /* Configure I2C acknowledgement */
+    I2Cx->CR2 |= (uint8_t)I2C_Ack;
 
-    /* Calculate standard mode speed */
-    result = (uint16_t)((input_clock * 1000000) / (OutputClockFrequency << (uint8_t)1));
-
-    /* Verify and correct CCR value if below minimum value */
-    if (result < (uint16_t)0x0004)
-    {
-      /* Set the minimum allowed value */
-      result = (uint16_t)0x0004;
-    }
-
-    /* Set Maximum Rise Time: 1000ns max in Standard Mode
-    = [1000ns/(1/input_clock.10e6)]+1
-    = input_clock+1 */
-    I2Cx->TRISER = (uint8_t)((uint8_t)input_clock + (uint8_t)1);
-
-  }
-
-  /* Write CCR with new calculated value */
-  I2Cx->CCRL = (uint8_t)result;
-  I2Cx->CCRH = (uint8_t)((uint8_t)((uint8_t)((uint8_t)result >> 8) & I2C_CCRH_CCR) | tmpccrh);
-
-  /* Enable I2C and  Configure its mode*/
-  I2Cx->CR1 |= (uint8_t)(I2C_CR1_PE | I2C_Mode);
-
-  /* Configure I2C acknowledgement */
-  I2Cx->CR2 |= (uint8_t)I2C_Ack;
-
-  /*--------------------------- I2C OAR Configuration ------------------------*/
-  I2Cx->OARL = (uint8_t)(OwnAddress);
-  I2Cx->OARH = (uint8_t)((uint8_t)(I2C_AcknowledgedAddress | I2C_OARH_ADDCONF ) | \
-                         (uint8_t)((uint16_t)( (uint16_t)OwnAddress &  (uint16_t)0x0300) >> 7));
+    /*--------------------------- I2C OAR Configuration ------------------------*/
+    I2Cx->OARL = (uint8_t)(OwnAddress);
+    I2Cx->OARH = (uint8_t)((uint8_t)(I2C_AcknowledgedAddress | I2C_OARH_ADDCONF ) | \
+                           (uint8_t)((uint16_t)( (uint16_t)OwnAddress &  (uint16_t)0x0300) >> 7));
 }
 
 /**
@@ -289,19 +281,16 @@ void I2C_Init(I2C_TypeDef* I2Cx, uint32_t OutputClockFrequency, uint16_t OwnAddr
 void I2C_Cmd(I2C_TypeDef* I2Cx, FunctionalState NewState)
 {
 
-  /* Check function parameters */
-  assert_param(IS_FUNCTIONAL_STATE(NewState));
+    /* Check function parameters */
+    assert_param(IS_FUNCTIONAL_STATE(NewState));
 
-  if (NewState != DISABLE)
-  {
-    /* Enable I2C peripheral */
-    I2Cx->CR1 |= I2C_CR1_PE;
-  }
-  else /* NewState == DISABLE */
-  {
-    /* Disable I2C peripheral */
-    I2Cx->CR1 &= (uint8_t)(~I2C_CR1_PE);
-  }
+    if (NewState != DISABLE) {
+        /* Enable I2C peripheral */
+        I2Cx->CR1 |= I2C_CR1_PE;
+    } else { /* NewState == DISABLE */
+        /* Disable I2C peripheral */
+        I2Cx->CR1 &= (uint8_t)(~I2C_CR1_PE);
+    }
 }
 
 /**
@@ -314,19 +303,16 @@ void I2C_Cmd(I2C_TypeDef* I2Cx, FunctionalState NewState)
 void I2C_GeneralCallCmd(I2C_TypeDef* I2Cx, FunctionalState NewState)
 {
 
-  /* Check function parameters */
-  assert_param(IS_FUNCTIONAL_STATE(NewState));
+    /* Check function parameters */
+    assert_param(IS_FUNCTIONAL_STATE(NewState));
 
-  if (NewState != DISABLE)
-  {
-    /* Enable General Call */
-    I2Cx->CR1 |= I2C_CR1_ENGC;
-  }
-  else /* NewState == DISABLE */
-  {
-    /* Disable General Call */
-    I2Cx->CR1 &= (uint8_t)(~I2C_CR1_ENGC);
-  }
+    if (NewState != DISABLE) {
+        /* Enable General Call */
+        I2Cx->CR1 |= I2C_CR1_ENGC;
+    } else { /* NewState == DISABLE */
+        /* Disable General Call */
+        I2Cx->CR1 &= (uint8_t)(~I2C_CR1_ENGC);
+    }
 }
 
 /**
@@ -341,19 +327,16 @@ void I2C_GeneralCallCmd(I2C_TypeDef* I2Cx, FunctionalState NewState)
 void I2C_GenerateSTART(I2C_TypeDef* I2Cx, FunctionalState NewState)
 {
 
-  /* Check function parameters */
-  assert_param(IS_FUNCTIONAL_STATE(NewState));
+    /* Check function parameters */
+    assert_param(IS_FUNCTIONAL_STATE(NewState));
 
-  if (NewState != DISABLE)
-  {
-    /* Generate a START condition */
-    I2Cx->CR2 |= I2C_CR2_START;
-  }
-  else /* NewState == DISABLE */
-  {
-    /* Disable the START condition generation */
-    I2Cx->CR2 &= (uint8_t)(~I2C_CR2_START);
-  }
+    if (NewState != DISABLE) {
+        /* Generate a START condition */
+        I2Cx->CR2 |= I2C_CR2_START;
+    } else { /* NewState == DISABLE */
+        /* Disable the START condition generation */
+        I2Cx->CR2 &= (uint8_t)(~I2C_CR2_START);
+    }
 }
 
 /**
@@ -366,19 +349,16 @@ void I2C_GenerateSTART(I2C_TypeDef* I2Cx, FunctionalState NewState)
 void I2C_GenerateSTOP(I2C_TypeDef* I2Cx, FunctionalState NewState)
 {
 
-  /* Check function parameters */
-  assert_param(IS_FUNCTIONAL_STATE(NewState));
+    /* Check function parameters */
+    assert_param(IS_FUNCTIONAL_STATE(NewState));
 
-  if (NewState != DISABLE)
-  {
-    /* Generate a STOP condition */
-    I2Cx->CR2 |= I2C_CR2_STOP;
-  }
-  else /* NewState == DISABLE */
-  {
-    /* Disable the STOP condition generation */
-    I2Cx->CR2 &= (uint8_t)(~I2C_CR2_STOP);
-  }
+    if (NewState != DISABLE) {
+        /* Generate a STOP condition */
+        I2Cx->CR2 |= I2C_CR2_STOP;
+    } else { /* NewState == DISABLE */
+        /* Disable the STOP condition generation */
+        I2Cx->CR2 &= (uint8_t)(~I2C_CR2_STOP);
+    }
 }
 
 /**
@@ -390,19 +370,16 @@ void I2C_GenerateSTOP(I2C_TypeDef* I2Cx, FunctionalState NewState)
   */
 void I2C_SoftwareResetCmd(I2C_TypeDef* I2Cx, FunctionalState NewState)
 {
-  /* Check function parameters */
-  assert_param(IS_FUNCTIONAL_STATE(NewState));
+    /* Check function parameters */
+    assert_param(IS_FUNCTIONAL_STATE(NewState));
 
-  if (NewState != DISABLE)
-  {
-    /* Peripheral under reset */
-    I2Cx->CR2 |= I2C_CR2_SWRST;
-  }
-  else /* NewState == DISABLE */
-  {
-    /* Peripheral not under reset */
-    I2Cx->CR2 &= (uint8_t)(~I2C_CR2_SWRST);
-  }
+    if (NewState != DISABLE) {
+        /* Peripheral under reset */
+        I2Cx->CR2 |= I2C_CR2_SWRST;
+    } else { /* NewState == DISABLE */
+        /* Peripheral not under reset */
+        I2Cx->CR2 &= (uint8_t)(~I2C_CR2_SWRST);
+    }
 }
 
 /**
@@ -414,20 +391,17 @@ void I2C_SoftwareResetCmd(I2C_TypeDef* I2Cx, FunctionalState NewState)
   */
 void I2C_StretchClockCmd(I2C_TypeDef* I2Cx, FunctionalState NewState)
 {
-  /* Check function parameters */
-  assert_param(IS_FUNCTIONAL_STATE(NewState));
+    /* Check function parameters */
+    assert_param(IS_FUNCTIONAL_STATE(NewState));
 
-  if (NewState != DISABLE)
-  {
-    /* Clock Stretching Enable */
-    I2Cx->CR1 &= (uint8_t)(~I2C_CR1_NOSTRETCH);
+    if (NewState != DISABLE) {
+        /* Clock Stretching Enable */
+        I2Cx->CR1 &= (uint8_t)(~I2C_CR1_NOSTRETCH);
 
-  }
-  else /* NewState == DISABLE */
-  {
-    /* Clock Stretching Disable (Slave mode) */
-    I2Cx->CR1 |= I2C_CR1_NOSTRETCH;
-  }
+    } else { /* NewState == DISABLE */
+        /* Clock Stretching Disable (Slave mode) */
+        I2Cx->CR1 |= I2C_CR1_NOSTRETCH;
+    }
 }
 
 /**
@@ -439,20 +413,17 @@ void I2C_StretchClockCmd(I2C_TypeDef* I2Cx, FunctionalState NewState)
   */
 void I2C_ARPCmd(I2C_TypeDef* I2Cx, FunctionalState NewState)
 {
-  /* Check function parameters */
-  assert_param(IS_FUNCTIONAL_STATE(NewState));
+    /* Check function parameters */
+    assert_param(IS_FUNCTIONAL_STATE(NewState));
 
-  if (NewState != DISABLE)
-  {
-    /* ARP Enable */
-    I2Cx->CR1 |= I2C_CR1_ARP;
+    if (NewState != DISABLE) {
+        /* ARP Enable */
+        I2Cx->CR1 |= I2C_CR1_ARP;
 
-  }
-  else /* NewState == DISABLE */
-  {
-    /* ARP Disable  */
-    I2Cx->CR1 &= (uint8_t)(~I2C_CR1_ARP);
-  }
+    } else { /* NewState == DISABLE */
+        /* ARP Disable  */
+        I2Cx->CR1 &= (uint8_t)(~I2C_CR1_ARP);
+    }
 }
 
 /**
@@ -464,19 +435,16 @@ void I2C_ARPCmd(I2C_TypeDef* I2Cx, FunctionalState NewState)
   */
 void I2C_AcknowledgeConfig(I2C_TypeDef* I2Cx, FunctionalState NewState)
 {
-  /* Check function parameters */
-  assert_param(IS_FUNCTIONAL_STATE(NewState));
+    /* Check function parameters */
+    assert_param(IS_FUNCTIONAL_STATE(NewState));
 
-  if (NewState != DISABLE)
-  {
-    /* Enable the acknowledgement */
-    I2Cx->CR2 |= I2C_CR2_ACK;
-  }
-  else
-  {
-    /* Disable the acknowledgement */
-    I2Cx->CR2 &= (uint8_t)(~I2C_CR2_ACK);
-  }
+    if (NewState != DISABLE) {
+        /* Enable the acknowledgement */
+        I2Cx->CR2 |= I2C_CR2_ACK;
+    } else {
+        /* Disable the acknowledgement */
+        I2Cx->CR2 &= (uint8_t)(~I2C_CR2_ACK);
+    }
 }
 
 /**
@@ -487,19 +455,19 @@ void I2C_AcknowledgeConfig(I2C_TypeDef* I2Cx, FunctionalState NewState)
   */
 void I2C_OwnAddress2Config(I2C_TypeDef* I2Cx, uint8_t Address)
 {
-  uint8_t tmpreg = 0;
+    uint8_t tmpreg = 0;
 
-  /* Get the old register value */
-  tmpreg = I2Cx->OAR2;
+    /* Get the old register value */
+    tmpreg = I2Cx->OAR2;
 
-  /* Reset I2Cx Own address2 bit [7:1] */
-  tmpreg &= (uint8_t)(~I2C_OAR2_ADD2);
+    /* Reset I2Cx Own address2 bit [7:1] */
+    tmpreg &= (uint8_t)(~I2C_OAR2_ADD2);
 
-  /* Set I2Cx Own address2 */
-  tmpreg |= (uint8_t) ((uint8_t)Address & (uint8_t)0xFE);
+    /* Set I2Cx Own address2 */
+    tmpreg |= (uint8_t) ((uint8_t)Address & (uint8_t)0xFE);
 
-  /* Store the new register value */
-  I2Cx->OAR2 = tmpreg;
+    /* Store the new register value */
+    I2Cx->OAR2 = tmpreg;
 }
 
 /**
@@ -511,19 +479,16 @@ void I2C_OwnAddress2Config(I2C_TypeDef* I2Cx, uint8_t Address)
   */
 void I2C_DualAddressCmd(I2C_TypeDef* I2Cx, FunctionalState NewState)
 {
-  /* Check the parameters */
-  assert_param(IS_FUNCTIONAL_STATE(NewState));
+    /* Check the parameters */
+    assert_param(IS_FUNCTIONAL_STATE(NewState));
 
-  if (NewState != DISABLE)
-  {
-    /* Enable dual addressing mode */
-    I2Cx->OAR2 |= I2C_OAR2_ENDUAL;
-  }
-  else
-  {
-    /* Disable dual addressing mode */
-    I2Cx->OAR2 &= (uint8_t)(~I2C_OAR2_ENDUAL);
-  }
+    if (NewState != DISABLE) {
+        /* Enable dual addressing mode */
+        I2Cx->OAR2 |= I2C_OAR2_ENDUAL;
+    } else {
+        /* Disable dual addressing mode */
+        I2Cx->OAR2 &= (uint8_t)(~I2C_OAR2_ENDUAL);
+    }
 }
 
 /**
@@ -538,13 +503,13 @@ void I2C_DualAddressCmd(I2C_TypeDef* I2Cx, FunctionalState NewState)
   */
 void I2C_AckPositionConfig(I2C_TypeDef* I2Cx, I2C_AckPosition_TypeDef I2C_AckPosition)
 {
-  /* Check function parameters */
-  assert_param(IS_I2C_ACK_POSITION(I2C_AckPosition));
+    /* Check function parameters */
+    assert_param(IS_I2C_ACK_POSITION(I2C_AckPosition));
 
-  /* Clear the I2C Ack position */
-  I2Cx->CR2 &= (uint8_t)(~I2C_CR2_POS);
-  /* Configure the specified I2C Ack position*/
-  I2Cx->CR2 |= (uint8_t)I2C_AckPosition;
+    /* Clear the I2C Ack position */
+    I2Cx->CR2 &= (uint8_t)(~I2C_CR2_POS);
+    /* Configure the specified I2C Ack position*/
+    I2Cx->CR2 |= (uint8_t)I2C_AckPosition;
 }
 
 /**
@@ -559,19 +524,16 @@ void I2C_AckPositionConfig(I2C_TypeDef* I2Cx, I2C_AckPosition_TypeDef I2C_AckPos
 void I2C_SMBusAlertConfig(I2C_TypeDef* I2Cx, I2C_SMBusAlert_TypeDef I2C_SMBusAlert)
 {
 
-  /* Check functions parameters */
-  assert_param(IS_I2C_SMBUS_ALERT(I2C_SMBusAlert));
+    /* Check functions parameters */
+    assert_param(IS_I2C_SMBUS_ALERT(I2C_SMBusAlert));
 
-  if (I2C_SMBusAlert != I2C_SMBusAlert_High)
-  {
-    /* SMBus Alert pin low */
-    I2Cx->CR2 |= (uint8_t)I2C_CR2_ALERT;
-  }
-  else /*I2C_SMBusAlert = I2C_SMBusAlert_High */
-  {
-    /* SMBus Alert pin high */
-    I2Cx->CR2 &= (uint8_t)(~I2C_CR2_ALERT);
-  }
+    if (I2C_SMBusAlert != I2C_SMBusAlert_High) {
+        /* SMBus Alert pin low */
+        I2Cx->CR2 |= (uint8_t)I2C_CR2_ALERT;
+    } else { /*I2C_SMBusAlert = I2C_SMBusAlert_High */
+        /* SMBus Alert pin high */
+        I2Cx->CR2 &= (uint8_t)(~I2C_CR2_ALERT);
+    }
 }
 
 /**
@@ -586,19 +548,16 @@ void I2C_SMBusAlertConfig(I2C_TypeDef* I2Cx, I2C_SMBusAlert_TypeDef I2C_SMBusAle
 void I2C_FastModeDutyCycleConfig(I2C_TypeDef* I2Cx, I2C_DutyCycle_TypeDef I2C_DutyCycle)
 {
 
-  /* Check function parameters */
-  assert_param(IS_I2C_DUTY_CYCLE(I2C_DutyCycle));
+    /* Check function parameters */
+    assert_param(IS_I2C_DUTY_CYCLE(I2C_DutyCycle));
 
-  if (I2C_DutyCycle == I2C_DutyCycle_16_9)
-  {
-    /* I2C fast mode Tlow/Thigh = 16/9 */
-    I2Cx->CCRH |= I2C_CCRH_DUTY;
-  }
-  else /* I2C_DUTYCYCLE_2 */
-  {
-    /* I2C fast mode Tlow/Thigh = 2 */
-    I2Cx->CCRH &= (uint8_t)(~I2C_CCRH_DUTY);
-  }
+    if (I2C_DutyCycle == I2C_DutyCycle_16_9) {
+        /* I2C fast mode Tlow/Thigh = 16/9 */
+        I2Cx->CCRH |= I2C_CCRH_DUTY;
+    } else { /* I2C_DUTYCYCLE_2 */
+        /* I2C fast mode Tlow/Thigh = 2 */
+        I2Cx->CCRH &= (uint8_t)(~I2C_CCRH_DUTY);
+    }
 }
 
 /**
@@ -614,23 +573,20 @@ void I2C_FastModeDutyCycleConfig(I2C_TypeDef* I2Cx, I2C_DutyCycle_TypeDef I2C_Du
   */
 void I2C_Send7bitAddress(I2C_TypeDef* I2Cx, uint8_t Address, I2C_Direction_TypeDef I2C_Direction)
 {
-  /* Check function parameters */
-  assert_param(IS_I2C_ADDRESS(Address));
-  assert_param(IS_I2C_DIRECTION(I2C_Direction));
+    /* Check function parameters */
+    assert_param(IS_I2C_ADDRESS(Address));
+    assert_param(IS_I2C_DIRECTION(I2C_Direction));
 
-  /* Test on the direction to set/reset the read/write bit */
-  if (I2C_Direction != I2C_Direction_Transmitter)
-  {
-    /* Set the address bit0 for read */
-    Address |= OAR1_ADD0_Set;
-  }
-  else
-  {
-    /* Reset the address bit0 for write */
-    Address &= OAR1_ADD0_Reset;
-  }
-  /* Send the address */
-  I2Cx->DR = Address;
+    /* Test on the direction to set/reset the read/write bit */
+    if (I2C_Direction != I2C_Direction_Transmitter) {
+        /* Set the address bit0 for read */
+        Address |= OAR1_ADD0_Set;
+    } else {
+        /* Reset the address bit0 for write */
+        Address &= OAR1_ADD0_Reset;
+    }
+    /* Send the address */
+    I2Cx->DR = Address;
 }
 
 /**
@@ -657,8 +613,8 @@ void I2C_Send7bitAddress(I2C_TypeDef* I2Cx, uint8_t Address, I2C_Direction_TypeD
   */
 void I2C_SendData(I2C_TypeDef* I2Cx, uint8_t Data)
 {
-  /* Write in the DR register the data to be sent */
-  I2Cx->DR = Data;
+    /* Write in the DR register the data to be sent */
+    I2Cx->DR = Data;
 }
 
 /**
@@ -669,8 +625,8 @@ void I2C_SendData(I2C_TypeDef* I2Cx, uint8_t Data)
   */
 uint8_t I2C_ReceiveData(I2C_TypeDef* I2Cx)
 {
-  /* Return the data present in the DR register */
-  return ((uint8_t)I2Cx->DR);
+    /* Return the data present in the DR register */
+    return ((uint8_t)I2Cx->DR);
 }
 
 /**
@@ -698,19 +654,16 @@ uint8_t I2C_ReceiveData(I2C_TypeDef* I2Cx)
   */
 void I2C_TransmitPEC(I2C_TypeDef* I2Cx, FunctionalState NewState)
 {
-  /* Check the parameters */
-  assert_param(IS_FUNCTIONAL_STATE(NewState));
+    /* Check the parameters */
+    assert_param(IS_FUNCTIONAL_STATE(NewState));
 
-  if (NewState != DISABLE)
-  {
-    /* Enable the PEC transmission */
-    I2Cx->CR2 |= I2C_CR2_PEC;
-  }
-  else
-  {
-    /* Disable the PEC transmission */
-    I2Cx->CR2 &= (uint8_t)(~I2C_CR2_PEC);
-  }
+    if (NewState != DISABLE) {
+        /* Enable the PEC transmission */
+        I2Cx->CR2 |= I2C_CR2_PEC;
+    } else {
+        /* Disable the PEC transmission */
+        I2Cx->CR2 &= (uint8_t)(~I2C_CR2_PEC);
+    }
 }
 
 /**
@@ -722,19 +675,16 @@ void I2C_TransmitPEC(I2C_TypeDef* I2Cx, FunctionalState NewState)
   */
 void I2C_CalculatePEC(I2C_TypeDef* I2Cx, FunctionalState NewState)
 {
-  /* Check the parameters */
-  assert_param(IS_FUNCTIONAL_STATE(NewState));
+    /* Check the parameters */
+    assert_param(IS_FUNCTIONAL_STATE(NewState));
 
-  if (NewState != DISABLE)
-  {
-    /* Enable PEC calculation */
-    I2Cx->CR1 |= I2C_CR1_ENPEC;
-  }
-  else
-  {
-    /* Disable PEC calculation */
-    I2Cx->CR1 &= (uint8_t)(~I2C_CR1_ENPEC);
-  }
+    if (NewState != DISABLE) {
+        /* Enable PEC calculation */
+        I2Cx->CR1 |= I2C_CR1_ENPEC;
+    } else {
+        /* Disable PEC calculation */
+        I2Cx->CR1 &= (uint8_t)(~I2C_CR1_ENPEC);
+    }
 }
 
 /**
@@ -748,13 +698,13 @@ void I2C_CalculatePEC(I2C_TypeDef* I2Cx, FunctionalState NewState)
   */
 void I2C_PECPositionConfig(I2C_TypeDef* I2Cx, I2C_PECPosition_TypeDef I2C_PECPosition)
 {
-  /* Check the parameters */
-  assert_param(IS_I2C_PEC_POSITION(I2C_PECPosition));
+    /* Check the parameters */
+    assert_param(IS_I2C_PEC_POSITION(I2C_PECPosition));
 
-  /* Clear the I2C PEC position */
-  I2Cx->CR2 &= (uint8_t)(~I2C_CR2_POS);
-  /* Configure the specified I2C PEC position*/
-  I2Cx->CR2 |= (uint8_t)I2C_PECPosition;
+    /* Clear the I2C PEC position */
+    I2Cx->CR2 &= (uint8_t)(~I2C_CR2_POS);
+    /* Configure the specified I2C PEC position*/
+    I2Cx->CR2 |= (uint8_t)I2C_PECPosition;
 }
 
 /**
@@ -765,8 +715,8 @@ void I2C_PECPositionConfig(I2C_TypeDef* I2Cx, I2C_PECPosition_TypeDef I2C_PECPos
   */
 uint8_t I2C_GetPEC(I2C_TypeDef* I2Cx)
 {
-  /* Return the PEC value */
-  return (I2Cx->PECR);
+    /* Return the PEC value */
+    return (I2Cx->PECR);
 }
 
 /**
@@ -796,19 +746,16 @@ uint8_t I2C_GetPEC(I2C_TypeDef* I2Cx)
   */
 void I2C_DMACmd(I2C_TypeDef* I2Cx, FunctionalState NewState)
 {
-  /* Check the parameters */
-  assert_param(IS_FUNCTIONAL_STATE(NewState));
+    /* Check the parameters */
+    assert_param(IS_FUNCTIONAL_STATE(NewState));
 
-  if (NewState != DISABLE)
-  {
-    /* Enable I2C DMA requests */
-    I2Cx->ITR |= I2C_ITR_DMAEN;
-  }
-  else
-  {
-    /* Disable I2C DMA requests */
-    I2Cx->ITR &= (uint8_t)(~I2C_ITR_DMAEN);
-  }
+    if (NewState != DISABLE) {
+        /* Enable I2C DMA requests */
+        I2Cx->ITR |= I2C_ITR_DMAEN;
+    } else {
+        /* Disable I2C DMA requests */
+        I2Cx->ITR &= (uint8_t)(~I2C_ITR_DMAEN);
+    }
 }
 
 /**
@@ -820,19 +767,16 @@ void I2C_DMACmd(I2C_TypeDef* I2Cx, FunctionalState NewState)
   */
 void I2C_DMALastTransferCmd(I2C_TypeDef* I2Cx, FunctionalState NewState)
 {
-  /* Check the parameters */
-  assert_param(IS_FUNCTIONAL_STATE(NewState));
+    /* Check the parameters */
+    assert_param(IS_FUNCTIONAL_STATE(NewState));
 
-  if (NewState != DISABLE)
-  {
-    /* Enable I2C DMA requests */
-    I2Cx->ITR |= I2C_ITR_LAST;
-  }
-  else
-  {
-    /* Disable I2C DMA requests */
-    I2Cx->ITR &= (uint8_t)(~I2C_ITR_LAST);
-  }
+    if (NewState != DISABLE) {
+        /* Enable I2C DMA requests */
+        I2Cx->ITR |= I2C_ITR_LAST;
+    } else {
+        /* Disable I2C DMA requests */
+        I2Cx->ITR &= (uint8_t)(~I2C_ITR_LAST);
+    }
 }
 
 /**
@@ -947,20 +891,17 @@ void I2C_DMALastTransferCmd(I2C_TypeDef* I2Cx, FunctionalState NewState)
   */
 void I2C_ITConfig(I2C_TypeDef* I2Cx, I2C_IT_TypeDef I2C_IT, FunctionalState NewState)
 {
-  /* Check functions parameters */
-  assert_param(IS_I2C_CONFIG_IT(I2C_IT));
-  assert_param(IS_FUNCTIONAL_STATE(NewState));
+    /* Check functions parameters */
+    assert_param(IS_I2C_CONFIG_IT(I2C_IT));
+    assert_param(IS_FUNCTIONAL_STATE(NewState));
 
-  if (NewState != DISABLE)
-  {
-    /* Enable the selected I2C interrupts */
-    I2Cx->ITR |= (uint8_t)I2C_IT;
-  }
-  else /* NewState == DISABLE */
-  {
-    /* Disable the selected I2C interrupts */
-    I2Cx->ITR &= (uint8_t)(~(uint8_t)I2C_IT);
-  }
+    if (NewState != DISABLE) {
+        /* Enable the selected I2C interrupts */
+        I2Cx->ITR |= (uint8_t)I2C_IT;
+    } else { /* NewState == DISABLE */
+        /* Disable the selected I2C interrupts */
+        I2Cx->ITR &= (uint8_t)(~(uint8_t)I2C_IT);
+    }
 }
 
 /**
@@ -987,15 +928,15 @@ void I2C_ITConfig(I2C_TypeDef* I2Cx, I2C_IT_TypeDef I2C_IT, FunctionalState NewS
 
 uint8_t I2C_ReadRegister(I2C_TypeDef* I2Cx, I2C_Register_TypeDef I2C_Register)
 {
-  __IO uint16_t tmp = 0;
-  /* Check the parameters */
-  assert_param(IS_I2C_REGISTER(I2C_Register));
+    __IO uint16_t tmp = 0;
+    /* Check the parameters */
+    assert_param(IS_I2C_REGISTER(I2C_Register));
 
-  tmp = (uint16_t) I2Cx;
-  tmp += I2C_Register;
+    tmp = (uint16_t) I2Cx;
+    tmp += I2C_Register;
 
-  /* Return the selected register value */
-  return (*(__IO uint8_t *) tmp);
+    /* Return the selected register value */
+    return (*(__IO uint8_t *) tmp);
 }
 
 
@@ -1037,38 +978,32 @@ uint8_t I2C_ReadRegister(I2C_TypeDef* I2Cx, I2C_Register_TypeDef I2C_Register)
   */
 ErrorStatus I2C_CheckEvent(I2C_TypeDef* I2Cx, I2C_Event_TypeDef I2C_Event)
 {
-  __IO uint16_t lastevent = 0x00;
-  uint8_t flag1 = 0x00 ;
-  uint8_t flag2 = 0x00;
-  ErrorStatus status = ERROR;
+    __IO uint16_t lastevent = 0x00;
+    uint8_t flag1 = 0x00 ;
+    uint8_t flag2 = 0x00;
+    ErrorStatus status = ERROR;
 
-  /* Check the parameters */
-  assert_param(IS_I2C_EVENT(I2C_Event));
+    /* Check the parameters */
+    assert_param(IS_I2C_EVENT(I2C_Event));
 
-  if (I2C_Event == I2C_EVENT_SLAVE_ACK_FAILURE)
-  {
-    lastevent = I2Cx->SR2 & I2C_SR2_AF;
-  }
-  else
-  {
-    flag1 = I2Cx->SR1;
-    flag2 = I2Cx->SR3;
-    lastevent = ((uint16_t)((uint16_t)flag2 << (uint16_t)8) | (uint16_t)flag1);
-  }
-  /* Check whether the last event is equal to I2C_EVENT */
-  if (((uint16_t)lastevent & (uint16_t)I2C_Event) == (uint16_t)I2C_Event)
-  {
-    /* SUCCESS: last event is equal to I2C_EVENT */
-    status = SUCCESS;
-  }
-  else
-  {
-    /* ERROR: last event is different from I2C_EVENT */
-    status = ERROR;
-  }
+    if (I2C_Event == I2C_EVENT_SLAVE_ACK_FAILURE) {
+        lastevent = I2Cx->SR2 & I2C_SR2_AF;
+    } else {
+        flag1 = I2Cx->SR1;
+        flag2 = I2Cx->SR3;
+        lastevent = ((uint16_t)((uint16_t)flag2 << (uint16_t)8) | (uint16_t)flag1);
+    }
+    /* Check whether the last event is equal to I2C_EVENT */
+    if (((uint16_t)lastevent & (uint16_t)I2C_Event) == (uint16_t)I2C_Event) {
+        /* SUCCESS: last event is equal to I2C_EVENT */
+        status = SUCCESS;
+    } else {
+        /* ERROR: last event is different from I2C_EVENT */
+        status = ERROR;
+    }
 
-  /* Return status */
-  return status;
+    /* Return status */
+    return status;
 }
 
 /**
@@ -1088,25 +1023,22 @@ ErrorStatus I2C_CheckEvent(I2C_TypeDef* I2Cx, I2C_Event_TypeDef I2C_Event)
   */
 I2C_Event_TypeDef I2C_GetLastEvent(I2C_TypeDef* I2Cx)
 {
-  __IO uint16_t lastevent = 0;
-  uint16_t flag1 = 0;
-  uint16_t flag2 = 0;
+    __IO uint16_t lastevent = 0;
+    uint16_t flag1 = 0;
+    uint16_t flag2 = 0;
 
-  if ((I2Cx->SR2 & I2C_SR2_AF) != 0x00)
-  {
-    lastevent = I2C_EVENT_SLAVE_ACK_FAILURE;
-  }
-  else
-  {
-    /* Read the I2C status register */
-    flag1 = I2Cx->SR1;
-    flag2 = I2Cx->SR3;
+    if ((I2Cx->SR2 & I2C_SR2_AF) != 0x00) {
+        lastevent = I2C_EVENT_SLAVE_ACK_FAILURE;
+    } else {
+        /* Read the I2C status register */
+        flag1 = I2Cx->SR1;
+        flag2 = I2Cx->SR3;
 
-    /* Get the last event value from I2C status register */
-    lastevent = ((uint16_t)((uint16_t)flag2 << 8) | (uint16_t)flag1);
-  }
-  /* Return status */
-  return (I2C_Event_TypeDef)lastevent;
+        /* Get the last event value from I2C status register */
+        lastevent = ((uint16_t)((uint16_t)flag2 << 8) | (uint16_t)flag1);
+    }
+    /* Return status */
+    return (I2C_Event_TypeDef)lastevent;
 }
 
 /**
@@ -1145,50 +1077,46 @@ I2C_Event_TypeDef I2C_GetLastEvent(I2C_TypeDef* I2Cx)
   */
 FlagStatus I2C_GetFlagStatus(I2C_TypeDef* I2Cx, I2C_FLAG_TypeDef I2C_FLAG)
 {
-  uint8_t tempreg = 0;
-  uint8_t regindex = 0;
-  FlagStatus bitstatus = RESET;
+    uint8_t tempreg = 0;
+    uint8_t regindex = 0;
+    FlagStatus bitstatus = RESET;
 
-  /* Check the parameters */
-  assert_param(IS_I2C_GET_FLAG(I2C_FLAG));
+    /* Check the parameters */
+    assert_param(IS_I2C_GET_FLAG(I2C_FLAG));
 
-  /* Read flag register index */
-  regindex = (uint8_t)((uint16_t)I2C_FLAG >> 8);
-  /* Check SRx index */
-  switch (regindex)
-  {
-      /* Returns whether the status register to check is SR1 */
+    /* Read flag register index */
+    regindex = (uint8_t)((uint16_t)I2C_FLAG >> 8);
+    /* Check SRx index */
+    switch (regindex) {
+    /* Returns whether the status register to check is SR1 */
     case 0x01:
-      tempreg = (uint8_t)I2Cx->SR1;
-      break;
+        tempreg = (uint8_t)I2Cx->SR1;
+        break;
 
-      /* Returns whether the status register to check is SR2 */
+    /* Returns whether the status register to check is SR2 */
     case 0x02:
-      tempreg = (uint8_t)I2Cx->SR2;
-      break;
+        tempreg = (uint8_t)I2Cx->SR2;
+        break;
 
-      /* Returns whether the status register to check is SR3 */
+    /* Returns whether the status register to check is SR3 */
     case 0x03:
-      tempreg = (uint8_t)I2Cx->SR3;
-      break;
+        tempreg = (uint8_t)I2Cx->SR3;
+        break;
 
     default:
-      break;
-  }
+        break;
+    }
 
-  /* Check the status of the specified I2C flag */
-  if ((tempreg & (uint8_t)I2C_FLAG ) != 0)
-  {
-    /* Flag is set */
-    bitstatus = SET;
-  }
-  else
-  {
-    /* Flag is reset */
-    bitstatus = RESET;
-  }
-  /* Return the flag status */
-  return bitstatus;
+    /* Check the status of the specified I2C flag */
+    if ((tempreg & (uint8_t)I2C_FLAG ) != 0) {
+        /* Flag is set */
+        bitstatus = SET;
+    } else {
+        /* Flag is reset */
+        bitstatus = RESET;
+    }
+    /* Return the flag status */
+    return bitstatus;
 }
 /**
   * @brief  Clear flags
@@ -1222,14 +1150,14 @@ FlagStatus I2C_GetFlagStatus(I2C_TypeDef* I2Cx, I2C_FLAG_TypeDef I2C_FLAG)
   */
 void I2C_ClearFlag(I2C_TypeDef* I2Cx, I2C_FLAG_TypeDef I2C_FLAG)
 {
-  uint16_t flagpos = 0;
-  /* Check the parameters */
-  assert_param(IS_I2C_CLEAR_FLAG(I2C_FLAG));
+    uint16_t flagpos = 0;
+    /* Check the parameters */
+    assert_param(IS_I2C_CLEAR_FLAG(I2C_FLAG));
 
-  /* Get the I2C flag position */
-  flagpos = (uint16_t)I2C_FLAG & FLAG_Mask;
-  /* Clear the selected I2C flag */
-  I2Cx->SR2 = (uint8_t)((uint16_t)(~flagpos));
+    /* Get the I2C flag position */
+    flagpos = (uint16_t)I2C_FLAG & FLAG_Mask;
+    /* Clear the selected I2C flag */
+    I2Cx->SR2 = (uint8_t)((uint16_t)(~flagpos));
 }
 
 /**
@@ -1257,48 +1185,39 @@ void I2C_ClearFlag(I2C_TypeDef* I2Cx, I2C_FLAG_TypeDef I2C_FLAG)
   */
 ITStatus I2C_GetITStatus(I2C_TypeDef* I2Cx, I2C_IT_TypeDef I2C_IT)
 {
-  ITStatus bitstatus = RESET;
-  __IO uint8_t enablestatus = 0;
-  uint16_t tempregister = 0;
+    ITStatus bitstatus = RESET;
+    __IO uint8_t enablestatus = 0;
+    uint16_t tempregister = 0;
 
-  /* Check the parameters */
-  assert_param(IS_I2C_GET_IT(I2C_IT));
+    /* Check the parameters */
+    assert_param(IS_I2C_GET_IT(I2C_IT));
 
-  tempregister = (uint8_t)( ((uint16_t)((uint16_t)I2C_IT & ITEN_Mask)) >> 8);
+    tempregister = (uint8_t)( ((uint16_t)((uint16_t)I2C_IT & ITEN_Mask)) >> 8);
 
-  /* Check if the interrupt source is enabled or not */
-  enablestatus = (uint8_t)(I2Cx->ITR & ( uint8_t)tempregister);
+    /* Check if the interrupt source is enabled or not */
+    enablestatus = (uint8_t)(I2Cx->ITR & ( uint8_t)tempregister);
 
-  if ((uint16_t)((uint16_t)I2C_IT & REGISTER_Mask) == REGISTER_SR1_Index)
-  {
-    /* Check the status of the specified I2C flag */
-    if (((I2Cx->SR1 & (uint8_t)I2C_IT) != RESET) && enablestatus)
-    {
-      /* I2C_IT is set */
-      bitstatus = SET;
+    if ((uint16_t)((uint16_t)I2C_IT & REGISTER_Mask) == REGISTER_SR1_Index) {
+        /* Check the status of the specified I2C flag */
+        if (((I2Cx->SR1 & (uint8_t)I2C_IT) != RESET) && enablestatus) {
+            /* I2C_IT is set */
+            bitstatus = SET;
+        } else {
+            /* I2C_IT is reset */
+            bitstatus = RESET;
+        }
+    } else {
+        /* Check the status of the specified I2C flag */
+        if (((I2Cx->SR2 & (uint8_t)I2C_IT) != RESET) && enablestatus) {
+            /* I2C_IT is set */
+            bitstatus = SET;
+        } else {
+            /* I2C_IT is reset */
+            bitstatus = RESET;
+        }
     }
-    else
-    {
-      /* I2C_IT is reset */
-      bitstatus = RESET;
-    }
-  }
-  else
-  {
-    /* Check the status of the specified I2C flag */
-    if (((I2Cx->SR2 & (uint8_t)I2C_IT) != RESET) && enablestatus)
-    {
-      /* I2C_IT is set */
-      bitstatus = SET;
-    }
-    else
-    {
-      /* I2C_IT is reset */
-      bitstatus = RESET;
-    }
-  }
-  /* Return the I2C_IT status */
-  return  bitstatus;
+    /* Return the I2C_IT status */
+    return  bitstatus;
 }
 /**
   * @brief  Clear IT pending bit
@@ -1333,16 +1252,16 @@ ITStatus I2C_GetITStatus(I2C_TypeDef* I2Cx, I2C_IT_TypeDef I2C_IT)
   */
 void I2C_ClearITPendingBit(I2C_TypeDef* I2Cx, I2C_IT_TypeDef I2C_IT)
 {
-  uint16_t flagpos = 0;
+    uint16_t flagpos = 0;
 
-  /* Check the parameters */
-  assert_param(IS_I2C_CLEAR_IT(I2C_IT));
+    /* Check the parameters */
+    assert_param(IS_I2C_CLEAR_IT(I2C_IT));
 
-  /* Get the I2C flag position */
-  flagpos = (uint16_t)I2C_IT & FLAG_Mask;
+    /* Get the I2C flag position */
+    flagpos = (uint16_t)I2C_IT & FLAG_Mask;
 
-  /* Clear the selected I2C flag */
-  I2Cx->SR2 = (uint8_t)((uint16_t)~flagpos);
+    /* Clear the selected I2C flag */
+    I2Cx->SR2 = (uint8_t)((uint16_t)~flagpos);
 }
 /**
   * @}

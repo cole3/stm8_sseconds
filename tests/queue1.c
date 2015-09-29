@@ -64,24 +64,17 @@ uint32_t test_start (void)
     failures = 0;
 
     /* Test creation and deletion of queues: good values */
-    for (i = 0; i < 1000; i++)
-    {
-        if (atomQueueCreate (&queue1, &queue1_storage[0], sizeof(uint8_t), QUEUE_ENTRIES) == ATOM_OK)
-        {
-            if (atomQueueDelete (&queue1) == ATOM_OK)
-            {
+    for (i = 0; i < 1000; i++) {
+        if (atomQueueCreate (&queue1, &queue1_storage[0], sizeof(uint8_t), QUEUE_ENTRIES) == ATOM_OK) {
+            if (atomQueueDelete (&queue1) == ATOM_OK) {
                 /* Success */
-            }
-            else
-            {
+            } else {
                 /* Fail */
                 ATOMLOG (_STR("Error deleting queue\n"));
                 failures++;
                 break;
             }
-        }
-        else
-        {
+        } else {
             /* Fail */
             ATOMLOG (_STR("Error creating queue\n"));
             failures++;
@@ -90,54 +83,39 @@ uint32_t test_start (void)
     }
 
     /* Test creation and deletion of queues: creation checks */
-    if (atomQueueCreate (NULL, &queue1_storage[0], sizeof(uint8_t), QUEUE_ENTRIES) != ATOM_OK)
-    {
+    if (atomQueueCreate (NULL, &queue1_storage[0], sizeof(uint8_t), QUEUE_ENTRIES) != ATOM_OK) {
         /* Success */
-    }
-    else
-    {
+    } else {
         /* Fail */
         ATOMLOG (_STR("Bad queue ptr check\n"));
         failures++;
     }
-    if (atomQueueCreate (&queue1, NULL, sizeof(uint8_t), QUEUE_ENTRIES) != ATOM_OK)
-    {
+    if (atomQueueCreate (&queue1, NULL, sizeof(uint8_t), QUEUE_ENTRIES) != ATOM_OK) {
         /* Success */
-    }
-    else
-    {
+    } else {
         /* Fail */
         ATOMLOG (_STR("Bad buff ptr check\n"));
         failures++;
     }
-    if (atomQueueCreate (&queue1, &queue1_storage[0], 0, QUEUE_ENTRIES) != ATOM_OK)
-    {
+    if (atomQueueCreate (&queue1, &queue1_storage[0], 0, QUEUE_ENTRIES) != ATOM_OK) {
         /* Success */
-    }
-    else
-    {
+    } else {
         /* Fail */
         ATOMLOG (_STR("Bad size check\n"));
         failures++;
     }
-    if (atomQueueCreate (&queue1, &queue1_storage[0], sizeof(uint8_t), 0) != ATOM_OK)
-    {
+    if (atomQueueCreate (&queue1, &queue1_storage[0], sizeof(uint8_t), 0) != ATOM_OK) {
         /* Success */
-    }
-    else
-    {
+    } else {
         /* Fail */
         ATOMLOG (_STR("Bad entries check\n"));
         failures++;
     }
 
     /* Test creation and deletion of queues: deletion checks */
-    if (atomQueueDelete (NULL) != ATOM_OK)
-    {
+    if (atomQueueDelete (NULL) != ATOM_OK) {
         /* Success */
-    }
-    else
-    {
+    } else {
         /* Fail */
         ATOMLOG (_STR("Bad queue deletion checks\n"));
         failures++;

@@ -73,9 +73,8 @@ uint32_t test_start (void)
 
     /* Create Thread 1 */
     if (atomThreadCreate(&tcb[0], TEST_THREAD_PRIO, test_thread_func, 1,
-          &test_thread_stack[0][TEST_THREAD_STACK_SIZE - 1],
-          TEST_THREAD_STACK_SIZE) != ATOM_OK)
-    {
+                         &test_thread_stack[0][TEST_THREAD_STACK_SIZE - 1],
+                         TEST_THREAD_STACK_SIZE) != ATOM_OK) {
         /* Fail */
         ATOMLOG (_STR("Thread1\n"));
         failures++;
@@ -83,9 +82,8 @@ uint32_t test_start (void)
 
     /* Create Thread 2 */
     if (atomThreadCreate(&tcb[1], TEST_THREAD_PRIO, test_thread_func, 2,
-          &test_thread_stack[1][TEST_THREAD_STACK_SIZE - 1],
-          TEST_THREAD_STACK_SIZE) != ATOM_OK)
-    {
+                         &test_thread_stack[1][TEST_THREAD_STACK_SIZE - 1],
+                         TEST_THREAD_STACK_SIZE) != ATOM_OK) {
         /* Fail */
         ATOMLOG (_STR("Thread2\n"));
         failures++;
@@ -93,17 +91,15 @@ uint32_t test_start (void)
 
     /* Create Thread 3 */
     if (atomThreadCreate(&tcb[2], TEST_THREAD_PRIO, test_thread_func, 3,
-          &test_thread_stack[2][TEST_THREAD_STACK_SIZE - 1],
-          TEST_THREAD_STACK_SIZE) != ATOM_OK)
-    {
+                         &test_thread_stack[2][TEST_THREAD_STACK_SIZE - 1],
+                         TEST_THREAD_STACK_SIZE) != ATOM_OK) {
         /* Fail */
         ATOMLOG (_STR("Thread3\n"));
         failures++;
     }
 
     /* Sleep for 10 seconds allowing the three threads to run tests */
-    if (atomTimerDelay(TEST_PERIOD_SECS * SYSTEM_TICKS_PER_SEC) != ATOM_OK)
-    {
+    if (atomTimerDelay(TEST_PERIOD_SECS * SYSTEM_TICKS_PER_SEC) != ATOM_OK) {
         ATOMLOG (_STR("Period\n"));
         failures++;
     }
@@ -118,19 +114,14 @@ uint32_t test_start (void)
         int thread;
 
         /* Check all threads */
-        for (thread = 0; thread < NUM_TEST_THREADS; thread++)
-        {
+        for (thread = 0; thread < NUM_TEST_THREADS; thread++) {
             /* Check thread stack usage */
-            if (atomThreadStackCheck (&tcb[thread], &used_bytes, &free_bytes) != ATOM_OK)
-            {
+            if (atomThreadStackCheck (&tcb[thread], &used_bytes, &free_bytes) != ATOM_OK) {
                 ATOMLOG (_STR("StackCheck\n"));
                 failures++;
-            }
-            else
-            {
+            } else {
                 /* Check the thread did not use up to the end of stack */
-                if (free_bytes == 0)
-                {
+                if (free_bytes == 0) {
                     ATOMLOG (_STR("StackOverflow %d\n"), thread);
                     failures++;
                 }
@@ -178,24 +169,19 @@ static void test_thread_func (uint32_t param)
     atomTimerDelay (1);
 
     /* Loop running the test forever */
-    while (1)
-    {
+    while (1) {
         /* Record the start time */
         start_time = atomTimeGet();
 
         /* Sleep for n ticks, where n is the thread ID */
-        if (atomTimerDelay(thread_id) != ATOM_OK)
-        {
+        if (atomTimerDelay(thread_id) != ATOM_OK) {
             g_failure_cnt[thread_id-1]++;
-        }
-        else
-        {
+        } else {
             /* Record the time we woke up */
             end_time = atomTimeGet();
 
             /* Check that time has advanced by exactly n ticks */
-            if ((end_time - start_time) != thread_id)
-            {
+            if ((end_time - start_time) != thread_id) {
                 g_failure_cnt[thread_id-1]++;
             }
         }

@@ -66,8 +66,7 @@ uint32_t test_start (void)
     failures = 0;
 
     /* Clear down the ran flag for all four timers */
-    for (i = 0; i < 4; i++)
-    {
+    for (i = 0; i < 4; i++) {
         callback_ran_flag[i] = FALSE;
     }
 
@@ -76,8 +75,7 @@ uint32_t test_start (void)
      * requested starting in one second, with the others
      * at 1 tick intervals thereafter.
      */
-    for (i = 0; i < 4; i++)
-    {
+    for (i = 0; i < 4; i++) {
         /*
          * testCallback() is passed a pointer to the flag it
          * should set to notify that it has run.
@@ -88,45 +86,36 @@ uint32_t test_start (void)
     }
 
     /* Register all four timers */
-    for (i = 0; i < 4; i++)
-    {
-        if (atomTimerRegister (&timer_cb[i]) != ATOM_OK)
-        {
+    for (i = 0; i < 4; i++) {
+        if (atomTimerRegister (&timer_cb[i]) != ATOM_OK) {
             ATOMLOG (_STR("TimerReg\n"));
             failures++;
         }
     }
 
     /* Check timers were successfully created */
-    if (failures == 0)
-    {
+    if (failures == 0) {
         /* Cancel two of the callbacks */
-        if (atomTimerCancel (&timer_cb[1]) != ATOM_OK)
-        {
+        if (atomTimerCancel (&timer_cb[1]) != ATOM_OK) {
             ATOMLOG (_STR("Cancel1\n"));
             failures++;
         }
-        if (atomTimerCancel (&timer_cb[2]) != ATOM_OK)
-        {
+        if (atomTimerCancel (&timer_cb[2]) != ATOM_OK) {
             ATOMLOG (_STR("Cancel2\n"));
             failures++;
         }
 
         /* Wait two seconds for callbacks to complete */
-        if (atomTimerDelay(2 * SYSTEM_TICKS_PER_SEC) != ATOM_OK)
-        {
+        if (atomTimerDelay(2 * SYSTEM_TICKS_PER_SEC) != ATOM_OK) {
             ATOMLOG (_STR("Wait\n"));
             failures++;
-        }
-        else
-        {
+        } else {
             /*
              * We should now find that timer callbacks 0 and 3
              * have run, but 1 and 2 did not (due to cancellation).
              */
             if ((callback_ran_flag[0] != TRUE) || (callback_ran_flag[3] != TRUE)
-                || (callback_ran_flag[1] != FALSE) || (callback_ran_flag[2] != FALSE))
-            {
+                || (callback_ran_flag[1] != FALSE) || (callback_ran_flag[2] != FALSE)) {
                 ATOMLOG (_STR("Cancellations\n"));
                 failures++;
             }

@@ -98,8 +98,7 @@ static NO_REG_SAVE void thread_shell (void)
 #endif
 
     /* Call the thread entry point */
-    if (curr_tcb && curr_tcb->entry_point)
-    {
+    if (curr_tcb && curr_tcb->entry_point) {
         curr_tcb->entry_point(curr_tcb->entry_param);
     }
 
@@ -238,26 +237,26 @@ void archInitSystemTickTimer ( void )
 {
     /* Reset TIM1 */
     TIM4_DeInit();
-		/* Enable TIM4 CLK */
-		CLK_PeripheralClockConfig(CLK_Peripheral_TIM4, ENABLE);
-		
-		/* TIM4 configuration:
-		 - TIM4CLK is set to 16 MHz, the TIM4 Prescaler is equal to 128 so the TIM1 counter
-		 clock used is 16 MHz / 1024 = 15625 Hz
-		- With 125 000 Hz we can generate time base:
-				max time base is 2.048 ms if TIM4_PERIOD = 255 --> (255 + 1) / 15625 = 16.384 ms
-				min time base is 0.016 ms if TIM4_PERIOD = 1   --> (  1 + 1) / 15625 = 0.128 ms
-		- In this example we need to generate a time base equal to 8 ms
-		 so TIM4_PERIOD = (0.008 * 15625 - 1) = 124 */
-		
-		/* Time base configuration */
-		TIM4_TimeBaseInit(TIM4_Prescaler_1024, 124);
-		/* Clear TIM4 update flag */
-		TIM4_ClearFlag(TIM4_FLAG_Update);
-		/* Enable update interrupt */
-		TIM4_ITConfig(TIM4_IT_Update, ENABLE);
-		/* Enable TIM4 */
-		TIM4_Cmd(ENABLE);
+    /* Enable TIM4 CLK */
+    CLK_PeripheralClockConfig(CLK_Peripheral_TIM4, ENABLE);
+
+    /* TIM4 configuration:
+     - TIM4CLK is set to 16 MHz, the TIM4 Prescaler is equal to 128 so the TIM1 counter
+     clock used is 16 MHz / 1024 = 15625 Hz
+    - With 125 000 Hz we can generate time base:
+    		max time base is 2.048 ms if TIM4_PERIOD = 255 --> (255 + 1) / 15625 = 16.384 ms
+    		min time base is 0.016 ms if TIM4_PERIOD = 1   --> (  1 + 1) / 15625 = 0.128 ms
+    - In this example we need to generate a time base equal to 8 ms
+     so TIM4_PERIOD = (0.008 * 15625 - 1) = 124 */
+
+    /* Time base configuration */
+    TIM4_TimeBaseInit(TIM4_Prescaler_1024, 124);
+    /* Clear TIM4 update flag */
+    TIM4_ClearFlag(TIM4_FLAG_Update);
+    /* Enable update interrupt */
+    TIM4_ITConfig(TIM4_IT_Update, ENABLE);
+    /* Enable TIM4 */
+    TIM4_Cmd(ENABLE);
 }
 
 

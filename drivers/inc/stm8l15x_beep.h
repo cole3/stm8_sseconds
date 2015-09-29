@@ -17,7 +17,7 @@
   * CODING INFORMATION CONTAINED HEREIN IN CONNECTION WITH THEIR PRODUCTS.
   *
   * <h2><center>&copy; COPYRIGHT 2011 STMicroelectronics</center></h2>
-  ******************************************************************************  
+  ******************************************************************************
   */
 
 /* Define to prevent recursive inclusion -------------------------------------*/
@@ -30,29 +30,29 @@
 /** @addtogroup STM8L15x_StdPeriph_Driver
   * @{
   */
-  
+
 /** @addtogroup BEEP
   * @{
-  */ 
-  
+  */
+
 /* Exported types ------------------------------------------------------------*/
 /** @defgroup BEEP_Exported_Types
   * @{
   */
-  
+
 /** @defgroup BEEP_Frequency
   * @{
   */
 typedef enum {
-  BEEP_Frequency_1KHz = (uint8_t)0x00,  /*!< Beep signal output frequency 1 KHz */
-  BEEP_Frequency_2KHz = (uint8_t)0x40,  /*!< Beep signal output frequency 2 KHz */
-  BEEP_Frequency_4KHz = (uint8_t)0x80   /*!< Beep signal output frequency 4 KHz */
+    BEEP_Frequency_1KHz = (uint8_t)0x00,  /*!< Beep signal output frequency 1 KHz */
+    BEEP_Frequency_2KHz = (uint8_t)0x40,  /*!< Beep signal output frequency 2 KHz */
+    BEEP_Frequency_4KHz = (uint8_t)0x80   /*!< Beep signal output frequency 4 KHz */
 } BEEP_Frequency_TypeDef;
 
 #define IS_BEEP_FREQUENCY(FREQ) (((FREQ) == BEEP_Frequency_1KHz) || \
                                  ((FREQ) == BEEP_Frequency_2KHz) || \
                                  ((FREQ) == BEEP_Frequency_4KHz))
- 
+
 /**
   * @}
   */
@@ -60,7 +60,7 @@ typedef enum {
 /**
   * @}
   */
-      
+
 /* Exported constants --------------------------------------------------------*/
 /** @defgroup BEEP_Exported_Constants
   * @{
@@ -86,7 +86,7 @@ typedef enum {
 
 /* Exported functions ------------------------------------------------------- */
 
-/*  Function used to set the BEEP configuration to the default reset state *****/  
+/*  Function used to set the BEEP configuration to the default reset state *****/
 void BEEP_DeInit(void);
 
 /* Initialization and Configuration functions *********************************/

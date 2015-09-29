@@ -28,7 +28,7 @@
  */
 
 
-/** 
+/**
  * \file
  * Mutex library.
  *
@@ -70,7 +70,7 @@
  * prevents programming errors whereby the wrong thread is used to
  * perform the unlock. This cannot be done for semaphores which do not
  * have a concept of ownership (because it must be possible to use them
- * to signal between threads). 
+ * to signal between threads).
  *
  * \par Smart mutex deletion
  * Where a mutex is deleted while threads are blocking on it, all blocking
@@ -92,7 +92,7 @@
  * lock request will return with an error). If a mutex is released while
  * threads are blocking on it, the highest priority thread is woken. Where
  * multiple threads of the same priority are blocking, they are woken in the
- * order in which the threads started blocking. 
+ * order in which the threads started blocking.
  *
  * A mutex which is no longer required can be deleted using atomMutexDelete().
  * This function automatically wakes up any threads which are waiting on the
@@ -109,8 +109,7 @@
 
 /* Local data types */
 
-typedef struct mutex_timer
-{
+typedef struct mutex_timer {
     ATOM_TCB *tcb_ptr;      /* Thread which is suspended with timeout */
     ATOM_MUTEX *mutex_ptr;  /* Mutex the thread is suspended on */
 } MUTEX_TIMER;
@@ -146,13 +145,10 @@ uint8_t atomMutexCreate (ATOM_MUTEX *mutex)
     uint8_t status;
 
     /* Parameter check */
-    if (mutex == NULL)
-    {
+    if (mutex == NULL) {
         /* Bad mutex pointer */
         status = ATOM_ERR_PARAM;
-    }
-    else
-    {
+    } else {
         /* Start with no owner (unlocked) */
         mutex->owner = NULL;
 
@@ -198,19 +194,15 @@ uint8_t atomMutexDelete (ATOM_MUTEX *mutex)
     uint8_t woken_threads = FALSE;
 
     /* Parameter check */
-    if (mutex == NULL)
-    {
+    if (mutex == NULL) {
         /* Bad mutex pointer */
         status = ATOM_ERR_PARAM;
-    }
-    else
-    {
+    } else {
         /* Default to success status unless errors occur during wakeup */
         status = ATOM_OK;
 
         /* Wake up all suspended tasks */
-        while (1)
-        {
+        while (1) {
             /* Enter critical region */
             CRITICAL_START ();
 
@@ -218,14 +210,12 @@ uint8_t atomMutexDelete (ATOM_MUTEX *mutex)
             tcb_ptr = tcbDequeueHead (&mutex->suspQ);
 
             /* A thread is suspended on the mutex */
-            if (tcb_ptr)
-            {
+            if (tcb_ptr) {
                 /* Return error status to the waiting thread */
                 tcb_ptr->suspend_wake_status = ATOM_ERR_DELETED;
 
                 /* Put the thread on the ready queue */
-                if (tcbEnqueuePriority (&tcbReadyQ, tcb_ptr) != ATOM_OK)
-                {
+                if (tcbEnqueuePriority (&tcbReadyQ, tcb_ptr) != ATOM_OK) {
                     /* Exit critical region */
                     CRITICAL_END ();
 
@@ -235,11 +225,9 @@ uint8_t atomMutexDelete (ATOM_MUTEX *mutex)
                 }
 
                 /* If there's a timeout on this suspension, cancel it */
-                if (tcb_ptr->suspend_timo_cb)
-                {
+                if (tcb_ptr->suspend_timo_cb) {
                     /* Cancel the callback */
-                    if (atomTimerCancel (tcb_ptr->suspend_timo_cb) != ATOM_OK)
-                    {
+                    if (atomTimerCancel (tcb_ptr->suspend_timo_cb) != ATOM_OK) {
                         /* Exit critical region */
                         CRITICAL_END ();
 
@@ -261,8 +249,7 @@ uint8_t atomMutexDelete (ATOM_MUTEX *mutex)
             }
 
             /* No more suspended threads */
-            else
-            {
+            else {
                 /* Exit critical region and quit the loop */
                 CRITICAL_END ();
                 break;
@@ -270,8 +257,7 @@ uint8_t atomMutexDelete (ATOM_MUTEX *mutex)
         }
 
         /* Call scheduler if any threads were woken up */
-        if (woken_threads == TRUE)
-        {
+        if (woken_threads == TRUE) {
             /**
              * Only call the scheduler if we are in thread context, otherwise
              * it will be called on exiting the ISR by atomIntExit().
@@ -346,13 +332,10 @@ uint8_t atomMutexGet (ATOM_MUTEX *mutex, int32_t timeout)
     ATOM_TCB *curr_tcb_ptr;
 
     /* Check parameters */
-    if (mutex == NULL)
-    {
+    if (mutex == NULL) {
         /* Bad mutex pointer */
         status = ATOM_ERR_PARAM;
-    }
-    else
-    {
+    } else {
         /* Get the current TCB */
         curr_tcb_ptr = atomCurrentContext();
 
@@ -364,8 +347,7 @@ uint8_t atomMutexGet (ATOM_MUTEX *mutex, int32_t timeout)
          * owner threads, it is never valid to call here from an ISR,
          * regardless of whether we will block.
          */
-        if (curr_tcb_ptr == NULL)
-        {
+        if (curr_tcb_ptr == NULL) {
             /* Exit critical region */
             CRITICAL_END ();
 
@@ -374,22 +356,17 @@ uint8_t atomMutexGet (ATOM_MUTEX *mutex, int32_t timeout)
         }
 
         /* Otherwise if mutex is owned by another thread, block the calling thread */
-        else if ((mutex->owner != NULL) && (mutex->owner != curr_tcb_ptr))
-        {
+        else if ((mutex->owner != NULL) && (mutex->owner != curr_tcb_ptr)) {
             /* If called with timeout >= 0, we should block */
-            if (timeout >= 0)
-            {
+            if (timeout >= 0) {
                 /* Add current thread to the suspend list on this mutex */
-                if (tcbEnqueuePriority (&mutex->suspQ, curr_tcb_ptr) != ATOM_OK)
-                {
+                if (tcbEnqueuePriority (&mutex->suspQ, curr_tcb_ptr) != ATOM_OK) {
                     /* Exit critical region */
                     CRITICAL_END ();
 
                     /* There was an error putting this thread on the suspend list */
                     status = ATOM_ERR_QUEUE;
-                }
-                else
-                {
+                } else {
                     /* Set suspended status for the current thread */
                     curr_tcb_ptr->suspended = TRUE;
 
@@ -397,8 +374,7 @@ uint8_t atomMutexGet (ATOM_MUTEX *mutex, int32_t timeout)
                     status = ATOM_OK;
 
                     /* Register a timer callback if requested */
-                    if (timeout)
-                    {
+                    if (timeout) {
                         /* Fill out the data needed by the callback to wake us up */
                         timer_data.tcb_ptr = curr_tcb_ptr;
                         timer_data.mutex_ptr = mutex;
@@ -416,8 +392,7 @@ uint8_t atomMutexGet (ATOM_MUTEX *mutex, int32_t timeout)
                         curr_tcb_ptr->suspend_timo_cb = &timer_cb;
 
                         /* Register a callback on timeout */
-                        if (atomTimerRegister (&timer_cb) != ATOM_OK)
-                        {
+                        if (atomTimerRegister (&timer_cb) != ATOM_OK) {
                             /* Timer registration failed */
                             status = ATOM_ERR_TIMER;
 
@@ -429,8 +404,7 @@ uint8_t atomMutexGet (ATOM_MUTEX *mutex, int32_t timeout)
                     }
 
                     /* Set no timeout requested */
-                    else
-                    {
+                    else {
                         /* No need to cancel timeouts on this one */
                         curr_tcb_ptr->suspend_timo_cb = NULL;
                     }
@@ -439,8 +413,7 @@ uint8_t atomMutexGet (ATOM_MUTEX *mutex, int32_t timeout)
                     CRITICAL_END ();
 
                     /* Check no errors have occurred */
-                    if (status == ATOM_OK)
-                    {
+                    if (status == ATOM_OK) {
                         /**
                          * Current thread now blocking, schedule in a new
                          * one. We already know we are in thread context
@@ -464,8 +437,7 @@ uint8_t atomMutexGet (ATOM_MUTEX *mutex, int32_t timeout)
                          * between this thread being made ready to run, and
                          * actually being scheduled back in here.
                          */
-                        if (status == ATOM_OK)
-                        {
+                        if (status == ATOM_OK) {
                             /**
                              * Since this thread has just gained ownership, the
                              * lock count is zero and should be incremented
@@ -475,32 +447,24 @@ uint8_t atomMutexGet (ATOM_MUTEX *mutex, int32_t timeout)
                         }
                     }
                 }
-            }
-            else
-            {
+            } else {
                 /* timeout == -1, requested not to block and mutex is owned by another thread */
                 CRITICAL_END();
                 status = ATOM_WOULDBLOCK;
             }
-        }
-        else
-        {
+        } else {
             /* Thread is not owned or is owned by us, we can claim ownership */
 
             /* Increment the lock count, checking for count overflow */
-            if (mutex->count == 255)
-            {
+            if (mutex->count == 255) {
                 /* Don't increment, just return error status */
                 status = ATOM_ERR_OVF;
-            }
-            else
-            {
+            } else {
                 /* Increment the count and return to the calling thread */
                 mutex->count++;
 
                 /* If the mutex is not locked, mark the calling thread as the new owner */
-                if (mutex->owner == NULL)
-                {
+                if (mutex->owner == NULL) {
                     mutex->owner = curr_tcb_ptr;
                 }
 
@@ -550,13 +514,10 @@ uint8_t atomMutexPut (ATOM_MUTEX * mutex)
     ATOM_TCB *tcb_ptr, *curr_tcb_ptr;
 
     /* Check parameters */
-    if (mutex == NULL)
-    {
+    if (mutex == NULL) {
         /* Bad mutex pointer */
         status = ATOM_ERR_PARAM;
-    }
-    else
-    {
+    } else {
         /* Get the current TCB */
         curr_tcb_ptr = atomCurrentContext();
 
@@ -564,44 +525,36 @@ uint8_t atomMutexPut (ATOM_MUTEX * mutex)
         CRITICAL_START ();
 
         /* Check if the calling thread owns this mutex */
-        if (mutex->owner != curr_tcb_ptr)
-        {
+        if (mutex->owner != curr_tcb_ptr) {
             /* Exit critical region */
             CRITICAL_END ();
 
             /* Attempt to unlock by non-owning thread */
             status = ATOM_ERR_OWNERSHIP;
-        }
-        else
-        {
+        } else {
             /* Lock is owned by this thread, decrement the recursive lock count */
             mutex->count--;
 
             /* Once recursive lock count reaches zero, we relinquish ownership */
-            if (mutex->count == 0)
-            {
+            if (mutex->count == 0) {
                 /* Relinquish ownership */
                 mutex->owner = NULL;
 
                 /* If any threads are blocking on this mutex, wake them now */
-                if (mutex->suspQ)
-                {
+                if (mutex->suspQ) {
                     /**
                      * Threads are woken up in priority order, with a FIFO system
                      * used on same priority threads. We always take the head,
                      * ordering is taken care of by an ordered list enqueue.
                      */
                     tcb_ptr = tcbDequeueHead (&mutex->suspQ);
-                    if (tcbEnqueuePriority (&tcbReadyQ, tcb_ptr) != ATOM_OK)
-                    {
+                    if (tcbEnqueuePriority (&tcbReadyQ, tcb_ptr) != ATOM_OK) {
                         /* Exit critical region */
                         CRITICAL_END ();
 
                         /* There was a problem putting the thread on the ready queue */
                         status = ATOM_ERR_QUEUE;
-                    }
-                    else
-                    {
+                    } else {
                         /* Set OK status to be returned to the waiting thread */
                         tcb_ptr->suspend_wake_status = ATOM_OK;
 
@@ -610,13 +563,10 @@ uint8_t atomMutexPut (ATOM_MUTEX * mutex)
 
                         /* If there's a timeout on this suspension, cancel it */
                         if ((tcb_ptr->suspend_timo_cb != NULL)
-                            && (atomTimerCancel (tcb_ptr->suspend_timo_cb) != ATOM_OK))
-                        {
+                            && (atomTimerCancel (tcb_ptr->suspend_timo_cb) != ATOM_OK)) {
                             /* There was a problem cancelling a timeout on this mutex */
                             status = ATOM_ERR_TIMER;
-                        }
-                        else
-                        {
+                        } else {
                             /* Flag as no timeout registered */
                             tcb_ptr->suspend_timo_cb = NULL;
 
@@ -634,9 +584,7 @@ uint8_t atomMutexPut (ATOM_MUTEX * mutex)
                          */
                         atomSched (FALSE);
                     }
-                }
-                else
-                {
+                } else {
                     /**
                      * Relinquished ownership and no threads waiting.
                      * Nothing to do.
@@ -648,9 +596,7 @@ uint8_t atomMutexPut (ATOM_MUTEX * mutex)
                     /* Successful */
                     status = ATOM_OK;
                 }
-            }
-            else
-            {
+            } else {
                 /**
                  * Decremented lock but still retain ownership due to
                  * recursion. Nothing to do.
@@ -690,8 +636,7 @@ static void atomMutexTimerCallback (POINTER cb_data)
     timer_data_ptr = (MUTEX_TIMER *)cb_data;
 
     /* Check parameter is valid */
-    if (timer_data_ptr)
-    {
+    if (timer_data_ptr) {
         /* Enter critical region */
         CRITICAL_START ();
 

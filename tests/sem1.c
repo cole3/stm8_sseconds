@@ -71,24 +71,17 @@ uint32_t test_start (void)
     failures = 0;
 
     /* Test creation and deletion of semaphores: good values */
-    for (i = 0; i < 1000; i++)
-    {
-        if (atomSemCreate (&sem1, 0) == ATOM_OK)
-        {
-            if (atomSemDelete (&sem1) == ATOM_OK)
-            {
+    for (i = 0; i < 1000; i++) {
+        if (atomSemCreate (&sem1, 0) == ATOM_OK) {
+            if (atomSemDelete (&sem1) == ATOM_OK) {
                 /* Success */
-            }
-            else
-            {
+            } else {
                 /* Fail */
                 ATOMLOG (_STR("Error deleting semaphore\n"));
                 failures++;
                 break;
             }
-        }
-        else
-        {
+        } else {
             /* Fail */
             ATOMLOG (_STR("Error creating semaphore\n"));
             failures++;
@@ -97,52 +90,41 @@ uint32_t test_start (void)
     }
 
     /* Test creation and deletion of semaphores: creation checks */
-    if (atomSemCreate (NULL, 0) != ATOM_OK)
-    {
+    if (atomSemCreate (NULL, 0) != ATOM_OK) {
         /* Success */
-    }
-    else
-    {
+    } else {
         /* Fail */
         ATOMLOG (_STR("Bad semaphore creation checks\n"));
         failures++;
     }
 
     /* Test creation and deletion of semaphores: deletion checks */
-    if (atomSemDelete (NULL) != ATOM_OK)
-    {
+    if (atomSemDelete (NULL) != ATOM_OK) {
         /* Success */
-    }
-    else
-    {
+    } else {
         /* Fail */
         ATOMLOG (_STR("Bad semaphore deletion checks\n"));
         failures++;
     }
 
     /* Test wakeup of threads on semaphore deletion (thread blocking with no timeout) */
-    if (atomSemCreate (&sem1, 0) != ATOM_OK)
-    {
+    if (atomSemCreate (&sem1, 0) != ATOM_OK) {
         ATOMLOG (_STR("Error creating test semaphore 1\n"));
         failures++;
     }
 
-    else if (atomSemCreate (&sem2, 0) != ATOM_OK)
-    {
+    else if (atomSemCreate (&sem2, 0) != ATOM_OK) {
         ATOMLOG (_STR("Error creating test semaphore 2\n"));
         failures++;
     }
 
     else if (atomThreadCreate(&tcb[0], TEST_THREAD_PRIO, test1_thread_func, 0,
-              &test_thread_stack[0][TEST_THREAD_STACK_SIZE - 1],
-              TEST_THREAD_STACK_SIZE) != ATOM_OK)
-    {
+                              &test_thread_stack[0][TEST_THREAD_STACK_SIZE - 1],
+                              TEST_THREAD_STACK_SIZE) != ATOM_OK) {
         /* Fail */
         ATOMLOG (_STR("Error creating test thread 1\n"));
         failures++;
-    }
-    else
-    {
+    } else {
 
         /*
          * We have created two semaphores. sem1 is for the other thread
@@ -153,34 +135,24 @@ uint32_t test_start (void)
          */
 
         /* Wait for the other thread to start blocking on sem1 */
-        if (atomTimerDelay(SYSTEM_TICKS_PER_SEC) != ATOM_OK)
-        {
+        if (atomTimerDelay(SYSTEM_TICKS_PER_SEC) != ATOM_OK) {
             ATOMLOG (_STR("Failed timer delay\n"));
             failures++;
-        }
-        else
-        {
+        } else {
             /* The other thread will be blocking on sem1 now, delete sem1 */
-            if (atomSemDelete(&sem1) != ATOM_OK)
-            {
+            if (atomSemDelete(&sem1) != ATOM_OK) {
                 ATOMLOG (_STR("Failed sem1 delete\n"));
                 failures++;
-            }
-            else
-            {
+            } else {
                 /* Sem1 deleted. The thread should now wake up and post sem2. */
-                if ((status = atomSemGet (&sem2, (5*SYSTEM_TICKS_PER_SEC))) != ATOM_OK)
-                {
+                if ((status = atomSemGet (&sem2, (5*SYSTEM_TICKS_PER_SEC))) != ATOM_OK) {
                     ATOMLOG (_STR("Notify fail (%d)\n"), status);
                     failures++;
-                }
-                else
-                {
+                } else {
                     /* Success */
 
                     /* Clean up the last remaining semaphore */
-                    if (atomSemDelete (&sem2) != ATOM_OK)
-                    {
+                    if (atomSemDelete (&sem2) != ATOM_OK) {
                         ATOMLOG (_STR("Failed sem2 delete\n"));
                         failures++;
                     }
@@ -190,26 +162,19 @@ uint32_t test_start (void)
     }
 
     /* Test wakeup of threads on semaphore deletion (thread blocking with timeout) */
-    if (atomSemCreate (&sem1, 0) != ATOM_OK)
-    {
+    if (atomSemCreate (&sem1, 0) != ATOM_OK) {
         ATOMLOG (_STR("Error creating test semaphore 1\n"));
         failures++;
-    }
-    else if (atomSemCreate (&sem2, 0) != ATOM_OK)
-    {
+    } else if (atomSemCreate (&sem2, 0) != ATOM_OK) {
         ATOMLOG (_STR("Error creating test semaphore 2\n"));
         failures++;
-    }
-    else if (atomThreadCreate(&tcb[1], TEST_THREAD_PRIO, test2_thread_func, 0,
-              &test_thread_stack[1][TEST_THREAD_STACK_SIZE - 1],
-              TEST_THREAD_STACK_SIZE) != ATOM_OK)
-    {
+    } else if (atomThreadCreate(&tcb[1], TEST_THREAD_PRIO, test2_thread_func, 0,
+                                &test_thread_stack[1][TEST_THREAD_STACK_SIZE - 1],
+                                TEST_THREAD_STACK_SIZE) != ATOM_OK) {
         /* Fail */
         ATOMLOG (_STR("Error creating test thread 2\n"));
         failures++;
-    }
-    else
-    {
+    } else {
         /*
          * We have created two semaphores. sem1 is for the other thread
          * to wait on, which we will delete from this thread. We want
@@ -219,34 +184,24 @@ uint32_t test_start (void)
          */
 
         /* Wait for the other thread to start blocking on sem1 */
-        if (atomTimerDelay(SYSTEM_TICKS_PER_SEC) != ATOM_OK)
-        {
+        if (atomTimerDelay(SYSTEM_TICKS_PER_SEC) != ATOM_OK) {
             ATOMLOG (_STR("Failed timer delay\n"));
             failures++;
-        }
-        else
-        {
+        } else {
             /* The other thread will be blocking on sem1 now, delete sem1 */
-            if (atomSemDelete(&sem1) != ATOM_OK)
-            {
+            if (atomSemDelete(&sem1) != ATOM_OK) {
                 ATOMLOG (_STR("Failed sem1 delete\n"));
                 failures++;
-            }
-            else
-            {
+            } else {
                 /* Sem1 deleted. The thread should now wake up and post sem2. */
-                if ((status = atomSemGet (&sem2, (5*SYSTEM_TICKS_PER_SEC))) != ATOM_OK)
-                {
+                if ((status = atomSemGet (&sem2, (5*SYSTEM_TICKS_PER_SEC))) != ATOM_OK) {
                     ATOMLOG (_STR("Notify fail (%d)\n"), status);
                     failures++;
-                }
-                else
-                {
+                } else {
                     /* Success */
 
                     /* Clean up the last remaining semaphore */
-                    if (atomSemDelete (&sem2) != ATOM_OK)
-                    {
+                    if (atomSemDelete (&sem2) != ATOM_OK) {
                         ATOMLOG (_STR("Failed sem2 delete\n"));
                         failures++;
                     }
@@ -262,19 +217,14 @@ uint32_t test_start (void)
         int thread;
 
         /* Check all threads */
-        for (thread = 0; thread < NUM_TEST_THREADS; thread++)
-        {
+        for (thread = 0; thread < NUM_TEST_THREADS; thread++) {
             /* Check thread stack usage */
-            if (atomThreadStackCheck (&tcb[thread], &used_bytes, &free_bytes) != ATOM_OK)
-            {
+            if (atomThreadStackCheck (&tcb[thread], &used_bytes, &free_bytes) != ATOM_OK) {
                 ATOMLOG (_STR("StackCheck\n"));
                 failures++;
-            }
-            else
-            {
+            } else {
                 /* Check the thread did not use up to the end of stack */
-                if (free_bytes == 0)
-                {
+                if (free_bytes == 0) {
                     ATOMLOG (_STR("StackOverflow %d\n"), thread);
                     failures++;
                 }
@@ -314,22 +264,17 @@ static void test1_thread_func (uint32_t param)
      * by the main thread while blocking.
      */
     status = atomSemGet(&sem1, 0);
-    if (status != ATOM_ERR_DELETED)
-    {
+    if (status != ATOM_ERR_DELETED) {
         ATOMLOG (_STR("Test1 thread woke without deletion (%d)\n"), status);
-    }
-    else
-    {
+    } else {
         /* We were woken due to deletion as expected, post sem2 to notify success */
-        if ((status = atomSemPut(&sem2)) != ATOM_OK)
-        {
+        if ((status = atomSemPut(&sem2)) != ATOM_OK) {
             ATOMLOG (_STR("Error posting sem2 on wakeup (%d)\n"), status);
         }
     }
 
     /* Wait forever */
-    while (1)
-    {
+    while (1) {
         atomTimerDelay (SYSTEM_TICKS_PER_SEC);
     }
 }
@@ -347,7 +292,7 @@ static void test1_thread_func (uint32_t param)
 static void test2_thread_func (uint32_t param)
 {
     uint8_t status;
-    
+
     /* Compiler warnings */
     param = param;
 
@@ -356,22 +301,17 @@ static void test2_thread_func (uint32_t param)
      * by the main thread while blocking.
      */
     status = atomSemGet(&sem1, (5 * SYSTEM_TICKS_PER_SEC));
-    if (status != ATOM_ERR_DELETED)
-    {
+    if (status != ATOM_ERR_DELETED) {
         ATOMLOG (_STR("Test2 thread woke without deletion (%d)\n"), status);
-    }
-    else
-    {
+    } else {
         /* We were woken due to deletion as expected, post sem2 to notify success */
-        if ((status = atomSemPut(&sem2)) != ATOM_OK)
-        {
+        if ((status = atomSemPut(&sem2)) != ATOM_OK) {
             ATOMLOG (_STR("Error posting sem2 on wakeup\n"));
         }
     }
 
     /* Wait forever */
-    while (1)
-    {
+    while (1) {
         atomTimerDelay (SYSTEM_TICKS_PER_SEC);
     }
 }

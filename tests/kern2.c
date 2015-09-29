@@ -81,103 +81,83 @@ uint32_t test_start (void)
     atomTimerDelay(SYSTEM_TICKS_PER_SEC);
 
     /* Check all variables contain expected values */
-    if (one != 1)
-    {
+    if (one != 1) {
         ATOMLOG (_STR("1(%d)\n"), (int)one);
         failures++;
     }
-    if (two != 2)
-    {
+    if (two != 2) {
         ATOMLOG (_STR("2(%d)\n"), (int)two);
         failures++;
     }
-    if (three != 3)
-    {
+    if (three != 3) {
         ATOMLOG (_STR("3(%d)\n"), (int)three);
         failures++;
     }
-    if (four != 4)
-    {
+    if (four != 4) {
         ATOMLOG (_STR("4(%d)\n"), (int)four);
         failures++;
     }
-    if (five != 5)
-    {
+    if (five != 5) {
         ATOMLOG (_STR("5(%d)\n"), (int)five);
         failures++;
     }
-    if (six != 6)
-    {
+    if (six != 6) {
         ATOMLOG (_STR("6(%d)\n"), (int)six);
         failures++;
     }
-    if (seven != 7)
-    {
+    if (seven != 7) {
         ATOMLOG (_STR("7(%d)\n"), (int)seven);
         failures++;
     }
-    if (eight != 8)
-    {
+    if (eight != 8) {
         ATOMLOG (_STR("8(%d)\n"), (int)eight);
         failures++;
     }
-    if (nine != 9)
-    {
+    if (nine != 9) {
         ATOMLOG (_STR("9(%d)\n"), (int)nine);
         failures++;
     }
-    if (ten != 10)
-    {
+    if (ten != 10) {
         ATOMLOG (_STR("10(%d)\n"), (int)ten);
         failures++;
     }
-    if (eleven != 11)
-    {
+    if (eleven != 11) {
         ATOMLOG (_STR("11(%d)\n"), (int)eleven);
         failures++;
     }
-    if (twelve != 12)
-    {
+    if (twelve != 12) {
         ATOMLOG (_STR("12(%d)\n"), (int)twelve);
         failures++;
     }
-    if (thirteen != 13)
-    {
+    if (thirteen != 13) {
         ATOMLOG (_STR("13(%d)\n"), (int)thirteen);
         failures++;
     }
-    if (fourteen != 14)
-    {
+    if (fourteen != 14) {
         ATOMLOG (_STR("14(%d)\n"), (int)fourteen);
         failures++;
     }
-    if (fifteen != 15)
-    {
+    if (fifteen != 15) {
         ATOMLOG (_STR("15(%d)\n"), (int)fifteen);
         failures++;
     }
-    if (sixteen != 16)
-    {
+    if (sixteen != 16) {
         ATOMLOG (_STR("16(%d)\n"), (int)sixteen);
         failures++;
     }
-    if (seventeen != 17)
-    {
+    if (seventeen != 17) {
         ATOMLOG (_STR("17(%d)\n"), (int)seventeen);
         failures++;
     }
-    if (eighteen != 18)
-    {
+    if (eighteen != 18) {
         ATOMLOG (_STR("18(%d)\n"), (int)eighteen);
         failures++;
     }
-    if (nineteen != 19)
-    {
+    if (nineteen != 19) {
         ATOMLOG (_STR("19(%d)\n"), (int)nineteen);
         failures++;
     }
-    if (twenty != 20)
-    {
+    if (twenty != 20) {
         ATOMLOG (_STR("20(%d)\n"), (int)twenty);
         failures++;
     }

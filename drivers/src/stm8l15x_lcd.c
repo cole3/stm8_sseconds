@@ -114,24 +114,22 @@
   */
 void LCD_DeInit(void)
 {
-  uint8_t counter = 0;
+    uint8_t counter = 0;
 
-  LCD->CR1 = LCD_CR1_RESET_VALUE;
-  LCD->CR2 = LCD_CR2_RESET_VALUE;
-  LCD->CR3 = LCD_CR3_RESET_VALUE;
-  LCD->FRQ = LCD_FRQ_RESET_VALUE;
+    LCD->CR1 = LCD_CR1_RESET_VALUE;
+    LCD->CR2 = LCD_CR2_RESET_VALUE;
+    LCD->CR3 = LCD_CR3_RESET_VALUE;
+    LCD->FRQ = LCD_FRQ_RESET_VALUE;
 
-  for (counter = 0;counter < 0x05; counter++)
-  {
-    LCD->PM[counter] = LCD_PM_RESET_VALUE;
-  }
+    for (counter = 0; counter < 0x05; counter++) {
+        LCD->PM[counter] = LCD_PM_RESET_VALUE;
+    }
 
-  for (counter = 0;counter < 0x16; counter++)
-  {
-    LCD->RAM[counter] =  LCD_RAM_RESET_VALUE;
-  }
+    for (counter = 0; counter < 0x16; counter++) {
+        LCD->RAM[counter] =  LCD_RAM_RESET_VALUE;
+    }
 
-  LCD->CR4 = LCD_CR4_RESET_VALUE;
+    LCD->CR4 = LCD_CR4_RESET_VALUE;
 
 }
 
@@ -195,48 +193,42 @@ void LCD_Init(LCD_Prescaler_TypeDef LCD_Prescaler, LCD_Divider_TypeDef LCD_Divid
               LCD_Duty_TypeDef LCD_Duty, LCD_Bias_TypeDef LCD_Bias,
               LCD_VoltageSource_TypeDef LCD_VoltageSource)
 {
-  /* Check function parameters */
-  assert_param(IS_LCD_CLOCK_PRESCALER(LCD_Prescaler));
-  assert_param(IS_LCD_CLOCK_DIVIDER(LCD_Divider));
-  assert_param(IS_LCD_DUTY(LCD_Duty));
-  assert_param(IS_LCD_BIAS(LCD_Bias));
-  assert_param(IS_LCD_VOLTAGE_SOURCE(LCD_VoltageSource));
+    /* Check function parameters */
+    assert_param(IS_LCD_CLOCK_PRESCALER(LCD_Prescaler));
+    assert_param(IS_LCD_CLOCK_DIVIDER(LCD_Divider));
+    assert_param(IS_LCD_DUTY(LCD_Duty));
+    assert_param(IS_LCD_BIAS(LCD_Bias));
+    assert_param(IS_LCD_VOLTAGE_SOURCE(LCD_VoltageSource));
 
-  LCD->FRQ &= (uint8_t)(~LCD_FRQ_PS);     /* Clear the prescaler bits */
-  LCD->FRQ |= LCD_Prescaler;
+    LCD->FRQ &= (uint8_t)(~LCD_FRQ_PS);     /* Clear the prescaler bits */
+    LCD->FRQ |= LCD_Prescaler;
 
-  LCD->FRQ &= (uint8_t)(~LCD_FRQ_DIV);     /* Clear the divider bits */
-  LCD->FRQ |= LCD_Divider;
+    LCD->FRQ &= (uint8_t)(~LCD_FRQ_DIV);     /* Clear the divider bits */
+    LCD->FRQ |= LCD_Divider;
 
-  /* Configure the Duty cycle */
-  LCD->CR1 &= (uint8_t)(~LCD_CR1_DUTY);    /* Clear the duty bits */
-  LCD->CR4 &= (uint8_t)(~LCD_CR4_DUTY8);   /* Clear the DUTY8 bit */
+    /* Configure the Duty cycle */
+    LCD->CR1 &= (uint8_t)(~LCD_CR1_DUTY);    /* Clear the duty bits */
+    LCD->CR4 &= (uint8_t)(~LCD_CR4_DUTY8);   /* Clear the DUTY8 bit */
 
-  if (LCD_Duty == LCD_Duty_1_8)
-  {
-    LCD->CR4 |= (uint8_t)((uint8_t)((uint8_t)LCD_Duty & (uint8_t)0xF0) >> 4);
-  }
-  else
-  {
-    LCD->CR1 |= (uint8_t)((uint8_t)LCD_Duty & (uint8_t)0x0F);
-  }
+    if (LCD_Duty == LCD_Duty_1_8) {
+        LCD->CR4 |= (uint8_t)((uint8_t)((uint8_t)LCD_Duty & (uint8_t)0xF0) >> 4);
+    } else {
+        LCD->CR1 |= (uint8_t)((uint8_t)LCD_Duty & (uint8_t)0x0F);
+    }
 
-  /* Configure the Bias */
-  LCD->CR1 &= (uint8_t)(~LCD_CR1_B2);      /* Clear the B2 bit */
-  LCD->CR4 &= (uint8_t)(~LCD_CR4_B4);      /* Clear the B4 bit */
+    /* Configure the Bias */
+    LCD->CR1 &= (uint8_t)(~LCD_CR1_B2);      /* Clear the B2 bit */
+    LCD->CR4 &= (uint8_t)(~LCD_CR4_B4);      /* Clear the B4 bit */
 
-  if (LCD_Bias == LCD_Bias_1_4)
-  {
-    LCD->CR1 |= (uint8_t)((uint8_t)LCD_Bias & (uint8_t)0x0F);
-    LCD->CR4 |= (uint8_t)((uint8_t)((uint8_t)LCD_Bias & (uint8_t)0xF0) >> 4);
-  }
-  else
-  {
-    LCD->CR1 |= (uint8_t)((uint8_t)LCD_Bias & (uint8_t)0x0F);
-  }
+    if (LCD_Bias == LCD_Bias_1_4) {
+        LCD->CR1 |= (uint8_t)((uint8_t)LCD_Bias & (uint8_t)0x0F);
+        LCD->CR4 |= (uint8_t)((uint8_t)((uint8_t)LCD_Bias & (uint8_t)0xF0) >> 4);
+    } else {
+        LCD->CR1 |= (uint8_t)((uint8_t)LCD_Bias & (uint8_t)0x0F);
+    }
 
-  LCD->CR2 &= (uint8_t)(~LCD_CR2_VSEL);    /* Clear the voltage source bit */
-  LCD->CR2 |= LCD_VoltageSource;
+    LCD->CR2 &= (uint8_t)(~LCD_CR2_VSEL);    /* Clear the voltage source bit */
+    LCD->CR2 |= LCD_VoltageSource;
 
 }
 
@@ -255,11 +247,11 @@ void LCD_Init(LCD_Prescaler_TypeDef LCD_Prescaler, LCD_Divider_TypeDef LCD_Divid
   */
 void LCD_PortMaskConfig(LCD_PortMaskRegister_TypeDef LCD_PortMaskRegister, uint8_t LCD_Mask)
 {
-  /* Check function parameters */
-  assert_param(IS_LCD_PORT_MASK(LCD_PortMaskRegister));
+    /* Check function parameters */
+    assert_param(IS_LCD_PORT_MASK(LCD_PortMaskRegister));
 
-  /* Copy data bytes to Port mask register */
-  LCD->PM[LCD_PortMaskRegister] =  LCD_Mask;
+    /* Copy data bytes to Port mask register */
+    LCD->PM[LCD_PortMaskRegister] =  LCD_Mask;
 
 }
 
@@ -272,17 +264,14 @@ void LCD_PortMaskConfig(LCD_PortMaskRegister_TypeDef LCD_PortMaskRegister, uint8
   */
 void LCD_Cmd(FunctionalState NewState)
 {
-  /* Check function parameters */
-  assert_param(IS_FUNCTIONAL_STATE(NewState));
+    /* Check function parameters */
+    assert_param(IS_FUNCTIONAL_STATE(NewState));
 
-  if (NewState != DISABLE)
-  {
-    LCD->CR3 |= LCD_CR3_LCDEN; /* Enable the LCD peripheral*/
-  }
-  else
-  {
-    LCD->CR3 &= (uint8_t)(~LCD_CR3_LCDEN); /* Disable the LCD peripheral*/
-  }
+    if (NewState != DISABLE) {
+        LCD->CR3 |= LCD_CR3_LCDEN; /* Enable the LCD peripheral*/
+    } else {
+        LCD->CR3 &= (uint8_t)(~LCD_CR3_LCDEN); /* Disable the LCD peripheral*/
+    }
 }
 
 /**
@@ -298,17 +287,14 @@ void LCD_Cmd(FunctionalState NewState)
   */
 void LCD_HighDriveCmd(FunctionalState NewState)
 {
-  /* Check function parameters */
-  assert_param(IS_FUNCTIONAL_STATE(NewState));
+    /* Check function parameters */
+    assert_param(IS_FUNCTIONAL_STATE(NewState));
 
-  if (NewState != DISABLE)
-  {
-    LCD->CR2 |= LCD_CR2_HD; /* Permanently enable low resistance divider */
-  }
-  else
-  {
-    LCD->CR2 &= (uint8_t)(~LCD_CR2_HD); /* Permanently disable low resistance divider */
-  }
+    if (NewState != DISABLE) {
+        LCD->CR2 |= LCD_CR2_HD; /* Permanently enable low resistance divider */
+    } else {
+        LCD->CR2 &= (uint8_t)(~LCD_CR2_HD); /* Permanently disable low resistance divider */
+    }
 }
 
 /**
@@ -328,11 +314,11 @@ void LCD_HighDriveCmd(FunctionalState NewState)
   */
 void LCD_PulseOnDurationConfig(LCD_PulseOnDuration_TypeDef LCD_PulseOnDuration)
 {
-  /* Check function parameters */
-  assert_param(IS_LCD_PULSE_DURATION(LCD_PulseOnDuration));
+    /* Check function parameters */
+    assert_param(IS_LCD_PULSE_DURATION(LCD_PulseOnDuration));
 
-  LCD->CR2 &= (uint8_t)(~LCD_CR2_PON); /* Clear the pulses on duration bits */
-  LCD->CR2 |= LCD_PulseOnDuration;
+    LCD->CR2 &= (uint8_t)(~LCD_CR2_PON); /* Clear the pulses on duration bits */
+    LCD->CR2 |= LCD_PulseOnDuration;
 }
 
 /**
@@ -351,12 +337,12 @@ void LCD_PulseOnDurationConfig(LCD_PulseOnDuration_TypeDef LCD_PulseOnDuration)
   */
 void LCD_DeadTimeConfig(LCD_DeadTime_TypeDef LCD_DeadTime)
 {
-  /* Check function parameters */
-  assert_param(IS_LCD_DEAD_TIME(LCD_DeadTime));
+    /* Check function parameters */
+    assert_param(IS_LCD_DEAD_TIME(LCD_DeadTime));
 
-  LCD->CR3 &= (uint8_t)(~LCD_CR3_DEAD);  /* Clear the dead time bits  */
+    LCD->CR3 &= (uint8_t)(~LCD_CR3_DEAD);  /* Clear the dead time bits  */
 
-  LCD->CR3 |= LCD_DeadTime;
+    LCD->CR3 |= LCD_DeadTime;
 
 }
 
@@ -384,15 +370,15 @@ void LCD_DeadTimeConfig(LCD_DeadTime_TypeDef LCD_DeadTime)
   */
 void LCD_BlinkConfig(LCD_BlinkMode_TypeDef LCD_BlinkMode, LCD_BlinkFrequency_TypeDef LCD_BlinkFrequency)
 {
-  /* Check function parameters */
-  assert_param(IS_LCD_BLINK_MODE(LCD_BlinkMode));
-  assert_param(IS_LCD_BLINK_FREQUENCY(LCD_BlinkFrequency));
+    /* Check function parameters */
+    assert_param(IS_LCD_BLINK_MODE(LCD_BlinkMode));
+    assert_param(IS_LCD_BLINK_FREQUENCY(LCD_BlinkFrequency));
 
-  LCD->CR1 &= (uint8_t)(~LCD_CR1_BLINK); /* Clear the blink mode bits */
-  LCD->CR1 |= LCD_BlinkMode; /* Config the LCD Blink Mode */
+    LCD->CR1 &= (uint8_t)(~LCD_CR1_BLINK); /* Clear the blink mode bits */
+    LCD->CR1 |= LCD_BlinkMode; /* Config the LCD Blink Mode */
 
-  LCD->CR1 &= (uint8_t)(~LCD_CR1_BLINKF); /* Clear the blink frequency bits */
-  LCD->CR1 |= LCD_BlinkFrequency; /* Config the LCD Blink Frequency */
+    LCD->CR1 &= (uint8_t)(~LCD_CR1_BLINKF); /* Clear the blink frequency bits */
+    LCD->CR1 |= LCD_BlinkFrequency; /* Config the LCD Blink Frequency */
 
 }
 
@@ -412,11 +398,11 @@ void LCD_BlinkConfig(LCD_BlinkMode_TypeDef LCD_BlinkMode, LCD_BlinkFrequency_Typ
   */
 void LCD_ContrastConfig(LCD_Contrast_TypeDef LCD_Contrast)
 {
-  /* Check function parameters */
-  assert_param(IS_LCD_CONTRAST(LCD_Contrast));
+    /* Check function parameters */
+    assert_param(IS_LCD_CONTRAST(LCD_Contrast));
 
-  LCD->CR2 &= (uint8_t)(~LCD_CR2_CC); /* Clear the contrast bits  */
-  LCD->CR2 |= LCD_Contrast; /* Select the maximum voltage value Vlcd */
+    LCD->CR2 &= (uint8_t)(~LCD_CR2_CC); /* Clear the contrast bits  */
+    LCD->CR2 |= LCD_Contrast; /* Select the maximum voltage value Vlcd */
 
 }
 
@@ -467,11 +453,11 @@ void LCD_ContrastConfig(LCD_Contrast_TypeDef LCD_Contrast)
   */
 void LCD_WriteRAM(LCD_RAMRegister_TypeDef LCD_RAMRegister, uint8_t LCD_Data)
 {
-  /* Check function parameters */
-  assert_param(IS_LCD_RAM_REGISTER(LCD_RAMRegister));
+    /* Check function parameters */
+    assert_param(IS_LCD_RAM_REGISTER(LCD_RAMRegister));
 
-  /* Copy data bytes to RAM register */
-  LCD->RAM[LCD_RAMRegister] =  LCD_Data;
+    /* Copy data bytes to RAM register */
+    LCD->RAM[LCD_RAMRegister] =  LCD_Data;
 
 }
 
@@ -485,11 +471,11 @@ void LCD_WriteRAM(LCD_RAMRegister_TypeDef LCD_RAMRegister, uint8_t LCD_Data)
   */
 void LCD_PageSelect(LCD_PageSelection_TypeDef LCD_PageSelection)
 {
-  /* Check function parameters */
-  assert_param(IS_LCD_PAGE_SELECT(LCD_PageSelection));
+    /* Check function parameters */
+    assert_param(IS_LCD_PAGE_SELECT(LCD_PageSelection));
 
-  LCD->CR4 &= (uint8_t)(~LCD_CR4_PAGECOM); /* Clear the PAGE COM bit */
-  LCD->CR4 |= LCD_PageSelection; /* Select the LCD page */
+    LCD->CR4 &= (uint8_t)(~LCD_CR4_PAGECOM); /* Clear the PAGE COM bit */
+    LCD->CR4 |= LCD_PageSelection; /* Select the LCD page */
 
 }
 
@@ -518,17 +504,14 @@ void LCD_PageSelect(LCD_PageSelection_TypeDef LCD_PageSelection)
   */
 void LCD_ITConfig(FunctionalState NewState)
 {
-  /* Check function parameters */
-  assert_param(IS_FUNCTIONAL_STATE(NewState));
+    /* Check function parameters */
+    assert_param(IS_FUNCTIONAL_STATE(NewState));
 
-  if (NewState != DISABLE)
-  {
-    LCD->CR3 |= LCD_CR3_SOFIE; /* Enable interrupt*/
-  }
-  else
-  {
-    LCD->CR3 &= (uint8_t)(~LCD_CR3_SOFIE); /* Disable interrupt*/
-  }
+    if (NewState != DISABLE) {
+        LCD->CR3 |= LCD_CR3_SOFIE; /* Enable interrupt*/
+    } else {
+        LCD->CR3 &= (uint8_t)(~LCD_CR3_SOFIE); /* Disable interrupt*/
+    }
 
 }
 
@@ -539,19 +522,16 @@ void LCD_ITConfig(FunctionalState NewState)
   */
 FlagStatus LCD_GetFlagStatus(void)
 {
-  FlagStatus status = RESET;
+    FlagStatus status = RESET;
 
-  /* Check the status of the start of new frame LCD flag */
-  if ((LCD->CR3 & (uint8_t)LCD_CR3_SOF) != (uint8_t)RESET)
-  {
-    status = SET; /* Flag is set */
-  }
-  else
-  {
-    status = RESET; /* Flag is reset*/
-  }
-  /* Return the FLAG status */
-  return status;
+    /* Check the status of the start of new frame LCD flag */
+    if ((LCD->CR3 & (uint8_t)LCD_CR3_SOF) != (uint8_t)RESET) {
+        status = SET; /* Flag is set */
+    } else {
+        status = RESET; /* Flag is reset*/
+    }
+    /* Return the FLAG status */
+    return status;
 
 }
 
@@ -562,8 +542,8 @@ FlagStatus LCD_GetFlagStatus(void)
   */
 void LCD_ClearFlag(void)
 {
-  /* Clear the flag bit */
-  LCD->CR3 |= (uint8_t)(LCD_CR3_SOFC);
+    /* Clear the flag bit */
+    LCD->CR3 |= (uint8_t)(LCD_CR3_SOFC);
 
 }
 
@@ -575,23 +555,20 @@ void LCD_ClearFlag(void)
   */
 ITStatus LCD_GetITStatus(void)
 {
-  ITStatus pendingbitstatus = RESET;
-  uint8_t enablestatus = 0;
+    ITStatus pendingbitstatus = RESET;
+    uint8_t enablestatus = 0;
 
-  enablestatus = (uint8_t)((uint8_t)LCD->CR3 & LCD_CR3_SOFIE);
-  /* Check the status of the start of frame interrupt */
-  if (((LCD->CR3 & LCD_CR3_SOF) != RESET) && enablestatus)
-  {
-    /* ITPENDINGBIT is set */
-    pendingbitstatus = SET;
-  }
-  else
-  {
-    /* ITPENDINGBIT is reset */
-    pendingbitstatus = RESET;
-  }
-  /* Return the ITPENDINGBIT status */
-  return  pendingbitstatus;
+    enablestatus = (uint8_t)((uint8_t)LCD->CR3 & LCD_CR3_SOFIE);
+    /* Check the status of the start of frame interrupt */
+    if (((LCD->CR3 & LCD_CR3_SOF) != RESET) && enablestatus) {
+        /* ITPENDINGBIT is set */
+        pendingbitstatus = SET;
+    } else {
+        /* ITPENDINGBIT is reset */
+        pendingbitstatus = RESET;
+    }
+    /* Return the ITPENDINGBIT status */
+    return  pendingbitstatus;
 
 }
 
@@ -602,8 +579,8 @@ ITStatus LCD_GetITStatus(void)
   */
 void LCD_ClearITPendingBit(void)
 {
-  /* Clear the flag bit */
-  LCD->CR3 |= (uint8_t)(LCD_CR3_SOFC);
+    /* Clear the flag bit */
+    LCD->CR3 |= (uint8_t)(LCD_CR3_SOFC);
 
 }
 

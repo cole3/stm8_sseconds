@@ -75,28 +75,23 @@ uint32_t test_start (void)
     failures = 0;
 
     /* Create mutex */
-    if (atomMutexCreate (&mutex1) != ATOM_OK)
-    {
+    if (atomMutexCreate (&mutex1) != ATOM_OK) {
         ATOMLOG (_STR("Error creating mutex\n"));
         failures++;
-    }
-    else
-    {
+    } else {
         /* Initialise the shared_data to zero */
         shared_data = 0;
 
         /* Attempt to release the mutex when not owned by any thread */
-        if (atomMutexPut (&mutex1) != ATOM_ERR_OWNERSHIP)
-        {
+        if (atomMutexPut (&mutex1) != ATOM_ERR_OWNERSHIP) {
             ATOMLOG (_STR("Release error\n"));
             failures++;
         }
 
         /* Create second thread */
         else if (atomThreadCreate(&tcb[0], TEST_THREAD_PRIO, test_thread_func, 1,
-              &test_thread_stack[0][TEST_THREAD_STACK_SIZE - 1],
-              TEST_THREAD_STACK_SIZE) != ATOM_OK)
-        {
+                                  &test_thread_stack[0][TEST_THREAD_STACK_SIZE - 1],
+                                  TEST_THREAD_STACK_SIZE) != ATOM_OK) {
             /* Fail */
             ATOMLOG (_STR("Error creating test thread\n"));
             failures++;
@@ -108,21 +103,18 @@ uint32_t test_start (void)
          * modified, which proves to us that the thread has taken the mutex.
          */
         atomTimerDelay (SYSTEM_TICKS_PER_SEC/4);
-        if (shared_data != 1)
-        {
+        if (shared_data != 1) {
             ATOMLOG (_STR("Shared data unmodified\n"));
             failures++;
         }
 
         /* Check successful so far */
-        if (failures == 0)
-        {
+        if (failures == 0) {
             /*
              * Attempt to release the mutex again now that it is owned
              * by another thread.
              */
-            if (atomMutexPut (&mutex1) != ATOM_ERR_OWNERSHIP)
-            {
+            if (atomMutexPut (&mutex1) != ATOM_ERR_OWNERSHIP) {
                 ATOMLOG (_STR("Release error 2\n"));
                 failures++;
             }
@@ -135,8 +127,7 @@ uint32_t test_start (void)
             timer_cb.cb_ticks = SYSTEM_TICKS_PER_SEC;
 
             /* Request the timer callback to run in one second */
-            if (atomTimerRegister (&timer_cb) != ATOM_OK)
-            {
+            if (atomTimerRegister (&timer_cb) != ATOM_OK) {
                 ATOMLOG (_STR("Error registering timer\n"));
                 failures++;
             }
@@ -147,11 +138,9 @@ uint32_t test_start (void)
              * callback received the expected ownership error
              * when attempting to release the mutex.
              */
-            else
-            {
+            else {
                 atomTimerDelay (2 * SYSTEM_TICKS_PER_SEC);
-                if (shared_data != 2)
-                {
+                if (shared_data != 2) {
                     ATOMLOG (_STR("Context check failed\n"));
                     failures++;
                 }
@@ -159,8 +148,7 @@ uint32_t test_start (void)
         }
 
         /* Delete mutex, test finished */
-        if (atomMutexDelete (&mutex1) != ATOM_OK)
-        {
+        if (atomMutexDelete (&mutex1) != ATOM_OK) {
             ATOMLOG (_STR("Delete failed\n"));
             failures++;
         }
@@ -173,19 +161,14 @@ uint32_t test_start (void)
         int thread;
 
         /* Check all threads */
-        for (thread = 0; thread < NUM_TEST_THREADS; thread++)
-        {
+        for (thread = 0; thread < NUM_TEST_THREADS; thread++) {
             /* Check thread stack usage */
-            if (atomThreadStackCheck (&tcb[thread], &used_bytes, &free_bytes) != ATOM_OK)
-            {
+            if (atomThreadStackCheck (&tcb[thread], &used_bytes, &free_bytes) != ATOM_OK) {
                 ATOMLOG (_STR("StackCheck\n"));
                 failures++;
-            }
-            else
-            {
+            } else {
                 /* Check the thread did not use up to the end of stack */
-                if (free_bytes == 0)
-                {
+                if (free_bytes == 0) {
                     ATOMLOG (_STR("StackOverflow %d\n"), thread);
                     failures++;
                 }
@@ -222,22 +205,19 @@ static void test_thread_func (uint32_t param)
     param = param;
 
     /* Block on the mutex */
-    if ((status = atomMutexGet (&mutex1, 0)) != ATOM_OK)
-    {
+    if ((status = atomMutexGet (&mutex1, 0)) != ATOM_OK) {
         /* Error getting mutex, notify the status code */
         ATOMLOG (_STR("G%d\n"), status);
     }
 
     /* Got the mutex */
-    else
-    {
+    else {
         /* Set shared_data to signify that we think we have the mutex */
         shared_data = 1;
     }
 
     /* Loop forever */
-    while (1)
-    {
+    while (1) {
         atomTimerDelay (SYSTEM_TICKS_PER_SEC);
     }
 }
@@ -255,13 +235,10 @@ static void test_thread_func (uint32_t param)
 static void testCallback (POINTER cb_data)
 {
     /* Check the return value from atomMutexPut() */
-    if (atomMutexPut(&mutex1) == ATOM_ERR_OWNERSHIP)
-    {
+    if (atomMutexPut(&mutex1) == ATOM_ERR_OWNERSHIP) {
         /* Received the error we expected, set shared_data to notify success */
         shared_data = 2;
-    }
-    else
-    {
+    } else {
         /* Did not get expected error, don't set shared_data signifying fail */
     }
 

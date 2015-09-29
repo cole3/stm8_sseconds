@@ -86,20 +86,16 @@ uint32_t test_start (void)
 
     /* Test wakeup of threads on queue deletion (thread blocking with no timeout) */
     g_result = 0;
-    if (atomQueueCreate (&queue1, &queue1_storage[0], sizeof(uint8_t), QUEUE_ENTRIES) != ATOM_OK)
-    {
+    if (atomQueueCreate (&queue1, &queue1_storage[0], sizeof(uint8_t), QUEUE_ENTRIES) != ATOM_OK) {
         ATOMLOG (_STR("Error creating test queue\n"));
         failures++;
     }
 
     /* Successful queue creation */
-    else
-    {
+    else {
         /* Fill up all entries */
-        for (i = 0; i < QUEUE_ENTRIES; i++)
-        {
-            if (atomQueuePut (&queue1, 0, &msg) != ATOM_OK)
-            {
+        for (i = 0; i < QUEUE_ENTRIES; i++) {
+            if (atomQueuePut (&queue1, 0, &msg) != ATOM_OK) {
                 ATOMLOG (_STR("Error filling queue\n"));
                 failures++;
             }
@@ -107,15 +103,12 @@ uint32_t test_start (void)
 
         /* Create a test thread that will block because the queue is full */
         if (atomThreadCreate(&tcb[0], TEST_THREAD_PRIO, test1_thread_func, 0,
-                  &test_thread_stack[0][TEST_THREAD_STACK_SIZE - 1],
-                  TEST_THREAD_STACK_SIZE) != ATOM_OK)
-        {
+                             &test_thread_stack[0][TEST_THREAD_STACK_SIZE - 1],
+                             TEST_THREAD_STACK_SIZE) != ATOM_OK) {
             /* Fail */
             ATOMLOG (_STR("Error creating test thread 1\n"));
             failures++;
-        }
-        else
-        {
+        } else {
 
             /*
              * We have created and filled a queue. We want to see that the other
@@ -124,30 +117,21 @@ uint32_t test_start (void)
              */
 
             /* Wait for the other thread to start blocking on queue1 */
-            if (atomTimerDelay(SYSTEM_TICKS_PER_SEC) != ATOM_OK)
-            {
+            if (atomTimerDelay(SYSTEM_TICKS_PER_SEC) != ATOM_OK) {
                 ATOMLOG (_STR("Failed timer delay\n"));
                 failures++;
-            }
-            else
-            {
+            } else {
                 /* The other thread will be blocking on queue1 now, delete queue1 */
-                if (atomQueueDelete(&queue1) != ATOM_OK)
-                {
+                if (atomQueueDelete(&queue1) != ATOM_OK) {
                     ATOMLOG (_STR("Failed queue1 delete\n"));
                     failures++;
-                }
-                else
-                {
+                } else {
                     /* Queue1 deleted. The thread should now wake up and set g_result. */
                     atomTimerDelay (SYSTEM_TICKS_PER_SEC);
-                    if (g_result == 0)
-                    {
+                    if (g_result == 0) {
                         ATOMLOG (_STR("Notify fail\n"));
                         failures++;
-                    }
-                    else
-                    {
+                    } else {
                         /* Success */
                     }
                 }
@@ -157,20 +141,16 @@ uint32_t test_start (void)
 
     /* Test wakeup of threads on semaphore deletion (thread blocking with timeout) */
     g_result = 0;
-    if (atomQueueCreate (&queue1, &queue1_storage[0], sizeof(uint8_t), QUEUE_ENTRIES) != ATOM_OK)
-    {
+    if (atomQueueCreate (&queue1, &queue1_storage[0], sizeof(uint8_t), QUEUE_ENTRIES) != ATOM_OK) {
         ATOMLOG (_STR("Error creating test queue\n"));
         failures++;
     }
 
     /* Successful queue creation */
-    else
-    {
+    else {
         /* Fill up all entries */
-        for (i = 0; i < QUEUE_ENTRIES; i++)
-        {
-            if (atomQueuePut (&queue1, 0, &msg) != ATOM_OK)
-            {
+        for (i = 0; i < QUEUE_ENTRIES; i++) {
+            if (atomQueuePut (&queue1, 0, &msg) != ATOM_OK) {
                 ATOMLOG (_STR("Error filling queue\n"));
                 failures++;
             }
@@ -178,15 +158,12 @@ uint32_t test_start (void)
 
         /* Create a test thread that will block because the queue is full */
         if (atomThreadCreate(&tcb[1], TEST_THREAD_PRIO, test2_thread_func, 0,
-                  &test_thread_stack[1][TEST_THREAD_STACK_SIZE - 1],
-                  TEST_THREAD_STACK_SIZE) != ATOM_OK)
-        {
+                             &test_thread_stack[1][TEST_THREAD_STACK_SIZE - 1],
+                             TEST_THREAD_STACK_SIZE) != ATOM_OK) {
             /* Fail */
             ATOMLOG (_STR("Error creating test thread 2\n"));
             failures++;
-        }
-        else
-        {
+        } else {
 
             /*
              * We have created and filled a queue. We want to see that the other
@@ -195,30 +172,21 @@ uint32_t test_start (void)
              */
 
             /* Wait for the other thread to start blocking on queue1 */
-            if (atomTimerDelay(SYSTEM_TICKS_PER_SEC) != ATOM_OK)
-            {
+            if (atomTimerDelay(SYSTEM_TICKS_PER_SEC) != ATOM_OK) {
                 ATOMLOG (_STR("Failed timer delay\n"));
                 failures++;
-            }
-            else
-            {
+            } else {
                 /* The other thread will be blocking on queue1 now, delete queue1 */
-                if (atomQueueDelete(&queue1) != ATOM_OK)
-                {
+                if (atomQueueDelete(&queue1) != ATOM_OK) {
                     ATOMLOG (_STR("Failed queue1 delete\n"));
                     failures++;
-                }
-                else
-                {
+                } else {
                     /* Queue1 deleted. The thread should now wake up and set g_result. */
                     atomTimerDelay (SYSTEM_TICKS_PER_SEC);
-                    if (g_result == 0)
-                    {
+                    if (g_result == 0) {
                         ATOMLOG (_STR("Notify fail\n"));
                         failures++;
-                    }
-                    else
-                    {
+                    } else {
                         /* Success */
                     }
                 }
@@ -233,19 +201,14 @@ uint32_t test_start (void)
         int thread;
 
         /* Check all threads */
-        for (thread = 0; thread < NUM_TEST_THREADS; thread++)
-        {
+        for (thread = 0; thread < NUM_TEST_THREADS; thread++) {
             /* Check thread stack usage */
-            if (atomThreadStackCheck (&tcb[thread], &used_bytes, &free_bytes) != ATOM_OK)
-            {
+            if (atomThreadStackCheck (&tcb[thread], &used_bytes, &free_bytes) != ATOM_OK) {
                 ATOMLOG (_STR("StackCheck\n"));
                 failures++;
-            }
-            else
-            {
+            } else {
                 /* Check the thread did not use up to the end of stack */
-                if (free_bytes == 0)
-                {
+                if (free_bytes == 0) {
                     ATOMLOG (_STR("StackOverflow %d\n"), thread);
                     failures++;
                 }
@@ -289,19 +252,15 @@ static void test1_thread_func (uint32_t param)
      * main thread while blocking.
      */
     status = atomQueuePut(&queue1, 0, &msg);
-    if (status != ATOM_ERR_DELETED)
-    {
+    if (status != ATOM_ERR_DELETED) {
         ATOMLOG (_STR("Test1 thread woke without deletion (%d)\n"), status);
-    }
-    else
-    {
+    } else {
         /* We were woken due to deletion as expected, set g_result to notify success */
         g_result = 1;
     }
 
     /* Wait forever */
-    while (1)
-    {
+    while (1) {
         atomTimerDelay (SYSTEM_TICKS_PER_SEC);
     }
 }
@@ -332,19 +291,15 @@ static void test2_thread_func (uint32_t param)
      * main thread while blocking.
      */
     status = atomQueuePut(&queue1, (5 * SYSTEM_TICKS_PER_SEC), &msg);
-    if (status != ATOM_ERR_DELETED)
-    {
+    if (status != ATOM_ERR_DELETED) {
         ATOMLOG (_STR("Test2 thread woke without deletion (%d)\n"), status);
-    }
-    else
-    {
+    } else {
         /* We were woken due to deletion as expected, set g_result to notify success */
         g_result = 1;
     }
 
     /* Wait forever */
-    while (1)
-    {
+    while (1) {
         atomTimerDelay (SYSTEM_TICKS_PER_SEC);
     }
 }

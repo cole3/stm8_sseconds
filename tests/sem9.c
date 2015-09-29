@@ -71,25 +71,21 @@ uint32_t test_start (void)
     failures = 0;
 
     /* Initialise pass status for all three threads to FALSE */
-    for (i = 0; i < 3; i++)
-    {
+    for (i = 0; i < 3; i++) {
         pass_flag[i] = FALSE;
     }
 
     /* Test wakeup of three threads on semaphore deletion */
-    if (atomSemCreate (&sem1, 0) != ATOM_OK)
-    {
+    if (atomSemCreate (&sem1, 0) != ATOM_OK) {
         ATOMLOG (_STR("Error creating test semaphore 1\n"));
         failures++;
     }
 
-    else
-    {
+    else {
         /* Create test thread 1 */
         if (atomThreadCreate(&tcb[0], TEST_THREAD_PRIO, test_thread_func, 0,
-                  &test_thread_stack[0][TEST_THREAD_STACK_SIZE - 1],
-                  TEST_THREAD_STACK_SIZE) != ATOM_OK)
-        {
+                             &test_thread_stack[0][TEST_THREAD_STACK_SIZE - 1],
+                             TEST_THREAD_STACK_SIZE) != ATOM_OK) {
             /* Fail */
             ATOMLOG (_STR("Error creating test thread 1\n"));
             failures++;
@@ -97,9 +93,8 @@ uint32_t test_start (void)
 
         /* Create test thread 2 */
         else if (atomThreadCreate(&tcb[1], TEST_THREAD_PRIO, test_thread_func, 1,
-                  &test_thread_stack[1][TEST_THREAD_STACK_SIZE - 1],
-                  TEST_THREAD_STACK_SIZE) != ATOM_OK)
-        {
+                                  &test_thread_stack[1][TEST_THREAD_STACK_SIZE - 1],
+                                  TEST_THREAD_STACK_SIZE) != ATOM_OK) {
             /* Fail */
             ATOMLOG (_STR("Error creating test thread 2\n"));
             failures++;
@@ -107,34 +102,28 @@ uint32_t test_start (void)
 
         /* Create test thread 3 */
         else if (atomThreadCreate(&tcb[2], TEST_THREAD_PRIO, test_thread_func, 2,
-                  &test_thread_stack[2][TEST_THREAD_STACK_SIZE - 1],
-                  TEST_THREAD_STACK_SIZE) != ATOM_OK)
-        {
+                                  &test_thread_stack[2][TEST_THREAD_STACK_SIZE - 1],
+                                  TEST_THREAD_STACK_SIZE) != ATOM_OK) {
             /* Fail */
             ATOMLOG (_STR("Error creating test thread 3\n"));
             failures++;
         }
 
         /* Test threads now created */
-        else
-        {
+        else {
             /* Wait a while for threads to start blocking on sem1 */
             atomTimerDelay (SYSTEM_TICKS_PER_SEC/4);
 
             /* Delete sem1 now that all three threads should be blocking */
-            if (atomSemDelete (&sem1) != ATOM_OK)
-            {
+            if (atomSemDelete (&sem1) != ATOM_OK) {
                 ATOMLOG (_STR("Delete fail\n"));
                 failures++;
-            }
-            else
-            {
+            } else {
                 /* Wait a while for all three threads to wake up */
                 atomTimerDelay (SYSTEM_TICKS_PER_SEC/4);
 
                 /* Check that all three threads have passed */
-                if ((pass_flag[0] != TRUE) || (pass_flag[1] != TRUE) || (pass_flag[2] != TRUE))
-                {
+                if ((pass_flag[0] != TRUE) || (pass_flag[1] != TRUE) || (pass_flag[2] != TRUE)) {
                     ATOMLOG (_STR("Thread fail\n"));
                     failures++;
                 }
@@ -149,19 +138,14 @@ uint32_t test_start (void)
         int thread;
 
         /* Check all threads */
-        for (thread = 0; thread < NUM_TEST_THREADS; thread++)
-        {
+        for (thread = 0; thread < NUM_TEST_THREADS; thread++) {
             /* Check thread stack usage */
-            if (atomThreadStackCheck (&tcb[thread], &used_bytes, &free_bytes) != ATOM_OK)
-            {
+            if (atomThreadStackCheck (&tcb[thread], &used_bytes, &free_bytes) != ATOM_OK) {
                 ATOMLOG (_STR("StackCheck\n"));
                 failures++;
-            }
-            else
-            {
+            } else {
                 /* Check the thread did not use up to the end of stack */
-                if (free_bytes == 0)
-                {
+                if (free_bytes == 0) {
                     ATOMLOG (_STR("StackOverflow %d\n"), thread);
                     failures++;
                 }
@@ -202,19 +186,15 @@ static void test_thread_func (uint32_t param)
      * by the main thread while blocking.
      */
     status = atomSemGet(&sem1, (5 * SYSTEM_TICKS_PER_SEC));
-    if (status != ATOM_ERR_DELETED)
-    {
+    if (status != ATOM_ERR_DELETED) {
         ATOMLOG (_STR("Test1 thread woke without deletion (%d)\n"), status);
-    }
-    else
-    {
+    } else {
         /* We were woken due to deletion as expected, set pass_flag to notify success */
         pass_flag[thread_id] = TRUE;
     }
 
     /* Wait forever */
-    while (1)
-    {
+    while (1) {
         atomTimerDelay (SYSTEM_TICKS_PER_SEC);
     }
 }

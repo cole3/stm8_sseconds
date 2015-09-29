@@ -17,7 +17,7 @@
   * CODING INFORMATION CONTAINED HEREIN IN CONNECTION WITH THEIR PRODUCTS.
   *
   * <h2><center>&copy; COPYRIGHT 2011 STMicroelectronics</center></h2>
-  ******************************************************************************  
+  ******************************************************************************
   */
 
 /* Define to prevent recursive inclusion -------------------------------------*/
@@ -30,10 +30,10 @@
 /** @addtogroup STM8L15x_StdPeriph_Driver
   * @{
   */
-  
+
 /** @addtogroup AES
   * @{
-  */ 
+  */
 
 /* Exported types ------------------------------------------------------------*/
 
@@ -44,12 +44,11 @@
 /** @defgroup AES_Operation_Mode
   * @{
   */
-typedef enum
-{
-  AES_Operation_Encryp            = (uint8_t)0x00, /*!< AES in Encryption mode */
-  AES_Operation_KeyDeriv          = (uint8_t)0x02, /*!< AES in Key Derivation mode */
-  AES_Operation_Decryp            = (uint8_t)0x04, /*!< AES in Decryption mode */
-  AES_Operation_KeyDerivAndDecryp = (uint8_t)0x06  /*!< AES in Key Derivation and Decryption mode */
+typedef enum {
+    AES_Operation_Encryp            = (uint8_t)0x00, /*!< AES in Encryption mode */
+    AES_Operation_KeyDeriv          = (uint8_t)0x02, /*!< AES in Key Derivation mode */
+    AES_Operation_Decryp            = (uint8_t)0x04, /*!< AES in Decryption mode */
+    AES_Operation_KeyDerivAndDecryp = (uint8_t)0x06  /*!< AES in Key Derivation and Decryption mode */
 } AES_Operation_TypeDef;
 
 #define IS_AES_MODE(Operation) (((Operation) == AES_Operation_Encryp) || \
@@ -59,47 +58,44 @@ typedef enum
 /**
   * @}
   */
-  
+
 /** @defgroup AES_Flags
   * @{
   */
-typedef enum
-{
-  AES_FLAG_CCF      = (uint8_t)0x01,  /*!< Computation Complete Flag */
-  AES_FLAG_RDERR    = (uint8_t)0x02,  /*!< Read Error Flag           */
-  AES_FLAG_WRERR    = (uint8_t)0x04   /*!< Write Error Flag          */
-}AES_FLAG_TypeDef;
+typedef enum {
+    AES_FLAG_CCF      = (uint8_t)0x01,  /*!< Computation Complete Flag */
+    AES_FLAG_RDERR    = (uint8_t)0x02,  /*!< Read Error Flag           */
+    AES_FLAG_WRERR    = (uint8_t)0x04   /*!< Write Error Flag          */
+} AES_FLAG_TypeDef;
 
 #define IS_AES_FLAG(Flag)  (((Flag) == AES_FLAG_CCF) || \
                             ((Flag) == AES_FLAG_RDERR)  || \
                             ((Flag) == AES_FLAG_WRERR))
-   
+
 /**
   * @}
   */
-  
+
 /** @defgroup AES_Interrupts
   * @{
   */
-typedef enum
-{
-  AES_IT_CCIE   = (uint16_t)0x20, /*!< Computation Complete interrupt enable */
-  AES_IT_ERRIE  = (uint16_t)0x40  /*!< Error interrupt enable                */
-}AES_IT_TypeDef;
+typedef enum {
+    AES_IT_CCIE   = (uint16_t)0x20, /*!< Computation Complete interrupt enable */
+    AES_IT_ERRIE  = (uint16_t)0x40  /*!< Error interrupt enable                */
+} AES_IT_TypeDef;
 
 #define IS_AES_IT(IT) (((IT) == AES_IT_CCIE) || \
                        ((IT) == AES_IT_ERRIE))
-   
+
 /**
   * @}
   */
-  
+
 /** @defgroup AES_DMA_Transfer_Direction
   * @{
   */
-typedef enum
-{
-  AES_DMATransfer_InOut = (uint8_t) 0x80 /*!< DMA requests enabled for input transfer phase
+typedef enum {
+    AES_DMATransfer_InOut = (uint8_t) 0x80 /*!< DMA requests enabled for input transfer phase
                                               as well as for the output transfer phase */
 }
 AES_DMATransfer_TypeDef;
@@ -108,15 +104,15 @@ AES_DMATransfer_TypeDef;
 /**
   * @}
   */
-  
+
 /**
   * @}
   */
-  
+
 /* Exported constants --------------------------------------------------------*/
 /* Exported macros -----------------------------------------------------------*/
 /* Exported functions ------------------------------------------------------- */
-/*  Function used to set the AES configuration to the default reset state *****/  
+/*  Function used to set the AES configuration to the default reset state *****/
 void AES_DeInit(void);
 
 /* AES Configuration **********************************************************/

@@ -79,13 +79,10 @@ uint32_t test_start (void)
     failures = 0;
 
     /* Create sem with count of zero */
-    if (atomSemCreate (&sem1, 0) != ATOM_OK)
-    {
+    if (atomSemCreate (&sem1, 0) != ATOM_OK) {
         ATOMLOG (_STR("Error creating test semaphore 1\n"));
         failures++;
-    }
-    else
-    {
+    } else {
         /* Set the test running flag */
         test_running = TRUE;
 
@@ -102,17 +99,15 @@ uint32_t test_start (void)
          * will automatically queue another so that this happens repeatedly
          * until the test is flagged as finished.
          */
-        if (atomTimerRegister (&timer_cb) != ATOM_OK)
-        {
+        if (atomTimerRegister (&timer_cb) != ATOM_OK) {
             ATOMLOG (_STR("Error registering timer\n"));
             failures++;
         }
 
         /* Create thread 1: Higher priority than main thread so should sleep */
         else if (atomThreadCreate(&tcb[0], TEST_THREAD_PRIO - 1, test_thread_func, 1,
-              &test_thread_stack[0][TEST_THREAD_STACK_SIZE - 1],
-              TEST_THREAD_STACK_SIZE) != ATOM_OK)
-        {
+                                  &test_thread_stack[0][TEST_THREAD_STACK_SIZE - 1],
+                                  TEST_THREAD_STACK_SIZE) != ATOM_OK) {
             /* Fail */
             ATOMLOG (_STR("Error creating test thread 1\n"));
             failures++;
@@ -120,9 +115,8 @@ uint32_t test_start (void)
 
         /* Create thread 2: Same priority as main thread so should not sleep */
         else if (atomThreadCreate(&tcb[1], TEST_THREAD_PRIO, test_thread_func, 0,
-              &test_thread_stack[1][TEST_THREAD_STACK_SIZE - 1],
-              TEST_THREAD_STACK_SIZE) != ATOM_OK)
-        {
+                                  &test_thread_stack[1][TEST_THREAD_STACK_SIZE - 1],
+                                  TEST_THREAD_STACK_SIZE) != ATOM_OK) {
             /* Fail */
             ATOMLOG (_STR("Error creating test thread 2\n"));
             failures++;
@@ -130,28 +124,24 @@ uint32_t test_start (void)
 
         /* Create thread 3: Same priority as main thread so should not sleep */
         else if (atomThreadCreate(&tcb[2], TEST_THREAD_PRIO + 1, test_thread_func, 0,
-              &test_thread_stack[2][TEST_THREAD_STACK_SIZE - 1],
-              TEST_THREAD_STACK_SIZE) != ATOM_OK)
-        {
+                                  &test_thread_stack[2][TEST_THREAD_STACK_SIZE - 1],
+                                  TEST_THREAD_STACK_SIZE) != ATOM_OK) {
             /* Fail */
             ATOMLOG (_STR("Error creating test thread 3\n"));
             failures++;
         }
 
         /* The test threads have now all been created */
-        else
-        {
+        else {
             /*
              * Continually decrement the semaphore while the test threads
              * and timer callbacks are continually incrementing it. The
              * test finishes after this runs without error for 5 seconds.
              */
             end_time = atomTimeGet() + (5 * SYSTEM_TICKS_PER_SEC);
-            while (atomTimeGet() < end_time)
-            {
+            while (atomTimeGet() < end_time) {
                 /* Decrement the semaphore */
-                if (atomSemGet (&sem1, SYSTEM_TICKS_PER_SEC) != ATOM_OK)
-                {
+                if (atomSemGet (&sem1, SYSTEM_TICKS_PER_SEC) != ATOM_OK) {
                     ATOMLOG (_STR("SemGet\n"));
                     failures++;
                     break;
@@ -170,8 +160,7 @@ uint32_t test_start (void)
         }
 
         /* Delete semaphores, test finished */
-        if (atomSemDelete (&sem1) != ATOM_OK)
-        {
+        if (atomSemDelete (&sem1) != ATOM_OK) {
             ATOMLOG (_STR("Delete failed\n"));
             failures++;
         }
@@ -184,19 +173,14 @@ uint32_t test_start (void)
         int thread;
 
         /* Check all threads */
-        for (thread = 0; thread < NUM_TEST_THREADS; thread++)
-        {
+        for (thread = 0; thread < NUM_TEST_THREADS; thread++) {
             /* Check thread stack usage */
-            if (atomThreadStackCheck (&tcb[thread], &used_bytes, &free_bytes) != ATOM_OK)
-            {
+            if (atomThreadStackCheck (&tcb[thread], &used_bytes, &free_bytes) != ATOM_OK) {
                 ATOMLOG (_STR("StackCheck\n"));
                 failures++;
-            }
-            else
-            {
+            } else {
                 /* Check the thread did not use up to the end of stack */
-                if (free_bytes == 0)
-                {
+                if (free_bytes == 0) {
                     ATOMLOG (_STR("StackOverflow %d\n"), thread);
                     failures++;
                 }
@@ -235,20 +219,17 @@ static void test_thread_func (uint32_t param)
 
     /* Run until the main thread sets the finish flag or we get an error */
     failures = 0;
-    while ((test_running == TRUE) && (failures == 0))
-    {
+    while ((test_running == TRUE) && (failures == 0)) {
         /* Post the semaphore 50 times */
         count = 50;
-        while (count--)
-        {
+        while (count--) {
             /*
              * Post the semaphore. Allow overflows as these are likely
              * to occur when so many threads are posting the same
              * semaphore continually.
              */
             status = atomSemPut (&sem1);
-            if ((status != ATOM_OK) && (status != ATOM_ERR_OVF))
-            {
+            if ((status != ATOM_OK) && (status != ATOM_ERR_OVF)) {
                 ATOMLOG (_STR("Put\n"));
                 failures++;
                 break;
@@ -261,15 +242,13 @@ static void test_thread_func (uint32_t param)
          * the main thread to actually run. For better stress-testing, same or lower
          * priority threads do not sleep.
          */
-        if (sleep_flag)
-        {
+        if (sleep_flag) {
             atomTimerDelay (1);
         }
     }
 
     /* Loop forever */
-    while (1)
-    {
+    while (1) {
         atomTimerDelay (SYSTEM_TICKS_PER_SEC);
     }
 }
@@ -298,22 +277,17 @@ static void testCallback (POINTER cb_data)
 
     /* Post sem1 */
     status = atomSemPut (&sem1);
-    if ((status != ATOM_OK) && (status != ATOM_ERR_OVF))
-    {
+    if ((status != ATOM_OK) && (status != ATOM_ERR_OVF)) {
         /* Error */
     }
 
     /* Enqueue another timer callback in one tick's time */
-    if (test_running == TRUE)
-    {
+    if (test_running == TRUE) {
         /* Update the callback time and requeue */
         ptimer->cb_ticks = 1;
-        if (atomTimerRegister (ptimer) != ATOM_OK)
-        {
+        if (atomTimerRegister (ptimer) != ATOM_OK) {
         }
-    }
-    else
-    {
+    } else {
         /* Test finished, no more will be queued */
     }
 

@@ -64,34 +64,30 @@ uint32_t test_start (void)
 
     /* atomThreadCreate: Pass a bad TCB pointer */
     if (atomThreadCreate (NULL, TEST_THREAD_PRIO, test_thread_func, 0,
-            &test_thread_stack[TEST_THREAD_STACK_SIZE - 1],
-            TEST_THREAD_STACK_SIZE) != ATOM_ERR_PARAM)
-    {
+                          &test_thread_stack[TEST_THREAD_STACK_SIZE - 1],
+                          TEST_THREAD_STACK_SIZE) != ATOM_ERR_PARAM) {
         ATOMLOG (_STR("Bad TCB check\n"));
         failures++;
     }
 
     /* atomThreadCreate: Pass a bad entry point */
     if (atomThreadCreate (&tcb1, TEST_THREAD_PRIO, NULL, 0,
-            &test_thread_stack[TEST_THREAD_STACK_SIZE - 1],
-            TEST_THREAD_STACK_SIZE) != ATOM_ERR_PARAM)
-    {
+                          &test_thread_stack[TEST_THREAD_STACK_SIZE - 1],
+                          TEST_THREAD_STACK_SIZE) != ATOM_ERR_PARAM) {
         ATOMLOG (_STR("Bad entry check\n"));
         failures++;
     }
 
     /* atomThreadCreate: Pass a bad stack pointer */
     if (atomThreadCreate (&tcb1, TEST_THREAD_PRIO, test_thread_func, 0,
-            NULL, TEST_THREAD_STACK_SIZE) != ATOM_ERR_PARAM)
-    {
+                          NULL, TEST_THREAD_STACK_SIZE) != ATOM_ERR_PARAM) {
         ATOMLOG (_STR("Bad stack ptr check\n"));
         failures++;
     }
 
     /* atomThreadCreate: Pass a bad stack size */
     if (atomThreadCreate (&tcb1, TEST_THREAD_PRIO, test_thread_func, 0,
-            &test_thread_stack[TEST_THREAD_STACK_SIZE - 1], 0) != ATOM_ERR_PARAM)
-    {
+                          &test_thread_stack[TEST_THREAD_STACK_SIZE - 1], 0) != ATOM_ERR_PARAM) {
         ATOMLOG (_STR("Bad stack size check\n"));
         failures++;
     }
@@ -117,8 +113,7 @@ static void test_thread_func (uint32_t param)
     param = param;
 
     /* Wait forever */
-    while (1)
-    {
+    while (1) {
         atomTimerDelay (SYSTEM_TICKS_PER_SEC);
     }
 }

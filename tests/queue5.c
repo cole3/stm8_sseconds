@@ -97,15 +97,13 @@ uint32_t test_start (void)
     failures = 0;
 
     /* Create empty queue */
-    if (atomQueueCreate (&queue1, &queue1_storage[0], sizeof(uint8_t), QUEUE_ENTRIES) != ATOM_OK)
-    {
+    if (atomQueueCreate (&queue1, &queue1_storage[0], sizeof(uint8_t), QUEUE_ENTRIES) != ATOM_OK) {
         ATOMLOG (_STR("Error creating test q1\n"));
         failures++;
     }
 
     /* Start the threads */
-    else
-    {
+    else {
         /*
          * The test threads all start by calling atomQueueGet() to receive
          * a message from the queue. Because the queue is empty, all test
@@ -115,9 +113,8 @@ uint32_t test_start (void)
 
         /* Create Thread 1 (lower priority thread A) */
         if (atomThreadCreate(&tcb[0], TEST_THREAD_PRIO+1, test_thread_func, 1,
-              &test_thread_stack[0][TEST_THREAD_STACK_SIZE - 1],
-              TEST_THREAD_STACK_SIZE) != ATOM_OK)
-        {
+                             &test_thread_stack[0][TEST_THREAD_STACK_SIZE - 1],
+                             TEST_THREAD_STACK_SIZE) != ATOM_OK) {
             /* Fail */
             ATOMLOG (_STR("Error creating test thread\n"));
             failures++;
@@ -128,9 +125,8 @@ uint32_t test_start (void)
 
         /* Create Thread 2 (lower priority thread B) */
         if (atomThreadCreate(&tcb[1], TEST_THREAD_PRIO+1, test_thread_func, 2,
-              &test_thread_stack[1][TEST_THREAD_STACK_SIZE - 1],
-              TEST_THREAD_STACK_SIZE) != ATOM_OK)
-        {
+                             &test_thread_stack[1][TEST_THREAD_STACK_SIZE - 1],
+                             TEST_THREAD_STACK_SIZE) != ATOM_OK) {
             /* Fail */
             ATOMLOG (_STR("Error creating test thread\n"));
             failures++;
@@ -141,9 +137,8 @@ uint32_t test_start (void)
 
         /* Create Thread 3 (higher priority thread A) */
         if (atomThreadCreate(&tcb[2], TEST_THREAD_PRIO, test_thread_func, 3,
-              &test_thread_stack[2][TEST_THREAD_STACK_SIZE - 1],
-              TEST_THREAD_STACK_SIZE) != ATOM_OK)
-        {
+                             &test_thread_stack[2][TEST_THREAD_STACK_SIZE - 1],
+                             TEST_THREAD_STACK_SIZE) != ATOM_OK) {
             /* Fail */
             ATOMLOG (_STR("Error creating test thread\n"));
             failures++;
@@ -154,9 +149,8 @@ uint32_t test_start (void)
 
         /* Create Thread 4 (higher priority thread B) */
         if (atomThreadCreate(&tcb[3], TEST_THREAD_PRIO, test_thread_func, 4,
-              &test_thread_stack[3][TEST_THREAD_STACK_SIZE - 1],
-              TEST_THREAD_STACK_SIZE) != ATOM_OK)
-        {
+                             &test_thread_stack[3][TEST_THREAD_STACK_SIZE - 1],
+                             TEST_THREAD_STACK_SIZE) != ATOM_OK) {
             /* Fail */
             ATOMLOG (_STR("Error creating test thread\n"));
             failures++;
@@ -174,8 +168,7 @@ uint32_t test_start (void)
         wake_cnt = 0;
 
         /* Loop waking all four threads */
-        for (count = 0; count < 4; count++)
-        {
+        for (count = 0; count < 4; count++) {
             /*
              * Post a message to the queue. This will wake up one of the threads
              * blocking on it (because it is currently empty). That thread will
@@ -184,8 +177,7 @@ uint32_t test_start (void)
              * that all four threads are woken, noting their wake order.
              */
             msg = 0x66;
-            if (atomQueuePut (&queue1, 0, &msg) != ATOM_OK)
-            {
+            if (atomQueuePut (&queue1, 0, &msg) != ATOM_OK) {
                 ATOMLOG (_STR("Post fail\n"));
                 failures++;
             }
@@ -202,16 +194,14 @@ uint32_t test_start (void)
 
         /* All four threads now woken up, check they woke in correct order */
         if ((wake_order[0] != 3) && (wake_order[1] != 4)
-            && (wake_order[2] != 1) && (wake_order[3] != 2))
-        {
+            && (wake_order[2] != 1) && (wake_order[3] != 2)) {
             ATOMLOG (_STR("Bad order %d,%d,%d,%d\n"),
-                wake_order[0], wake_order[1], wake_order[2], wake_order[3]);
+                     wake_order[0], wake_order[1], wake_order[2], wake_order[3]);
             failures++;
         }
 
         /* Delete queue, test finished */
-        if (atomQueueDelete (&queue1) != ATOM_OK)
-        {
+        if (atomQueueDelete (&queue1) != ATOM_OK) {
             ATOMLOG (_STR("Delete failed\n"));
             failures++;
         }
@@ -224,19 +214,14 @@ uint32_t test_start (void)
         int thread;
 
         /* Check all threads */
-        for (thread = 0; thread < NUM_TEST_THREADS; thread++)
-        {
+        for (thread = 0; thread < NUM_TEST_THREADS; thread++) {
             /* Check thread stack usage */
-            if (atomThreadStackCheck (&tcb[thread], &used_bytes, &free_bytes) != ATOM_OK)
-            {
+            if (atomThreadStackCheck (&tcb[thread], &used_bytes, &free_bytes) != ATOM_OK) {
                 ATOMLOG (_STR("StackCheck\n"));
                 failures++;
-            }
-            else
-            {
+            } else {
                 /* Check the thread did not use up to the end of stack */
-                if (free_bytes == 0)
-                {
+                if (free_bytes == 0) {
                     ATOMLOG (_STR("StackOverflow %d\n"), thread);
                     failures++;
                 }
@@ -279,12 +264,9 @@ static void test_thread_func (uint32_t param)
      * Wait for a message to appear on queue1. At creation of all test
      * threads the queue is empty, so all four threads will block here.
      */
-    if (atomQueueGet (&queue1, 0, &msg) != ATOM_OK)
-    {
+    if (atomQueueGet (&queue1, 0, &msg) != ATOM_OK) {
         ATOMLOG (_STR("Get fail\n"));
-    }
-    else
-    {
+    } else {
         /*
          * Store our thread ID in the array using the current
          * wake_cnt order. The threads are woken with large
@@ -298,8 +280,7 @@ static void test_thread_func (uint32_t param)
     }
 
     /* Loop forever */
-    while (1)
-    {
+    while (1) {
         atomTimerDelay (SYSTEM_TICKS_PER_SEC);
     }
 }

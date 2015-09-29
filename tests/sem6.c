@@ -72,31 +72,25 @@ uint32_t test_start (void)
     failures = 0;
 
     /* Create sem with count ten for second thread to decrement */
-    if (atomSemCreate (&sem1, INITIAL_SEM_COUNT) != ATOM_OK)
-    {
+    if (atomSemCreate (&sem1, INITIAL_SEM_COUNT) != ATOM_OK) {
         ATOMLOG (_STR("Error creating test semaphore 1\n"));
         failures++;
     }
     /* Create sem to receive test-passed notification */
-    else if (atomSemCreate (&sem2, 0) != ATOM_OK)
-    {
+    else if (atomSemCreate (&sem2, 0) != ATOM_OK) {
         ATOMLOG (_STR("Error creating test semaphore 1\n"));
         failures++;
-    }
-    else
-    {
+    } else {
         /* Check that sem2 doesn't already have a positive count */
-        if (atomSemGet (&sem2, -1) != ATOM_WOULDBLOCK)
-        {
+        if (atomSemGet (&sem2, -1) != ATOM_WOULDBLOCK) {
             ATOMLOG (_STR("Sem2 already put\n"));
             failures++;
         }
 
         /* Create second thread */
         else if (atomThreadCreate(&tcb[0], TEST_THREAD_PRIO, test_thread_func, 1,
-              &test_thread_stack[0][TEST_THREAD_STACK_SIZE - 1],
-              TEST_THREAD_STACK_SIZE) != ATOM_OK)
-        {
+                                  &test_thread_stack[0][TEST_THREAD_STACK_SIZE - 1],
+                                  TEST_THREAD_STACK_SIZE) != ATOM_OK) {
             /* Fail */
             ATOMLOG (_STR("Error creating test thread\n"));
             failures++;
@@ -108,11 +102,9 @@ uint32_t test_start (void)
          * decrement it any further. If this passes then the second
          * thread will post sem2 to notify us that the test has passed.
          */
-        else
-        {
+        else {
             /* Give the second thread one second to post sem2 */
-            if (atomSemGet (&sem2, SYSTEM_TICKS_PER_SEC) != ATOM_OK)
-            {
+            if (atomSemGet (&sem2, SYSTEM_TICKS_PER_SEC) != ATOM_OK) {
                 ATOMLOG (_STR("Sem2 not posted\n"));
                 failures++;
             }
@@ -120,13 +112,11 @@ uint32_t test_start (void)
         }
 
         /* Delete semaphores, test finished */
-        if (atomSemDelete (&sem1) != ATOM_OK)
-        {
+        if (atomSemDelete (&sem1) != ATOM_OK) {
             ATOMLOG (_STR("Delete failed\n"));
             failures++;
         }
-        if (atomSemDelete (&sem2) != ATOM_OK)
-        {
+        if (atomSemDelete (&sem2) != ATOM_OK) {
             ATOMLOG (_STR("Delete failed\n"));
             failures++;
         }
@@ -139,19 +129,14 @@ uint32_t test_start (void)
         int thread;
 
         /* Check all threads */
-        for (thread = 0; thread < NUM_TEST_THREADS; thread++)
-        {
+        for (thread = 0; thread < NUM_TEST_THREADS; thread++) {
             /* Check thread stack usage */
-            if (atomThreadStackCheck (&tcb[thread], &used_bytes, &free_bytes) != ATOM_OK)
-            {
+            if (atomThreadStackCheck (&tcb[thread], &used_bytes, &free_bytes) != ATOM_OK) {
                 ATOMLOG (_STR("StackCheck\n"));
                 failures++;
-            }
-            else
-            {
+            } else {
                 /* Check the thread did not use up to the end of stack */
-                if (free_bytes == 0)
-                {
+                if (free_bytes == 0) {
                     ATOMLOG (_STR("StackOverflow %d\n"), thread);
                     failures++;
                 }
@@ -195,11 +180,9 @@ static void test_thread_func (uint32_t param)
      */
     failures = 0;
     count = INITIAL_SEM_COUNT;
-    while (count--)
-    {
+    while (count--) {
         /* Decrement sem1 */
-        if ((status = atomSemGet (&sem1, -1)) != ATOM_OK)
-        {
+        if ((status = atomSemGet (&sem1, -1)) != ATOM_OK) {
             /* Error decrementing semaphore, notify the status code */
             ATOMLOG (_STR("G%d\n"), status);
             failures++;
@@ -207,26 +190,22 @@ static void test_thread_func (uint32_t param)
     }
 
     /* Check above stage was successful */
-    if (failures == 0)
-    {
+    if (failures == 0) {
         /* Sem1 should now have a count of zero, and not allow a decrement */
-        if ((status = atomSemGet (&sem1, -1)) != ATOM_WOULDBLOCK)
-        {
+        if ((status = atomSemGet (&sem1, -1)) != ATOM_WOULDBLOCK) {
             /* Error getting semaphore, notify the status code */
             ATOMLOG (_STR("W%d\n"), status);
         }
 
         /* Post sem2 to notify that the test passed */
-        else if ((status = atomSemPut (&sem2)) != ATOM_OK)
-        {
+        else if ((status = atomSemPut (&sem2)) != ATOM_OK) {
             /* Error putting semaphore, notify the status code */
             ATOMLOG (_STR("P%d\n"), status);
         }
     }
 
     /* Loop forever */
-    while (1)
-    {
+    while (1) {
         atomTimerDelay (SYSTEM_TICKS_PER_SEC);
     }
 }

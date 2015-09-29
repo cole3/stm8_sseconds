@@ -7,16 +7,16 @@
   * @brief   This file provides firmware functions to configure the IRTIM peripheral.
   *
   *  @verbatim
-  *  
+  *
   *          ===================================================================
   *                                 How to use this driver
   *          ===================================================================
   *          This driver provides functions to:
   *             1. Enable the IRTIM peripheral
-  *             2. Enable the high sink mode on the IRTIM pin 
-  *               
+  *             2. Enable the high sink mode on the IRTIM pin
+  *
   *  @endverbatim
-  *    
+  *
   ******************************************************************************
   * @attention
   *
@@ -28,7 +28,7 @@
   * CODING INFORMATION CONTAINED HEREIN IN CONNECTION WITH THEIR PRODUCTS.
   *
   * <h2><center>&copy; COPYRIGHT 2011 STMicroelectronics</center></h2>
-  ******************************************************************************  
+  ******************************************************************************
   */
 
 
@@ -38,12 +38,12 @@
 /** @addtogroup STM8L15x_StdPeriph_Driver
   * @{
   */
-  
-/** @defgroup IRTIM 
+
+/** @defgroup IRTIM
   * @brief IRTIM driver modules
   * @{
   */
-   
+
 /* Private typedef -----------------------------------------------------------*/
 /* Private define ------------------------------------------------------------*/
 /* Private macro -------------------------------------------------------------*/
@@ -55,16 +55,16 @@
   */
 
 /** @defgroup IRTIM_Group1 IRTIM configuration functions
- *  @brief   IRTIM configuration functions 
+ *  @brief   IRTIM configuration functions
  *
-@verbatim   
+@verbatim
  ===============================================================================
                        IRTIM configuration functions
- ===============================================================================  
-  
-       ===================================================================      
+ ===============================================================================
+
+       ===================================================================
                        IRTIM Driver: how to use it
-       =================================================================== 
+       ===================================================================
        To generate the infrared remote control signal, perform the following steps:
           1. Use TIM2 channel 1 to generate the high frequency carrier signal
              by calling TIM2_OC1Init()
@@ -74,9 +74,9 @@
 
           Note1: When IRTIM peripheral is enabled, TIM2 channel 1 and TIM3 channel 1
                  become inactive (no signal on output) and can be used as GPIO.
-                 
+
           Note2: The high sink LED driver capability (only available on the IRTIM pin)
-                 can be activated using IRTIM_HighSinkODCmd() to sink the high 
+                 can be activated using IRTIM_HighSinkODCmd() to sink the high
                  current needed to directly control an infrared LED
 
 @endverbatim
@@ -90,7 +90,7 @@
   */
 void IRTIM_DeInit(void)
 {
-  IRTIM->CR = IRTIM_CR_RESET_VALUE;
+    IRTIM->CR = IRTIM_CR_RESET_VALUE;
 }
 
 /**
@@ -101,18 +101,15 @@ void IRTIM_DeInit(void)
   */
 void IRTIM_Cmd(FunctionalState NewState)
 {
-  /* Check the parameters */
-  assert_param(IS_FUNCTIONAL_STATE(NewState));
+    /* Check the parameters */
+    assert_param(IS_FUNCTIONAL_STATE(NewState));
 
-  /* set or Reset the EN Bit */
-  if (NewState ==   DISABLE)
-  {
-    IRTIM->CR &= (uint8_t)(~IRTIM_CR_EN) ;
-  }
-  else
-  {
-    IRTIM->CR |= IRTIM_CR_EN ;
-  }
+    /* set or Reset the EN Bit */
+    if (NewState ==   DISABLE) {
+        IRTIM->CR &= (uint8_t)(~IRTIM_CR_EN) ;
+    } else {
+        IRTIM->CR |= IRTIM_CR_EN ;
+    }
 }
 
 /**
@@ -123,18 +120,15 @@ void IRTIM_Cmd(FunctionalState NewState)
   */
 void IRTIM_HighSinkODCmd(FunctionalState NewState)
 {
-  /* Check the parameters */
-  assert_param(IS_FUNCTIONAL_STATE(NewState));
+    /* Check the parameters */
+    assert_param(IS_FUNCTIONAL_STATE(NewState));
 
-  /* set or Reset the EN Bit */
-  if (NewState == DISABLE)
-  {
-    IRTIM->CR &= (uint8_t)(~IRTIM_CR_HSEN) ;
-  }
-  else
-  {
-    IRTIM->CR |= IRTIM_CR_HSEN ;
-  }
+    /* set or Reset the EN Bit */
+    if (NewState == DISABLE) {
+        IRTIM->CR &= (uint8_t)(~IRTIM_CR_HSEN) ;
+    } else {
+        IRTIM->CR |= IRTIM_CR_HSEN ;
+    }
 }
 
 /**
@@ -142,12 +136,12 @@ void IRTIM_HighSinkODCmd(FunctionalState NewState)
   */
 
 /** @defgroup IRTIM_Group2 IRITM status management functions
- *  @brief    IRITM status management functions 
+ *  @brief    IRITM status management functions
  *
-@verbatim   
+@verbatim
  ===============================================================================
                      IRITM status management functions
- ===============================================================================  
+ ===============================================================================
 
 @endverbatim
   * @{
@@ -161,7 +155,7 @@ void IRTIM_HighSinkODCmd(FunctionalState NewState)
 
 FunctionalState IRTIM_GetStatus(void)
 {
-  return ((FunctionalState) (IRTIM->CR & IRTIM_CR_EN));
+    return ((FunctionalState) (IRTIM->CR & IRTIM_CR_EN));
 }
 
 /**
@@ -171,17 +165,13 @@ FunctionalState IRTIM_GetStatus(void)
   */
 FunctionalState IRTIM_GetHighSinkODStatus(void)
 {
-  return ((FunctionalState)(IRTIM->CR & IRTIM_CR_HSEN));
+    return ((FunctionalState)(IRTIM->CR & IRTIM_CR_HSEN));
 }
 
 /**
   * @}
-  */ 
+  */
 
-/**
-  * @}
-  */ 
-  
 /**
   * @}
   */
@@ -189,5 +179,9 @@ FunctionalState IRTIM_GetHighSinkODStatus(void)
 /**
   * @}
   */
-  
+
+/**
+  * @}
+  */
+
 /******************* (C) COPYRIGHT 2011 STMicroelectronics *****END OF FILE****/

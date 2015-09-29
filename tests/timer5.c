@@ -63,15 +63,13 @@ uint32_t test_start (void)
     failures = 0;
 
     /* Test parameter checks */
-    if (atomTimerCancel(NULL) != ATOM_ERR_PARAM)
-    {
+    if (atomTimerCancel(NULL) != ATOM_ERR_PARAM) {
         ATOMLOG (_STR("Param\n"));
         failures++;
     }
 
     /* Test cancel when timer not registered */
-    if (atomTimerCancel(&timer_cb) != ATOM_ERR_NOT_FOUND)
-    {
+    if (atomTimerCancel(&timer_cb) != ATOM_ERR_NOT_FOUND) {
         ATOMLOG (_STR("NotFound\n"));
         failures++;
     }
@@ -84,36 +82,26 @@ uint32_t test_start (void)
     timer_cb.cb_func = testCallback;
 
     /* Register the timer callback */
-    if (atomTimerRegister (&timer_cb) != ATOM_OK)
-    {
+    if (atomTimerRegister (&timer_cb) != ATOM_OK) {
         ATOMLOG (_STR("TimerReg\n"));
         failures++;
-    }
-    else
-    {
+    } else {
         /* Successfully registered for one second's time */
 
         /* Cancel the callback */
-        if (atomTimerCancel (&timer_cb) != ATOM_OK)
-        {
+        if (atomTimerCancel (&timer_cb) != ATOM_OK) {
             ATOMLOG (_STR("TimerCancel\n"));
             failures++;
-        }
-        else
-        {
+        } else {
             /* Successfully cancelled the callback */
 
             /* Wait two seconds, and check callback did not occur */
-            if (atomTimerDelay(2 * SYSTEM_TICKS_PER_SEC) != ATOM_OK)
-            {
+            if (atomTimerDelay(2 * SYSTEM_TICKS_PER_SEC) != ATOM_OK) {
                 ATOMLOG (_STR("Wait\n"));
                 failures++;
-            }
-            else
-            {
+            } else {
                 /* The ran flag should still be FALSE */
-                if (callback_ran_flag != FALSE)
-                {
+                if (callback_ran_flag != FALSE) {
                     ATOMLOG (_STR("Called back\n"));
                     failures++;
                 }

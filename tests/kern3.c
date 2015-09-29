@@ -95,25 +95,22 @@ uint32_t test_start (void)
 
     /* Create low priority thread */
     if (atomThreadCreate (&tcb[0], 253, test_thread_func, 0,
-            &test_thread_stack[0][TEST_THREAD_STACK_SIZE - 1],
-            TEST_THREAD_STACK_SIZE) != ATOM_OK)
-    {
+                          &test_thread_stack[0][TEST_THREAD_STACK_SIZE - 1],
+                          TEST_THREAD_STACK_SIZE) != ATOM_OK) {
         ATOMLOG (_STR("Bad thread create\n"));
         failures++;
     }
 
     /* Create high priority thread */
     else if (atomThreadCreate (&tcb[1], 252, test_thread_func, 1,
-            &test_thread_stack[1][TEST_THREAD_STACK_SIZE - 1],
-            TEST_THREAD_STACK_SIZE) != ATOM_OK)
-    {
+                               &test_thread_stack[1][TEST_THREAD_STACK_SIZE - 1],
+                               TEST_THREAD_STACK_SIZE) != ATOM_OK) {
         ATOMLOG (_STR("Bad thread create\n"));
         failures++;
     }
 
     /* Repeat test a few times */
-    for (i = 0; i < 8; i++)
-    {
+    for (i = 0; i < 8; i++) {
         /* Make the higher priority thread sleep */
         sleep_request[1] = TRUE;
 
@@ -127,14 +124,11 @@ uint32_t test_start (void)
         atomTimerDelay (SYSTEM_TICKS_PER_SEC/4);
 
         /* Check only the low priority thread has run since we reset the flags */
-        if ((running_flag[0] != TRUE) || (running_flag[1] != FALSE))
-        {
+        if ((running_flag[0] != TRUE) || (running_flag[1] != FALSE)) {
             ATOMLOG (_STR("Lo%d %d/%d\n"), i, running_flag[0], running_flag[1]);
             failures++;
             break;
-        }
-        else
-        {
+        } else {
             /*
              * We have confirmed that only the ready thread has been running.
              * Now check that if we wake up the high priority thread, the
@@ -152,14 +146,11 @@ uint32_t test_start (void)
             atomTimerDelay (SYSTEM_TICKS_PER_SEC/4);
 
             /* Check only the high priority thread has run since we reset the flags */
-            if ((running_flag[1] != TRUE) || (running_flag[0] != FALSE))
-            {
+            if ((running_flag[1] != TRUE) || (running_flag[0] != FALSE)) {
                 ATOMLOG (_STR("Hi%d/%d\n"), running_flag[0], running_flag[1]);
                 failures++;
                 break;
-            }
-            else
-            {
+            } else {
                 /*
                  * We have confirmed that the high priority thread has preempted the
                  * low priority thread, and remain running while never scheduling
@@ -176,19 +167,14 @@ uint32_t test_start (void)
         int thread;
 
         /* Check all threads */
-        for (thread = 0; thread < NUM_TEST_THREADS; thread++)
-        {
+        for (thread = 0; thread < NUM_TEST_THREADS; thread++) {
             /* Check thread stack usage */
-            if (atomThreadStackCheck (&tcb[thread], &used_bytes, &free_bytes) != ATOM_OK)
-            {
+            if (atomThreadStackCheck (&tcb[thread], &used_bytes, &free_bytes) != ATOM_OK) {
                 ATOMLOG (_STR("StackCheck\n"));
                 failures++;
-            }
-            else
-            {
+            } else {
                 /* Check the thread did not use up to the end of stack */
-                if (free_bytes == 0)
-                {
+                if (free_bytes == 0) {
                     ATOMLOG (_STR("StackOverflow %d\n"), thread);
                     failures++;
                 }
@@ -225,15 +211,11 @@ static void test_thread_func (uint32_t param)
     thread_id = (int)param;
 
     /* Run forever */
-    while (1)
-    {
+    while (1) {
         /* If this thread is requested to sleep, sleep until told to stop */
-        if (sleep_request[thread_id])
-        {
+        if (sleep_request[thread_id]) {
             atomTimerDelay (1);
-        }
-        else
-        {
+        } else {
             /* Otherwise set running flag for this thread */
             running_flag[thread_id] = TRUE;
         }

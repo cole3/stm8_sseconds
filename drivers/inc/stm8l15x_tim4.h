@@ -17,7 +17,7 @@
   * CODING INFORMATION CONTAINED HEREIN IN CONNECTION WITH THEIR PRODUCTS.
   *
   * <h2><center>&copy; COPYRIGHT 2011 STMicroelectronics</center></h2>
-  ******************************************************************************  
+  ******************************************************************************
   */
 
 /* Define to prevent recursive inclusion -------------------------------------*/
@@ -33,8 +33,8 @@
 
 /** @addtogroup TIM4
   * @{
-  */ 
-  
+  */
+
 /* Exported types ------------------------------------------------------------*/
 
 /** @defgroup TIM4_Exported_Types
@@ -45,161 +45,150 @@
 /** @defgroup TIM4_Prescaler
   * @{
   */
-typedef enum
-{
-  TIM4_Prescaler_1      = ((uint8_t)0x00),   /*!< Time base Prescaler = 1 (No effect)*/
-  TIM4_Prescaler_2      = ((uint8_t)0x01),  /*!< Time base Prescaler = 2 */
-  TIM4_Prescaler_4      = ((uint8_t)0x02),  /*!< Time base Prescaler = 4 */
-  TIM4_Prescaler_8      = ((uint8_t)0x03),  /*!< Time base Prescaler = 8 */
-  TIM4_Prescaler_16     = ((uint8_t)0x04),  /*!< Time base Prescaler = 16 */
-  TIM4_Prescaler_32     = ((uint8_t)0x05),  /*!< Time base Prescaler = 32 */
-  TIM4_Prescaler_64     = ((uint8_t)0x06),  /*!< Time base Prescaler = 64 */
-  TIM4_Prescaler_128    = ((uint8_t)0x07),  /*!< Time base Prescaler = 128 */
-  TIM4_Prescaler_256    = ((uint8_t)0x08),  /*!< Time base Prescaler = 256 */
-  TIM4_Prescaler_512    = ((uint8_t)0x09),  /*!< Time base Prescaler = 512 */
-  TIM4_Prescaler_1024   = ((uint8_t)0x0A),  /*!< Time base Prescaler = 1024 */
-  TIM4_Prescaler_2048   = ((uint8_t)0x0B),  /*!< Time base Prescaler = 2048 */
-  TIM4_Prescaler_4096   = ((uint8_t)0x0C),  /*!< Time base Prescaler = 4096 */
-  TIM4_Prescaler_8192   = ((uint8_t)0x0D),  /*!< Time base Prescaler = 8196 */
-  TIM4_Prescaler_16384  = ((uint8_t)0x0E),  /*!< Time base Prescaler = 16384 */
-  TIM4_Prescaler_32768  = ((uint8_t)0x0F)   /*!< Time base Prescaler = 32768 */
-}TIM4_Prescaler_TypeDef;
+typedef enum {
+    TIM4_Prescaler_1      = ((uint8_t)0x00),   /*!< Time base Prescaler = 1 (No effect)*/
+    TIM4_Prescaler_2      = ((uint8_t)0x01),  /*!< Time base Prescaler = 2 */
+    TIM4_Prescaler_4      = ((uint8_t)0x02),  /*!< Time base Prescaler = 4 */
+    TIM4_Prescaler_8      = ((uint8_t)0x03),  /*!< Time base Prescaler = 8 */
+    TIM4_Prescaler_16     = ((uint8_t)0x04),  /*!< Time base Prescaler = 16 */
+    TIM4_Prescaler_32     = ((uint8_t)0x05),  /*!< Time base Prescaler = 32 */
+    TIM4_Prescaler_64     = ((uint8_t)0x06),  /*!< Time base Prescaler = 64 */
+    TIM4_Prescaler_128    = ((uint8_t)0x07),  /*!< Time base Prescaler = 128 */
+    TIM4_Prescaler_256    = ((uint8_t)0x08),  /*!< Time base Prescaler = 256 */
+    TIM4_Prescaler_512    = ((uint8_t)0x09),  /*!< Time base Prescaler = 512 */
+    TIM4_Prescaler_1024   = ((uint8_t)0x0A),  /*!< Time base Prescaler = 1024 */
+    TIM4_Prescaler_2048   = ((uint8_t)0x0B),  /*!< Time base Prescaler = 2048 */
+    TIM4_Prescaler_4096   = ((uint8_t)0x0C),  /*!< Time base Prescaler = 4096 */
+    TIM4_Prescaler_8192   = ((uint8_t)0x0D),  /*!< Time base Prescaler = 8196 */
+    TIM4_Prescaler_16384  = ((uint8_t)0x0E),  /*!< Time base Prescaler = 16384 */
+    TIM4_Prescaler_32768  = ((uint8_t)0x0F)   /*!< Time base Prescaler = 32768 */
+} TIM4_Prescaler_TypeDef;
 
 /**
   * @}
   */
-  
+
 /** @defgroup TIM4_One_Pulse_Mode
   * @{
   */
-typedef enum
-{
-  TIM4_OPMode_Single      = ((uint8_t) 0x01),  /*!< Single one Pulse mode (OPM Active) */
-  TIM4_OPMode_Repetitive  = ((uint8_t) 0x00)   /*!< Repetitive Pulse mode (OPM inactive) */
-}TIM4_OPMode_TypeDef;
+typedef enum {
+    TIM4_OPMode_Single      = ((uint8_t) 0x01),  /*!< Single one Pulse mode (OPM Active) */
+    TIM4_OPMode_Repetitive  = ((uint8_t) 0x00)   /*!< Repetitive Pulse mode (OPM inactive) */
+} TIM4_OPMode_TypeDef;
 
 /**
   * @}
   */
-  
+
 /** @defgroup TIM4_Reload_Mode_Prescaler
   * @{
   */
-typedef enum
-{
-  TIM4_PSCReloadMode_Update      = ((uint8_t)0x00), /*!< Prescaler value is reloaded at every update */
-  TIM4_PSCReloadMode_Immediate  = ((uint8_t)0x01)  /*!< Prescaler value is reloaded immediatly */
-}TIM4_PSCReloadMode_TypeDef;
+typedef enum {
+    TIM4_PSCReloadMode_Update      = ((uint8_t)0x00), /*!< Prescaler value is reloaded at every update */
+    TIM4_PSCReloadMode_Immediate  = ((uint8_t)0x01)  /*!< Prescaler value is reloaded immediatly */
+} TIM4_PSCReloadMode_TypeDef;
 
 /**
   * @}
   */
-  
+
 /** @defgroup TIM4_Update_Source
   * @{
   */
-typedef enum
-{
-  TIM4_UpdateSource_Global  = ((uint8_t)0x00),  /*!< Global Update request source */
-  TIM4_UpdateSource_Regular  = ((uint8_t)0x01)   /*!< Regular Update request source */
-}TIM4_UpdateSource_TypeDef;
+typedef enum {
+    TIM4_UpdateSource_Global  = ((uint8_t)0x00),  /*!< Global Update request source */
+    TIM4_UpdateSource_Regular  = ((uint8_t)0x01)   /*!< Regular Update request source */
+} TIM4_UpdateSource_TypeDef;
 
 /**
   * @}
   */
-  
+
 /** @defgroup TIM4_Event_Source
   * @{
   */
-typedef enum
-{
-  TIM4_EventSource_Update    = ((uint8_t)0x01),  /*!< Update Event */
-  TIM4_EventSource_Trigger  = ((uint8_t)0x40)   /*!< Trigger Event */
-}TIM4_EventSource_TypeDef;
+typedef enum {
+    TIM4_EventSource_Update    = ((uint8_t)0x01),  /*!< Update Event */
+    TIM4_EventSource_Trigger  = ((uint8_t)0x40)   /*!< Trigger Event */
+} TIM4_EventSource_TypeDef;
 
 /**
   * @}
   */
-  
+
 /** @defgroup TIM4_Trigger_Output_Source
   * @{
   */
-typedef enum
-{
-  TIM4_TRGOSource_Reset   = ((uint8_t)0x00),  /*!< Trigger Output source = Reset */
-  TIM4_TRGOSource_Enable  = ((uint8_t)0x10),  /*!< Trigger Output source = TIM4 is enabled */
-  TIM4_TRGOSource_Update  = ((uint8_t)0x20)   /*!< Trigger Output source = Update event */
-}TIM4_TRGOSource_TypeDef;
+typedef enum {
+    TIM4_TRGOSource_Reset   = ((uint8_t)0x00),  /*!< Trigger Output source = Reset */
+    TIM4_TRGOSource_Enable  = ((uint8_t)0x10),  /*!< Trigger Output source = TIM4 is enabled */
+    TIM4_TRGOSource_Update  = ((uint8_t)0x20)   /*!< Trigger Output source = Update event */
+} TIM4_TRGOSource_TypeDef;
 
 /**
   * @}
   */
-  
+
 /** @defgroup TIM4_Salve_Mode
   * @{
   */
-typedef enum
-{
-  TIM4_SlaveMode_Disable    = ((uint8_t)0x00),   /*!< Disable slave mode to clock the prescaler
+typedef enum {
+    TIM4_SlaveMode_Disable    = ((uint8_t)0x00),   /*!< Disable slave mode to clock the prescaler
                                                       directly with the internal clock */
-  TIM4_SlaveMode_Reset      = ((uint8_t)0x04),   /*!< Slave Mode Selection  = Reset*/
-  TIM4_SlaveMode_Gated      = ((uint8_t)0x05),   /*!< Slave Mode Selection  = Gated*/
-  TIM4_SlaveMode_Trigger    = ((uint8_t)0x06),  /*!< Slave Mode Selection  = Trigger*/
-  TIM4_SlaveMode_External1  = ((uint8_t)0x07)    /*!< Slave Mode Selection  = External 1*/
-}TIM4_SlaveMode_TypeDef;
+    TIM4_SlaveMode_Reset      = ((uint8_t)0x04),   /*!< Slave Mode Selection  = Reset*/
+    TIM4_SlaveMode_Gated      = ((uint8_t)0x05),   /*!< Slave Mode Selection  = Gated*/
+    TIM4_SlaveMode_Trigger    = ((uint8_t)0x06),  /*!< Slave Mode Selection  = Trigger*/
+    TIM4_SlaveMode_External1  = ((uint8_t)0x07)    /*!< Slave Mode Selection  = External 1*/
+} TIM4_SlaveMode_TypeDef;
 
 /**
   * @}
   */
-  
+
 /** @defgroup TIM4_Flags
   * @{
   */
-typedef enum
-{
-  TIM4_FLAG_Update  = ((uint8_t)0x01),  /*!< Update Flag */
-  TIM4_FLAG_Trigger  = ((uint8_t)0x40)    /*!< Trigger Flag */
-}TIM4_FLAG_TypeDef;
+typedef enum {
+    TIM4_FLAG_Update  = ((uint8_t)0x01),  /*!< Update Flag */
+    TIM4_FLAG_Trigger  = ((uint8_t)0x40)    /*!< Trigger Flag */
+} TIM4_FLAG_TypeDef;
 
 /**
   * @}
   */
-  
+
 /** @defgroup TIM4_Interrupts
   * @{
   */
-typedef enum
-{
-  TIM4_IT_Update  = ((uint8_t)0x01),  /*!< Update Interrupt*/
-  TIM4_IT_Trigger  = ((uint8_t)0x40)   /*!< Trigger  Interrupt*/
-}TIM4_IT_TypeDef;
+typedef enum {
+    TIM4_IT_Update  = ((uint8_t)0x01),  /*!< Update Interrupt*/
+    TIM4_IT_Trigger  = ((uint8_t)0x40)   /*!< Trigger  Interrupt*/
+} TIM4_IT_TypeDef;
 
 /**
   * @}
   */
-  
+
 /** @defgroup TIM4_Internal_Trigger_Selection
   * @{
   */
-typedef enum
-{
-  TIM4_TRGSelection_TIM5  = ((uint8_t)0x00), /*!< TRIG Input source =  TIM5 TRIG Output */
-  TIM4_TRGSelection_TIM1  = ((uint8_t)0x10), /*!< TRIG Input source =  TIM1 TRIG Output */
-  TIM4_TRGSelection_TIM3  = ((uint8_t)0x20), /*!< TRIG Input source =  TIM3 TRIG Output */
-  TIM4_TRGSelection_TIM2  = ((uint8_t)0x30)  /*!< TRIG Input source =  TIM2 TRIG Output */
-}TIM4_TRGSelection_TypeDef;
+typedef enum {
+    TIM4_TRGSelection_TIM5  = ((uint8_t)0x00), /*!< TRIG Input source =  TIM5 TRIG Output */
+    TIM4_TRGSelection_TIM1  = ((uint8_t)0x10), /*!< TRIG Input source =  TIM1 TRIG Output */
+    TIM4_TRGSelection_TIM3  = ((uint8_t)0x20), /*!< TRIG Input source =  TIM3 TRIG Output */
+    TIM4_TRGSelection_TIM2  = ((uint8_t)0x30)  /*!< TRIG Input source =  TIM2 TRIG Output */
+} TIM4_TRGSelection_TypeDef;
 
 /**
   * @}
   */
-  
+
 /** @defgroup TIM4_DMA_source_requests
   * @{
   */
-typedef enum
-{
-  TIM4_DMASource_Update    = ((uint8_t)0x01)  /*!< TIM4 DMA Update Request*/
-}TIM4_DMASource_TypeDef;
+typedef enum {
+    TIM4_DMASource_Update    = ((uint8_t)0x01)  /*!< TIM4 DMA Update Request*/
+} TIM4_DMASource_TypeDef;
 /**
   * @}
   */
@@ -207,7 +196,7 @@ typedef enum
 /**
   * @}
   */
-  
+
 /* Exported constants --------------------------------------------------------*/
 /* Exported macros -----------------------------------------------------------*/
 

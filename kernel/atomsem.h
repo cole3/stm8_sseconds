@@ -30,8 +30,7 @@
 #ifndef __ATOM_SEM_H
 #define __ATOM_SEM_H
 
-typedef struct atom_sem
-{
+typedef struct atom_sem {
     ATOM_TCB *  suspQ;  /* Queue of threads suspended on this semaphore */
     uint8_t       count;  /* Semaphore count */
 } ATOM_SEM;

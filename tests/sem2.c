@@ -64,40 +64,27 @@ uint32_t test_start (void)
     failures = 0;
 
     /* Test semaphore wait timeouts */
-    if (atomSemCreate (&sem1, 0) != ATOM_OK)
-    {
+    if (atomSemCreate (&sem1, 0) != ATOM_OK) {
         ATOMLOG (_STR("Error creating test semaphore 1\n"));
         failures++;
-    }
-    else
-    {
+    } else {
         /* Wait on semaphore with timeout */
-        if ((status = atomSemGet (&sem1, SYSTEM_TICKS_PER_SEC)) != ATOM_TIMEOUT)
-        {
+        if ((status = atomSemGet (&sem1, SYSTEM_TICKS_PER_SEC)) != ATOM_TIMEOUT) {
             ATOMLOG (_STR("Timo %d\n"), status);
             failures++;
-        }
-        else
-        {
+        } else {
             /* Test semaphore still operates correctly after timeout */
-            if (atomSemPut (&sem1) != ATOM_OK)
-            {
+            if (atomSemPut (&sem1) != ATOM_OK) {
                 ATOMLOG (_STR("Put failed\n"));
                 failures++;
-            }
-            else
-            {
+            } else {
                 /* Count should now be 1 */
-                if (atomSemGet (&sem1, 0) != ATOM_OK)
-                {
+                if (atomSemGet (&sem1, 0) != ATOM_OK) {
                     ATOMLOG (_STR("Get failed\n"));
                     failures++;
-                }
-                else
-                {
+                } else {
                     /* Delete it, test finished */
-                    if (atomSemDelete (&sem1) != ATOM_OK)
-                    {
+                    if (atomSemDelete (&sem1) != ATOM_OK) {
                         ATOMLOG (_STR("Delete failed\n"));
                         failures++;
                     }
@@ -107,24 +94,17 @@ uint32_t test_start (void)
     }
 
     /* Test semaphore blocks if count is zero */
-    if (atomSemCreate (&sem1, 0) != ATOM_OK)
-    {
+    if (atomSemCreate (&sem1, 0) != ATOM_OK) {
         ATOMLOG (_STR("Error creating test semaphore 1\n"));
         failures++;
-    }
-    else
-    {
+    } else {
         /* Wait on semaphore with timeout */
-        if ((status = atomSemGet (&sem1, SYSTEM_TICKS_PER_SEC)) != ATOM_TIMEOUT)
-        {
+        if ((status = atomSemGet (&sem1, SYSTEM_TICKS_PER_SEC)) != ATOM_TIMEOUT) {
             ATOMLOG (_STR("Timo %d\n"), status);
             failures++;
-        }
-        else
-        {
+        } else {
             /* Delete it, test finished */
-            if (atomSemDelete (&sem1) != ATOM_OK)
-            {
+            if (atomSemDelete (&sem1) != ATOM_OK) {
                 ATOMLOG (_STR("Delete failed\n"));
                 failures++;
             }
@@ -132,24 +112,17 @@ uint32_t test_start (void)
     }
 
     /* Test semaphore does not block if count is one */
-    if (atomSemCreate (&sem1, 1) != ATOM_OK)
-    {
+    if (atomSemCreate (&sem1, 1) != ATOM_OK) {
         ATOMLOG (_STR("Error creating test semaphore 1\n"));
         failures++;
-    }
-    else
-    {
+    } else {
         /* Wait on semaphore with timeout */
-        if ((status = atomSemGet (&sem1, SYSTEM_TICKS_PER_SEC)) != ATOM_OK)
-        {
+        if ((status = atomSemGet (&sem1, SYSTEM_TICKS_PER_SEC)) != ATOM_OK) {
             ATOMLOG (_STR("Get %d\n"), status);
             failures++;
-        }
-        else
-        {
+        } else {
             /* Delete it, test finished */
-            if (atomSemDelete (&sem1) != ATOM_OK)
-            {
+            if (atomSemDelete (&sem1) != ATOM_OK) {
                 ATOMLOG (_STR("Delete failed\n"));
                 failures++;
             }
@@ -157,80 +130,64 @@ uint32_t test_start (void)
     }
 
     /* Test parameter checks */
-    if (atomSemGet (NULL, 0) != ATOM_ERR_PARAM)
-    {
+    if (atomSemGet (NULL, 0) != ATOM_ERR_PARAM) {
         ATOMLOG (_STR("Get param failed\n"));
         failures++;
     }
-    if (atomSemPut (NULL) != ATOM_ERR_PARAM)
-    {
+    if (atomSemPut (NULL) != ATOM_ERR_PARAM) {
         ATOMLOG (_STR("Put param failed\n"));
         failures++;
     }
 
     /* Test atomSemGet() cannot be called from interrupt context */
-    if (atomSemCreate (&sem1, 0) != ATOM_OK)
-    {
+    if (atomSemCreate (&sem1, 0) != ATOM_OK) {
         ATOMLOG (_STR("Error creating test sem1\n"));
         failures++;
-    }
-    else if (atomSemCreate (&sem2, 0) != ATOM_OK)
-    {
+    } else if (atomSemCreate (&sem2, 0) != ATOM_OK) {
         ATOMLOG (_STR("Error creating test sem2\n"));
         failures++;
-    }
-    else
-    {
+    } else {
         /* Fill out the timer callback request structure */
         timer_cb.cb_func = testCallback;
         timer_cb.cb_data = NULL;
         timer_cb.cb_ticks = SYSTEM_TICKS_PER_SEC;
 
         /* Request the timer callback to run in one second */
-        if (atomTimerRegister (&timer_cb) != ATOM_OK)
-        {
+        if (atomTimerRegister (&timer_cb) != ATOM_OK) {
             ATOMLOG (_STR("Error registering timer\n"));
             failures++;
         }
 
         /* Wait up to two seconds for sem2 to be posted indicating success */
-        else if (atomSemGet (&sem2, 2 * SYSTEM_TICKS_PER_SEC) != ATOM_OK)
-        {
+        else if (atomSemGet (&sem2, 2 * SYSTEM_TICKS_PER_SEC) != ATOM_OK) {
             ATOMLOG (_STR("Context check failed\n"));
             failures++;
         }
 
         /* Delete the two test semaphores */
-        if (atomSemDelete (&sem1) != ATOM_OK)
-        {
+        if (atomSemDelete (&sem1) != ATOM_OK) {
             ATOMLOG (_STR("Sem1 delete failed\n"));
             failures++;
         }
-        if (atomSemDelete (&sem2) != ATOM_OK)
-        {
+        if (atomSemDelete (&sem2) != ATOM_OK) {
             ATOMLOG (_STR("Sem2 delete failed\n"));
             failures++;
         }
     }
 
     /* Test for ATOM_WOULDBLOCK */
-    if (atomSemCreate (&sem1, 0) != ATOM_OK)
-    {
+    if (atomSemCreate (&sem1, 0) != ATOM_OK) {
         ATOMLOG (_STR("Error creating test sem1\n"));
         failures++;
-    }
-    else
-    {
+    } else {
         /* Semaphore count is zero so will block */
-        if ((status = atomSemGet (&sem1, -1)) != ATOM_WOULDBLOCK)
-        {
+        if ((status = atomSemGet (&sem1, -1)) != ATOM_WOULDBLOCK) {
             ATOMLOG (_STR("Wouldblock err %d\n"), status);
             failures++;
         }
 
         /* Delete the test semaphore */
-        if (atomSemDelete (&sem1) != ATOM_OK)
-        {
+        if (atomSemDelete (&sem1) != ATOM_OK) {
             ATOMLOG (_STR("Sem1 delete failed\n"));
             failures++;
         }
@@ -238,30 +195,24 @@ uint32_t test_start (void)
     }
 
     /* Test no timeout */
-    if (atomSemCreate (&sem1, 0) != ATOM_OK)
-    {
+    if (atomSemCreate (&sem1, 0) != ATOM_OK) {
         ATOMLOG (_STR("Error creating test sem1\n"));
         failures++;
-    }
-    else
-    {
+    } else {
         /* Increment the semaphore */
-        if (atomSemPut (&sem1) != ATOM_OK)
-        {
+        if (atomSemPut (&sem1) != ATOM_OK) {
             ATOMLOG (_STR("Error on put\n"));
             failures++;
         }
 
         /* Semaphore count is one so will not block */
-        if (atomSemGet (&sem1, -1) != ATOM_OK)
-        {
+        if (atomSemGet (&sem1, -1) != ATOM_OK) {
             ATOMLOG (_STR("Error on get\n"));
             failures++;
         }
 
         /* Delete the test semaphore */
-        if (atomSemDelete (&sem1) != ATOM_OK)
-        {
+        if (atomSemDelete (&sem1) != ATOM_OK) {
             ATOMLOG (_STR("Sem1 delete failed\n"));
             failures++;
         }
@@ -269,23 +220,18 @@ uint32_t test_start (void)
     }
 
     /* Test for semaphore counter overflows with too many puts */
-    if (atomSemCreate (&sem1, 255) != ATOM_OK)
-    {
+    if (atomSemCreate (&sem1, 255) != ATOM_OK) {
         ATOMLOG (_STR("Error creating test sem1\n"));
         failures++;
-    }
-    else
-    {
+    } else {
         /* Increment the semaphore (expect this to overflow the count at 256) */
-        if (atomSemPut (&sem1) != ATOM_ERR_OVF)
-        {
+        if (atomSemPut (&sem1) != ATOM_ERR_OVF) {
             ATOMLOG (_STR("Failed to detect overflow\n"));
             failures++;
         }
 
         /* Delete the test semaphore */
-        if (atomSemDelete (&sem1) != ATOM_OK)
-        {
+        if (atomSemDelete (&sem1) != ATOM_OK) {
             ATOMLOG (_STR("Sem1 delete failed\n"));
             failures++;
         }
@@ -308,13 +254,10 @@ uint32_t test_start (void)
 static void testCallback (POINTER cb_data)
 {
     /* Check the return value from atomSemGet() */
-    if (atomSemGet(&sem1, 0) == ATOM_ERR_CONTEXT)
-    {
+    if (atomSemGet(&sem1, 0) == ATOM_ERR_CONTEXT) {
         /* Received the error we expected, post sem2 to notify success */
         atomSemPut(&sem2);
-    }
-    else
-    {
+    } else {
         /*
          * Did not get the expected error, don't post sem2 and the test
          * thread will time out, signifying an error.

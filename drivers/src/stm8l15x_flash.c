@@ -4,67 +4,67 @@
   * @author  MCD Application Team
   * @version V1.5.0
   * @date    13-May-2011
-  * @brief   This file provides all the Flash firmware functions. These functions 
+  * @brief   This file provides all the Flash firmware functions. These functions
   *          can be executed from Internal FLASH or Internal RAM memories.
   *            - FLASH program and Data EEPROM memories interface configuration
   *            - FLASH program and Data EEPROM memories Programming
   *            - Option Bytes Programming
   *            - Interrupts and flags management
   *            - Functions to be executed from RAM
-  *               
+  *
   *  @verbatim
-  *  
+  *
   *          ===================================================================
   *                                 How to use this driver
   *          ===================================================================
-  *                           
-  *          This driver provides functions to configure and program the Flash 
+  *
+  *          This driver provides functions to configure and program the Flash
   *          memory of all STM8L15x devices
   *          These functions are split in 4 groups
-  * 
-  *           1. FLASH program and Data EEPROM memories interface configuration 
-  *              functions: this group includes the management of the following 
+  *
+  *           1. FLASH program and Data EEPROM memories interface configuration
+  *              functions: this group includes the management of the following
   *              features:
   *                    - Set the fixed programming time
   *                    - Configure the power state during WFI mode
   *                    - Configure the power state during run, low power run and
-  *                      WFE modes (should be executed from internal RAM) 
-  *  
-  *           2. FLASH program and Data EEPROM memories Programming functions: 
-  *              this group includes all needed functions to erase and program 
+  *                      WFE modes (should be executed from internal RAM)
+  *
+  *           2. FLASH program and Data EEPROM memories Programming functions:
+  *              this group includes all needed functions to erase and program
   *              the FLASH program or the Data EEPROM memory.
   *                    - Lock and Unlock the Flash program interface.
-  *                    - Lock and Unlock the Data EEPROM interface.  
-  *                    - Erase function: Erase Byte, Erase Word and Erase Block 
-  *                      (should be executed from internal RAM). 
-  *                    - Program functions: Program Byte, Program Word, 
-  *                      Program Block (should be executed from internal RAM) 
+  *                    - Lock and Unlock the Data EEPROM interface.
+  *                    - Erase function: Erase Byte, Erase Word and Erase Block
+  *                      (should be executed from internal RAM).
+  *                    - Program functions: Program Byte, Program Word,
+  *                      Program Block (should be executed from internal RAM)
   *                      and Fast Program Block (should be executed from internal
   *                      RAM).
-  *    
-  *           3. FLASH Option Bytes Programming functions: this group includes 
+  *
+  *           3. FLASH Option Bytes Programming functions: this group includes
   *              all needed functions to:
-  *                    - Program/erase the user option Bytes 
+  *                    - Program/erase the user option Bytes
   *                    - Get the Read Out Protection status (ROP option byte)
   *                    - Get the User Boot Code size (UBC option byte)
-  *                    - Get the Protected Code size (PCODE option byte) 
-  *                    
+  *                    - Get the Protected Code size (PCODE option byte)
+  *
   *            Note: Option byte programming is very similar to data EEPROM byte
-  *                  programming.          
-  *  
-  *           4. FLASH Interrupts and flag management functions: this group 
+  *                  programming.
+  *
+  *           4. FLASH Interrupts and flag management functions: this group
   *              includes all needed functions to:
   *                    - Enable/Disable the flash interrupt sources
   *                    - Get flags status
-  *                    - Wait for last flash operation(can be executed from 
+  *                    - Wait for last flash operation(can be executed from
   *                      internal RAM)
-  *                        
+  *
   *           5. Functions to be executed from RAM: this group includes the functions
-  *              that should be executed from RAM and provides description on how 
+  *              that should be executed from RAM and provides description on how
   *              to handle this with the different supported toolchains
-  *   
+  *
   *  The table below lists the functions that can be executed from RAM.
-  *  
+  *
   *   +--------------------------------------------------------------------------------|
   *   |   Functions prototypes      |    RAM execution            |     Comments       |
   *   ---------------------------------------------------------------------------------|
@@ -81,15 +81,15 @@
   *   |--------------------------------------------------------------------------------|
   *   | FLASH_EraseBlock            |       Exclusively           | useless from Flash |
   *   |--------------------------------------------------------------------------------|
-  *  
+  *
   *  To be able to execute functions from RAM several steps have to be followed.
   *   These steps may differ from one toolchain to another.
   *   A detailed description is available below within this driver.
   *   You can also refer to the Flash_DataProgram example provided within the
   *   STM8L15x_StdPeriph_Lib package.
-  * 
+  *
   *  @endverbatim
-  *                      
+  *
   ******************************************************************************
   * @attention
   *
@@ -101,7 +101,7 @@
   * CODING INFORMATION CONTAINED HEREIN IN CONNECTION WITH THEIR PRODUCTS.
   *
   * <h2><center>&copy; COPYRIGHT 2011 STMicroelectronics</center></h2>
-  ******************************************************************************  
+  ******************************************************************************
   */
 /* Includes ------------------------------------------------------------------*/
 #include "stm8l15x_flash.h"
@@ -110,16 +110,16 @@
   * @{
   */
 
-/** @defgroup FLASH 
+/** @defgroup FLASH
   * @brief FLASH driver modules
   * @{
   */
-  
+
 /* Private typedef -----------------------------------------------------------*/
 /* Private define ------------------------------------------------------------*/
 /** @defgroup FLASH_Private_Define
   * @{
-  */ 
+  */
 #define FLASH_CLEAR_BYTE   ((uint8_t)0x00)
 #define FLASH_SET_BYTE     ((uint8_t)0xFF)
 #define OPERATION_TIMEOUT  ((uint16_t)0xFFFF)
@@ -130,23 +130,23 @@
 /* Private variables ---------------------------------------------------------*/
 /* Private function prototypes -----------------------------------------------*/
 /* Private functions ---------------------------------------------------------*/
- 
+
 /** @defgroup FLASH_Private_Functions
   * @{
-  */ 
+  */
 
-/** @defgroup FLASH_Group1 FLASH program and Data EEPROM memories Interface 
+/** @defgroup FLASH_Group1 FLASH program and Data EEPROM memories Interface
   *                        configuration functions
-  *  @brief   FLASH Interface configuration functions 
+  *  @brief   FLASH Interface configuration functions
  *
-@verbatim   
+@verbatim
  ===============================================================================
       FLASH program and Data EEPROM memories interface configuration functions
- ===============================================================================  
+ ===============================================================================
 
    The FLASH program and Data EEPROM memories interface configuration functions,
     includes the following functions:
-		
+
    - FLASH_ProgramTime_TypeDef FLASH_GetProgrammingTime(void);
    - void FLASH_SetProgrammingTime(FLASH_ProgramTime_TypeDef FLASH_ProgTime);
 	 - void FLASH_PowerWaitModeConfig(FLASH_Power_TypeDef FLASH_Power);
@@ -156,22 +156,22 @@
 @endverbatim
   * @{
   */
-	
+
 /**
   * @brief  Sets the fixed programming time
   * @param  FLASH_ProgTime : Indicates the programming time to be fixed
   *          This parameter can be one of the following values:
   *            @arg FLASH_ProgramTime_Standard: Standard programming time fixed at 1/2 tprog
-  *            @arg FLASH_ProgramTime_TProg: Programming time fixed at tprog 
+  *            @arg FLASH_ProgramTime_TProg: Programming time fixed at tprog
   * @retval None
   */
 void FLASH_SetProgrammingTime(FLASH_ProgramTime_TypeDef FLASH_ProgTime)
 {
-  /* Check parameter */
-  assert_param(IS_FLASH_PROGRAM_TIME(FLASH_ProgTime));
+    /* Check parameter */
+    assert_param(IS_FLASH_PROGRAM_TIME(FLASH_ProgTime));
 
-  FLASH->CR1 &= (uint8_t)(~FLASH_CR1_FIX);
-  FLASH->CR1 |= (uint8_t)FLASH_ProgTime;
+    FLASH->CR1 &= (uint8_t)(~FLASH_CR1_FIX);
+    FLASH->CR1 |= (uint8_t)FLASH_ProgTime;
 }
 
 /**
@@ -181,7 +181,7 @@ void FLASH_SetProgrammingTime(FLASH_ProgramTime_TypeDef FLASH_ProgTime)
   */
 FLASH_ProgramTime_TypeDef FLASH_GetProgrammingTime(void)
 {
-  return((FLASH_ProgramTime_TypeDef)(FLASH->CR1 & FLASH_CR1_FIX));
+    return((FLASH_ProgramTime_TypeDef)(FLASH->CR1 & FLASH_CR1_FIX));
 }
 
 /**
@@ -191,24 +191,22 @@ FLASH_ProgramTime_TypeDef FLASH_GetProgrammingTime(void)
   *         wait for interrupt mode
   *          This parameter can be one of the following values:
   *            @arg FLASH_Power_IDDQ: Flash program and data EEPROM in IDDQ
-  *            @arg FLASH_Power_On: Flash program and data EEPROM not in IDDQ 
+  *            @arg FLASH_Power_On: Flash program and data EEPROM not in IDDQ
   * @retval None
   */
 void FLASH_PowerWaitModeConfig(FLASH_Power_TypeDef FLASH_Power)
 {
-  /* Check parameter */
-  assert_param(IS_FLASH_POWER(FLASH_Power));
+    /* Check parameter */
+    assert_param(IS_FLASH_POWER(FLASH_Power));
 
-  /* Flash program and data EEPROM in IDDQ during wait for interrupt mode*/
-  if (FLASH_Power != FLASH_Power_On)
-  {
-    FLASH->CR1 |= (uint8_t)FLASH_CR1_WAITM;
-  }
-  /* Flash program and data EEPROM not in IDDQ during wait for interrupt mode*/
-  else
-  {
-    FLASH->CR1 &= (uint8_t)(~FLASH_CR1_WAITM);
-  }
+    /* Flash program and data EEPROM in IDDQ during wait for interrupt mode*/
+    if (FLASH_Power != FLASH_Power_On) {
+        FLASH->CR1 |= (uint8_t)FLASH_CR1_WAITM;
+    }
+    /* Flash program and data EEPROM not in IDDQ during wait for interrupt mode*/
+    else {
+        FLASH->CR1 &= (uint8_t)(~FLASH_CR1_WAITM);
+    }
 }
 
 /**
@@ -218,10 +216,10 @@ void FLASH_PowerWaitModeConfig(FLASH_Power_TypeDef FLASH_Power)
 /** @defgroup FLASH_Group2 FLASH Memory Programming functions
  *  @brief   FLASH Memory Programming functions
  *
-@verbatim   
+@verbatim
  ===============================================================================
                       FLASH Memory Programming functions
- ===============================================================================  
+ ===============================================================================
 
    The FLASH Memory Programming functions, includes the following functions:
     - void FLASH_DeInit(void);
@@ -231,20 +229,20 @@ void FLASH_PowerWaitModeConfig(FLASH_Power_TypeDef FLASH_Power)
     - void FLASH_EraseByte(uint32_t Address);
     - void FLASH_ProgramWord(uint32_t Address, uint32_t Data);
     - uint8_t FLASH_ReadByte(uint32_t Address);
-   
+
    Any operation of erase or program should follow these steps:
 
    1. Call the FLASH_Unlock(FLASH_MemType) function to enable the memory access
 
    2. Call the desired function to erase or program data
 
-   3. Call the FLASH_Lock() function to disable the memory access 
+   3. Call the FLASH_Lock() function to disable the memory access
      (it is recommended to protect the FLASH memory against possible unwanted operation)
 
 @endverbatim
   * @{
   */
-  
+
 /**
   * @brief  Deinitializes the FLASH registers to their default reset values.
   * @param  None
@@ -252,38 +250,36 @@ void FLASH_PowerWaitModeConfig(FLASH_Power_TypeDef FLASH_Power)
   */
 void FLASH_DeInit(void)
 {
-  FLASH->CR1 = FLASH_CR1_RESET_VALUE;
-  FLASH->CR2 = FLASH_CR2_RESET_VALUE;
-  FLASH->IAPSR = FLASH_IAPSR_RESET_VALUE;
-  (void) FLASH->IAPSR; /* Reading of this register causes the clearing of status flags */
+    FLASH->CR1 = FLASH_CR1_RESET_VALUE;
+    FLASH->CR2 = FLASH_CR2_RESET_VALUE;
+    FLASH->IAPSR = FLASH_IAPSR_RESET_VALUE;
+    (void) FLASH->IAPSR; /* Reading of this register causes the clearing of status flags */
 }
-  
+
 /**
   * @brief  Unlocks the program or data EEPROM memory
   * @param  FLASH_MemType : Memory type to unlock
   *          This parameter can be one of the following values:
   *            @arg FLASH_MemType_Program: Program memory
-  *            @arg FLASH_MemType_Data: Data EEPROM memory 
+  *            @arg FLASH_MemType_Data: Data EEPROM memory
   * @retval None
   */
 void FLASH_Unlock(FLASH_MemType_TypeDef FLASH_MemType)
 {
-  /* Check parameter */
-  assert_param(IS_FLASH_MEMORY_TYPE(FLASH_MemType));
+    /* Check parameter */
+    assert_param(IS_FLASH_MEMORY_TYPE(FLASH_MemType));
 
-  /* Unlock program memory */
-  if (FLASH_MemType == FLASH_MemType_Program)
-  {
-    FLASH->PUKR = FLASH_RASS_KEY1;
-    FLASH->PUKR = FLASH_RASS_KEY2;
-  }
+    /* Unlock program memory */
+    if (FLASH_MemType == FLASH_MemType_Program) {
+        FLASH->PUKR = FLASH_RASS_KEY1;
+        FLASH->PUKR = FLASH_RASS_KEY2;
+    }
 
-  /* Unlock data memory */
-  if (FLASH_MemType == FLASH_MemType_Data)
-  {
-    FLASH->DUKR = FLASH_RASS_KEY2; /* Warning: keys are reversed on data memory !!! */
-    FLASH->DUKR = FLASH_RASS_KEY1;
-  }
+    /* Unlock data memory */
+    if (FLASH_MemType == FLASH_MemType_Data) {
+        FLASH->DUKR = FLASH_RASS_KEY2; /* Warning: keys are reversed on data memory !!! */
+        FLASH->DUKR = FLASH_RASS_KEY1;
+    }
 }
 
 /**
@@ -291,15 +287,15 @@ void FLASH_Unlock(FLASH_MemType_TypeDef FLASH_MemType)
   * @param  FLASH_MemType : Memory type
   *          This parameter can be one of the following values:
   *            @arg FLASH_MemType_Program: Program memory
-  *            @arg FLASH_MemType_Data: Data EEPROM memory 
+  *            @arg FLASH_MemType_Data: Data EEPROM memory
   * @retval None
   */
 void FLASH_Lock(FLASH_MemType_TypeDef FLASH_MemType)
 {
-  /* Check parameter */
-  assert_param(IS_FLASH_MEMORY_TYPE(FLASH_MemType));
-  /* Lock memory */
-  FLASH->IAPSR &= (uint8_t)FLASH_MemType;
+    /* Check parameter */
+    assert_param(IS_FLASH_MEMORY_TYPE(FLASH_MemType));
+    /* Lock memory */
+    FLASH->IAPSR &= (uint8_t)FLASH_MemType;
 }
 
 /**
@@ -310,10 +306,10 @@ void FLASH_Lock(FLASH_MemType_TypeDef FLASH_MemType)
   */
 void FLASH_ProgramByte(uint32_t Address, uint8_t Data)
 {
-  /* Check parameters */
-  assert_param(IS_FLASH_ADDRESS(Address));
+    /* Check parameters */
+    assert_param(IS_FLASH_ADDRESS(Address));
 
-  *(PointerAttr uint8_t*) (uint16_t)Address = Data;
+    *(PointerAttr uint8_t*) (uint16_t)Address = Data;
 }
 
 /**
@@ -323,10 +319,10 @@ void FLASH_ProgramByte(uint32_t Address, uint8_t Data)
   */
 void FLASH_EraseByte(uint32_t Address)
 {
-  /* Check parameter */
-  assert_param(IS_FLASH_ADDRESS(Address));
+    /* Check parameter */
+    assert_param(IS_FLASH_ADDRESS(Address));
 
-  *(PointerAttr uint8_t*) (uint16_t)Address = FLASH_CLEAR_BYTE; /* Erase byte */
+    *(PointerAttr uint8_t*) (uint16_t)Address = FLASH_CLEAR_BYTE; /* Erase byte */
 }
 
 /**
@@ -337,19 +333,19 @@ void FLASH_EraseByte(uint32_t Address)
   */
 void FLASH_ProgramWord(uint32_t Address, uint32_t Data)
 {
-  /* Check parameters */
-  assert_param(IS_FLASH_ADDRESS(Address));
-  /* Enable Word Write Once */
-  FLASH->CR2 |= FLASH_CR2_WPRG;
+    /* Check parameters */
+    assert_param(IS_FLASH_ADDRESS(Address));
+    /* Enable Word Write Once */
+    FLASH->CR2 |= FLASH_CR2_WPRG;
 
-  /* Write one byte - from lowest address*/
-  *((PointerAttr uint8_t*)(uint16_t)Address)       = *((uint8_t*)(&Data));   
-  /* Write one byte*/
-  *(((PointerAttr uint8_t*)(uint16_t)Address) + 1) = *((uint8_t*)(&Data) + 1);
-  /* Write one byte*/
-  *(((PointerAttr uint8_t*)(uint16_t)Address) + 2) = *((uint8_t*)(&Data) + 2); 
-  /* Write one byte - from higher address*/
-  *(((PointerAttr uint8_t*)(uint16_t)Address) + 3) = *((uint8_t*)(&Data) + 3); 
+    /* Write one byte - from lowest address*/
+    *((PointerAttr uint8_t*)(uint16_t)Address)       = *((uint8_t*)(&Data));
+    /* Write one byte*/
+    *(((PointerAttr uint8_t*)(uint16_t)Address) + 1) = *((uint8_t*)(&Data) + 1);
+    /* Write one byte*/
+    *(((PointerAttr uint8_t*)(uint16_t)Address) + 2) = *((uint8_t*)(&Data) + 2);
+    /* Write one byte - from higher address*/
+    *(((PointerAttr uint8_t*)(uint16_t)Address) + 3) = *((uint8_t*)(&Data) + 3);
 }
 
 /**
@@ -359,20 +355,20 @@ void FLASH_ProgramWord(uint32_t Address, uint32_t Data)
   */
 uint8_t FLASH_ReadByte(uint32_t Address)
 {
-  /* Read byte */
-  return(*(PointerAttr uint8_t *) (uint16_t)Address);
+    /* Read byte */
+    return(*(PointerAttr uint8_t *) (uint16_t)Address);
 }
 /**
   * @}
   */
 
 /** @defgroup FLASH_Group3 Option Bytes Programming functions
- *  @brief   Option Bytes Programming functions 
+ *  @brief   Option Bytes Programming functions
  *
-@verbatim   
+@verbatim
  ===============================================================================
                         Option Bytes Programming functions
- ===============================================================================  
+ ===============================================================================
 
    The FLASH_Option Bytes Programming_functions, includes the following functions:
 
@@ -381,18 +377,18 @@ uint8_t FLASH_ReadByte(uint32_t Address)
    - FunctionalState FLASH_GetReadOutProtectionStatus(void);
    - uint16_t FLASH_GetBootSize(void);
    - uint16_t FLASH_GetCodeSize(void);
-   
+
    Any operation of erase or program should follow these steps:
-   
-   1. Call the FLASH_Unlock(FLASH_MemType_Data); function to enable the Flash 
+
+   1. Call the FLASH_Unlock(FLASH_MemType_Data); function to enable the Flash
       option control register access
-   
+
    2. Call the desired function to erase or program data
       - void FLASH_ProgramOptionByte(uint16_t Address, uint8_t Data); => to program
-        the option byte Address with the desired Data value.  
+        the option byte Address with the desired Data value.
       - void FLASH_EraseOptionByte(uint16_t Address); => to erase the option byte
-        Address. 			 
-   
+        Address.
+
    3. Once all needed option bytes to be programmed are correctly written, call the
       FLASH_Lock(FLASH_MemType_Data) to disable the memory access ( It is recommended to
       protect the FLASH memory against possible unwanted operation)
@@ -400,7 +396,7 @@ uint8_t FLASH_ReadByte(uint32_t Address)
 @endverbatim
   * @{
   */
-  
+
 /**
   * @brief  Programs option byte
   * @param  Address : option byte address to program
@@ -409,19 +405,19 @@ uint8_t FLASH_ReadByte(uint32_t Address)
   */
 void FLASH_ProgramOptionByte(uint16_t Address, uint8_t Data)
 {
-  /* Check parameter */
-  assert_param(IS_OPTION_BYTE_ADDRESS(Address));
+    /* Check parameter */
+    assert_param(IS_OPTION_BYTE_ADDRESS(Address));
 
-  /* Enable write access to option bytes */
-  FLASH->CR2 |= FLASH_CR2_OPT;
+    /* Enable write access to option bytes */
+    FLASH->CR2 |= FLASH_CR2_OPT;
 
-  /* Program option byte and his complement */
-  *((PointerAttr uint8_t*)Address) = Data;
+    /* Program option byte and his complement */
+    *((PointerAttr uint8_t*)Address) = Data;
 
-  FLASH_WaitForLastOperation(FLASH_MemType_Program);
+    FLASH_WaitForLastOperation(FLASH_MemType_Program);
 
-  /* Disable write access to option bytes */
-  FLASH->CR2 &= (uint8_t)(~FLASH_CR2_OPT);
+    /* Disable write access to option bytes */
+    FLASH->CR2 &= (uint8_t)(~FLASH_CR2_OPT);
 }
 
 /**
@@ -431,19 +427,19 @@ void FLASH_ProgramOptionByte(uint16_t Address, uint8_t Data)
   */
 void FLASH_EraseOptionByte(uint16_t Address)
 {
-  /* Check parameter */
-  assert_param(IS_OPTION_BYTE_ADDRESS(Address));
+    /* Check parameter */
+    assert_param(IS_OPTION_BYTE_ADDRESS(Address));
 
-  /* Enable write access to option bytes */
-  FLASH->CR2 |= FLASH_CR2_OPT;
+    /* Enable write access to option bytes */
+    FLASH->CR2 |= FLASH_CR2_OPT;
 
-  /* Erase option byte and his complement */
-  *((PointerAttr uint8_t*)Address) = FLASH_CLEAR_BYTE;
+    /* Erase option byte and his complement */
+    *((PointerAttr uint8_t*)Address) = FLASH_CLEAR_BYTE;
 
-  FLASH_WaitForLastOperation(FLASH_MemType_Program);
+    FLASH_WaitForLastOperation(FLASH_MemType_Program);
 
-  /* Disable write access to option bytes */
-  FLASH->CR2 &= (uint8_t)(~FLASH_CR2_OPT);
+    /* Disable write access to option bytes */
+    FLASH->CR2 &= (uint8_t)(~FLASH_CR2_OPT);
 }
 
 /**
@@ -454,20 +450,17 @@ void FLASH_EraseOptionByte(uint16_t Address)
   */
 FunctionalState FLASH_GetReadOutProtectionStatus(void)
 {
-  FunctionalState state = DISABLE;
+    FunctionalState state = DISABLE;
 
-  if (OPT->ROP == FLASH_READOUTPROTECTION_KEY)
-  {
-    /* The status of the Flash read out protection is enabled*/
-    state =  ENABLE;
-  }
-  else
-  {
-    /* The status of the Flash read out protection is disabled*/
-    state =  DISABLE;
-  }
+    if (OPT->ROP == FLASH_READOUTPROTECTION_KEY) {
+        /* The status of the Flash read out protection is enabled*/
+        state =  ENABLE;
+    } else {
+        /* The status of the Flash read out protection is disabled*/
+        state =  DISABLE;
+    }
 
-  return state;
+    return state;
 }
 
 /**
@@ -477,19 +470,18 @@ FunctionalState FLASH_GetReadOutProtectionStatus(void)
   */
 uint16_t FLASH_GetBootSize(void)
 {
-  uint16_t temp = 0;
+    uint16_t temp = 0;
 
-  /* Calculates the number of bytes */
-  temp = (uint16_t)((uint16_t)OPT->UBC * (uint16_t)128);
+    /* Calculates the number of bytes */
+    temp = (uint16_t)((uint16_t)OPT->UBC * (uint16_t)128);
 
-  /* Correction because size upper 8kb doesn't exist */
-  if (OPT->UBC > 0x7F)
-  {
-    temp = 8192;
-  }
+    /* Correction because size upper 8kb doesn't exist */
+    if (OPT->UBC > 0x7F) {
+        temp = 8192;
+    }
 
-  /* Return value */
-  return(temp);
+    /* Return value */
+    return(temp);
 
 }
 
@@ -501,19 +493,18 @@ uint16_t FLASH_GetBootSize(void)
   */
 uint16_t FLASH_GetCodeSize(void)
 {
-  uint16_t temp = 0;
+    uint16_t temp = 0;
 
-  /* Calculates the number of bytes */
-  temp = (uint16_t)((uint16_t)OPT->PCODESIZE * (uint16_t)128);
+    /* Calculates the number of bytes */
+    temp = (uint16_t)((uint16_t)OPT->PCODESIZE * (uint16_t)128);
 
-  /* Correction because size upper of 8kb doesn't exist */
-  if (OPT->PCODESIZE > 0x7F)
-  {
-    temp = 8192;
-  }
+    /* Correction because size upper of 8kb doesn't exist */
+    if (OPT->PCODESIZE > 0x7F) {
+        temp = 8192;
+    }
 
-  /* Return value */
-  return(temp);
+    /* Return value */
+    return(temp);
 }
 
 /**
@@ -523,15 +514,15 @@ uint16_t FLASH_GetCodeSize(void)
 /** @defgroup FLASH_Group4 Interrupts and flags management functions
  *  @brief   Interrupts and flags management functions
  *
-@verbatim   
+@verbatim
  ===============================================================================
                   Interrupts and flags management functions
- ===============================================================================  
+ ===============================================================================
 
 @endverbatim
   * @{
   */
-  
+
 /**
   * @brief  Enables or Disables the Flash interrupt mode
   * @param  NewState : The new state of the flash interrupt mode
@@ -541,19 +532,16 @@ uint16_t FLASH_GetCodeSize(void)
 void FLASH_ITConfig(FunctionalState NewState)
 {
 
-  /* Check parameter */
-  assert_param(IS_FUNCTIONAL_STATE(NewState));
+    /* Check parameter */
+    assert_param(IS_FUNCTIONAL_STATE(NewState));
 
-  if (NewState != DISABLE)
-  {
-    /* Enables the interrupt sources */
-    FLASH->CR1 |= FLASH_CR1_IE;
-  }
-  else
-  {
-    /* Disables the interrupt sources */
-    FLASH->CR1 &= (uint8_t)(~FLASH_CR1_IE);
-  }
+    if (NewState != DISABLE) {
+        /* Enables the interrupt sources */
+        FLASH->CR1 |= FLASH_CR1_IE;
+    } else {
+        /* Disables the interrupt sources */
+        FLASH->CR1 &= (uint8_t)(~FLASH_CR1_IE);
+    }
 }
 
 /**
@@ -564,41 +552,38 @@ void FLASH_ITConfig(FunctionalState NewState)
   *            @arg FLASH_FLAG_DUL: Data EEPROM unlocked
   *            @arg FLASH_FLAG_EOP: End of programming (write or erase operation)
   *            @arg FLASH_FLAG_PUL: Flash Program memory unlocked
-  *            @arg FLASH_FLAG_WR_PG_DIS: Write attempted to protected page       
+  *            @arg FLASH_FLAG_WR_PG_DIS: Write attempted to protected page
   * @retval Indicates the state of the Flash_FLAG.
   *         This parameter can be SET or RESET
   */
 FlagStatus FLASH_GetFlagStatus(FLASH_FLAG_TypeDef FLASH_FLAG)
 {
-  FlagStatus status = RESET;
-  assert_param(IS_FLASH_FLAGS(FLASH_FLAG));
+    FlagStatus status = RESET;
+    assert_param(IS_FLASH_FLAGS(FLASH_FLAG));
 
-  /* Check the status of the specified flash flag*/
-  if ((FLASH->IAPSR  & (uint8_t)FLASH_FLAG) != (uint8_t)RESET)
-  {
-    status = SET; /* Flash_FLAG is set*/
-  }
-  else
-  {
-    status = RESET; /* Flash_FLAG is reset*/
-  }
+    /* Check the status of the specified flash flag*/
+    if ((FLASH->IAPSR  & (uint8_t)FLASH_FLAG) != (uint8_t)RESET) {
+        status = SET; /* Flash_FLAG is set*/
+    } else {
+        status = RESET; /* Flash_FLAG is reset*/
+    }
 
-  /* Return the Flash_FLAG status*/
-  return status;
+    /* Return the Flash_FLAG status*/
+    return status;
 }
 
 /**
   * @}
-  */ 
-  
+  */
+
 /** @defgroup FLASH_Group5 Functions to be executed from RAM
  *  @brief  Functions to be executed from RAM
  *
-@verbatim   
+@verbatim
  ===============================================================================
                          Functions to be executed from RAM
- ===============================================================================  
- 
+ ===============================================================================
+
  All the functions defined below must be executed from RAM exclusively, except
  for the FLASH_WaitForLastOperation function which can be executed from Flash.
 
@@ -611,7 +596,7 @@ FlagStatus FLASH_GetFlagStatus(FLASH_FLAG_TypeDef FLASH_FLAG)
    definition.
   3- In STVD Select Project\Settings\Linker\Category "input" and in the RAM section
     add the FLASH_CODE segment with "-ic" options.
-  4- In main.c file call the _fctcpy() function with first segment character as 
+  4- In main.c file call the _fctcpy() function with first segment character as
     parameter "_fctcpy('F');" to load the declared moveable code segment
     (FLASH_CODE) in RAM before execution.
   5- By default the _fctcpy function is packaged in the Cosmic machine library,
@@ -621,25 +606,25 @@ FlagStatus FLASH_GetFlagStatus(FLASH_FLAG_TypeDef FLASH_FLAG)
   - For Raisonance Compiler
    1- Use the inram keyword in the function declaration to specify that it can be
     executed from RAM.
-    This is done within the stm8l15x_flash.c file, and it's conditioned by 
+    This is done within the stm8l15x_flash.c file, and it's conditioned by
     RAM_EXECUTION definition.
-   2- Uncomment the "#define RAM_EXECUTION  (1)" line in the stm8l15x.h file, or 
-   define it in Raisonance compiler preprocessor to enable the access for the 
+   2- Uncomment the "#define RAM_EXECUTION  (1)" line in the stm8l15x.h file, or
+   define it in Raisonance compiler preprocessor to enable the access for the
    inram functions.
-   3- An inram function code is copied from Flash to RAM by the C startup code. 
+   3- An inram function code is copied from Flash to RAM by the C startup code.
    In some applications, the RAM area where the code was initially stored may be
-   erased or corrupted, so it may be desirable to perform the copy again. 
+   erased or corrupted, so it may be desirable to perform the copy again.
    Depending on the application memory model, the memcpy() or fmemcpy() functions
    should be used to perform the copy.
       • In case your project uses the SMALL memory model (code smaller than 64K),
        memcpy()function is recommended to perform the copy
-      • In case your project uses the LARGE memory model, functions can be 
+      • In case your project uses the LARGE memory model, functions can be
       everywhere in the 24-bits address space (not limited to the first 64KB of
       code), In this case, the use of memcpy() function will not be appropriate,
       you need to use the specific fmemcpy() function (which copies objects with
       24-bit addresses).
       - The linker automatically defines 2 symbols for each inram function:
-           • __address__functionname is a symbol that holds the Flash address 
+           • __address__functionname is a symbol that holds the Flash address
            where the given function code is stored.
            • __size__functionname is a symbol that holds the function size in bytes.
      And we already have the function address (which is itself a pointer)
@@ -653,41 +638,41 @@ FlagStatus FLASH_GetFlagStatus(FLASH_FLAG_TypeDef FLASH_FLAG)
                 memcpy(functionname, // RAM destination address
                       (void*)&__address__functionname, // Flash source address
                       (int)&__size__functionname); // Code size of the function
-     • In case of LARGE memory model use, call the fmemcpy() function to copy 
+     • In case of LARGE memory model use, call the fmemcpy() function to copy
      the inram function to the RAM destination address:
                  memcpy(functionname, // RAM destination address
                       (void @far*)&__address__functionname, // Flash source address
                       (int)&__size__functionname); // Code size of the function
 
  - For IAR Compiler:
-    1- Use the __ramfunc keyword in the function declaration to specify that it 
+    1- Use the __ramfunc keyword in the function declaration to specify that it
     can be executed from RAM.
-    This is done within the stm8l15x_flash.c file, and it's conditioned by 
+    This is done within the stm8l15x_flash.c file, and it's conditioned by
     RAM_EXECUTION definition.
-    2- Uncomment the "#define RAM_EXECUTION  (1)" line in the stm8l15x.h file, or 
-   define it in IAR compiler preprocessor to enable the access for the 
+    2- Uncomment the "#define RAM_EXECUTION  (1)" line in the stm8l15x.h file, or
+   define it in IAR compiler preprocessor to enable the access for the
    __ramfunc functions.
- 
+
  The Flash_DataProgram example provided within the STM8L15x_StdPeriph_Lib package
  details all the steps described above.
 
 @endverbatim
   * @{
   */
-   
+
 /**
   * @brief
   *******************************************************************************
   *                         Execution from RAM enable
   *******************************************************************************
   *
-  * To enable execution from RAM you can either uncomment the following define 
+  * To enable execution from RAM you can either uncomment the following define
   * in the stm8l15x.h file or define it in your toolchain compiler preprocessor
-  * - #define RAM_EXECUTION  (1) 
+  * - #define RAM_EXECUTION  (1)
   */
 
 #if defined (_COSMIC_) && defined (RAM_EXECUTION)
- #pragma section (FLASH_CODE)
+#pragma section (FLASH_CODE)
 #endif  /* _COSMIC_ && RAM_EXECUTION */
 
 /**
@@ -697,22 +682,19 @@ FlagStatus FLASH_GetFlagStatus(FLASH_FLAG_TypeDef FLASH_FLAG)
   * @param  FLASH_Power: power state of the Flash program and data EEPROM
   *          This parameter can be one of the following values:
   *            @arg FLASH_Power_IDDQ: Flash program and data EEPROM in IDDQ
-  *            @arg FLASH_Power_On: Flash program and data EEPROM not in IDDQ 
+  *            @arg FLASH_Power_On: Flash program and data EEPROM not in IDDQ
   * @retval None
   */
 IN_RAM(void FLASH_PowerRunModeConfig(FLASH_Power_TypeDef FLASH_Power))
 {
-  /* Check parameter */
-  assert_param(IS_FLASH_POWER(FLASH_Power));
+    /* Check parameter */
+    assert_param(IS_FLASH_POWER(FLASH_Power));
 
-  if (FLASH_Power != FLASH_Power_On)
-  {
-  FLASH->CR1 |= (uint8_t)FLASH_CR1_EEPM;
-  }
-  else
-  {
-    FLASH->CR1 &= (uint8_t)(~FLASH_CR1_EEPM);
-  }
+    if (FLASH_Power != FLASH_Power_On) {
+        FLASH->CR1 |= (uint8_t)FLASH_CR1_EEPM;
+    } else {
+        FLASH->CR1 &= (uint8_t)(~FLASH_CR1_EEPM);
+    }
 }
 
 /**
@@ -728,7 +710,7 @@ IN_RAM(void FLASH_PowerRunModeConfig(FLASH_Power_TypeDef FLASH_Power))
   */
 IN_RAM(FLASH_PowerStatus_TypeDef FLASH_GetPowerStatus(void))
 {
-  return((FLASH_PowerStatus_TypeDef)(FLASH->CR1 & (uint8_t)0x0C));
+    return((FLASH_PowerStatus_TypeDef)(FLASH->CR1 & (uint8_t)0x0C));
 }
 
 /**
@@ -737,7 +719,7 @@ IN_RAM(FLASH_PowerStatus_TypeDef FLASH_GetPowerStatus(void))
   * @param  FLASH_MemType : The type of memory to program
   *          This parameter can be one of the following values:
   *            @arg FLASH_MemType_Program: Program memory
-  *            @arg FLASH_MemType_Data: Data EEPROM memory 
+  *            @arg FLASH_MemType_Data: Data EEPROM memory
   * @param  BlockNum : The block number
   * @param  FLASH_ProgMode : The programming mode.
   *          This parameter can be one of the following values:
@@ -747,49 +729,42 @@ IN_RAM(FLASH_PowerStatus_TypeDef FLASH_GetPowerStatus(void))
   * @retval None.
   */
 IN_RAM(void FLASH_ProgramBlock(uint16_t BlockNum, FLASH_MemType_TypeDef FLASH_MemType,
-                        FLASH_ProgramMode_TypeDef FLASH_ProgMode, uint8_t *Buffer))
+                               FLASH_ProgramMode_TypeDef FLASH_ProgMode, uint8_t *Buffer))
 {
-  uint16_t Count = 0;
-  uint32_t startaddress = 0;
+    uint16_t Count = 0;
+    uint32_t startaddress = 0;
 
-  /* Check parameters */
-  assert_param(IS_FLASH_MEMORY_TYPE(FLASH_MemType));
-  assert_param(IS_FLASH_PROGRAM_MODE(FLASH_ProgMode));
-  if (FLASH_MemType == FLASH_MemType_Program)
-  {
-  assert_param(IS_FLASH_PROGRAM_BLOCK_NUMBER(BlockNum));
-    startaddress = FLASH_PROGRAM_START_PHYSICAL_ADDRESS;
-  }
-  else
-  {
-    assert_param(IS_FLASH_DATA_EEPROM_BLOCK_NUMBER(BlockNum));
-    startaddress = FLASH_DATA_EEPROM_START_PHYSICAL_ADDRESS;
-  }
+    /* Check parameters */
+    assert_param(IS_FLASH_MEMORY_TYPE(FLASH_MemType));
+    assert_param(IS_FLASH_PROGRAM_MODE(FLASH_ProgMode));
+    if (FLASH_MemType == FLASH_MemType_Program) {
+        assert_param(IS_FLASH_PROGRAM_BLOCK_NUMBER(BlockNum));
+        startaddress = FLASH_PROGRAM_START_PHYSICAL_ADDRESS;
+    } else {
+        assert_param(IS_FLASH_DATA_EEPROM_BLOCK_NUMBER(BlockNum));
+        startaddress = FLASH_DATA_EEPROM_START_PHYSICAL_ADDRESS;
+    }
 
-  /* Point to the first block address */
-  startaddress = startaddress + ((uint32_t)BlockNum * FLASH_BLOCK_SIZE);
+    /* Point to the first block address */
+    startaddress = startaddress + ((uint32_t)BlockNum * FLASH_BLOCK_SIZE);
 
-  /* Selection of Standard or Fast programming mode */
-  if (FLASH_ProgMode == FLASH_ProgramMode_Standard)
-  {
-  /* Standard programming mode */
-  FLASH->CR2 |= FLASH_CR2_PRG;
-  }
-  else
-  {
-  /* Fast programming mode */
-  FLASH->CR2 |= FLASH_CR2_FPRG;
-  }
+    /* Selection of Standard or Fast programming mode */
+    if (FLASH_ProgMode == FLASH_ProgramMode_Standard) {
+        /* Standard programming mode */
+        FLASH->CR2 |= FLASH_CR2_PRG;
+    } else {
+        /* Fast programming mode */
+        FLASH->CR2 |= FLASH_CR2_FPRG;
+    }
 
-  /* Copy data bytes from RAM to FLASH memory */
-  for (Count = 0; Count < FLASH_BLOCK_SIZE; Count++)
-  {
+    /* Copy data bytes from RAM to FLASH memory */
+    for (Count = 0; Count < FLASH_BLOCK_SIZE; Count++) {
 #if defined (STM8L15X_MD) || defined (STM8L15X_MDP) || defined (STM8L15X_LD)
-  *((PointerAttr uint8_t*) (uint16_t)startaddress + Count) = ((uint8_t)(Buffer[Count]));
+        *((PointerAttr uint8_t*) (uint16_t)startaddress + Count) = ((uint8_t)(Buffer[Count]));
 #elif defined (STM8L15X_HD)
-  *((PointerAttr uint8_t*) (uint32_t)startaddress + Count) = ((uint8_t)(Buffer[Count]));
+        *((PointerAttr uint8_t*) (uint32_t)startaddress + Count) = ((uint8_t)(Buffer[Count]));
 #endif
-  }
+    }
 }
 
 /**
@@ -799,48 +774,45 @@ IN_RAM(void FLASH_ProgramBlock(uint16_t BlockNum, FLASH_MemType_TypeDef FLASH_Me
   * @param  FLASH_MemType :  The type of memory to erase
   *          This parameter can be one of the following values:
   *            @arg FLASH_MemType_Program: Program memory
-  *            @arg FLASH_MemType_Data: Data EEPROM memory 
+  *            @arg FLASH_MemType_Data: Data EEPROM memory
   * @retval None.
   */
 IN_RAM(void FLASH_EraseBlock(uint16_t BlockNum, FLASH_MemType_TypeDef FLASH_MemType))
 {
-  uint32_t startaddress = 0;
+    uint32_t startaddress = 0;
 #if defined (STM8L15X_MD) || defined (STM8L15X_MDP) || defined (STM8L15X_LD)
-  uint32_t PointerAttr  *pwFlash;
+    uint32_t PointerAttr  *pwFlash;
 #elif defined (STM8L15X_HD)
-  uint8_t PointerAttr  *pwFlash;
+    uint8_t PointerAttr  *pwFlash;
 #endif
 
-  /* Check parameters */
-  assert_param(IS_FLASH_MEMORY_TYPE(FLASH_MemType));
-  if (FLASH_MemType == FLASH_MemType_Program)
-  {
-  assert_param(IS_FLASH_PROGRAM_BLOCK_NUMBER(BlockNum));
-    startaddress = FLASH_PROGRAM_START_PHYSICAL_ADDRESS;
-  }
-  else
-  {
-    assert_param(IS_FLASH_DATA_EEPROM_BLOCK_NUMBER(BlockNum));
-    startaddress = FLASH_DATA_EEPROM_START_PHYSICAL_ADDRESS;
-  }
+    /* Check parameters */
+    assert_param(IS_FLASH_MEMORY_TYPE(FLASH_MemType));
+    if (FLASH_MemType == FLASH_MemType_Program) {
+        assert_param(IS_FLASH_PROGRAM_BLOCK_NUMBER(BlockNum));
+        startaddress = FLASH_PROGRAM_START_PHYSICAL_ADDRESS;
+    } else {
+        assert_param(IS_FLASH_DATA_EEPROM_BLOCK_NUMBER(BlockNum));
+        startaddress = FLASH_DATA_EEPROM_START_PHYSICAL_ADDRESS;
+    }
 
-  /* Point to the first block address */
+    /* Point to the first block address */
 #if defined (STM8L15X_MD) || defined (STM8L15X_MDP)|| defined (STM8L15X_LD)
-  pwFlash = (PointerAttr uint32_t *)(uint16_t)(startaddress + ((uint32_t)BlockNum * FLASH_BLOCK_SIZE));
+    pwFlash = (PointerAttr uint32_t *)(uint16_t)(startaddress + ((uint32_t)BlockNum * FLASH_BLOCK_SIZE));
 #elif defined (STM8L15X_HD)
-  pwFlash = (PointerAttr uint8_t *)(uint32_t)(startaddress + ((uint32_t)BlockNum * FLASH_BLOCK_SIZE));
+    pwFlash = (PointerAttr uint8_t *)(uint32_t)(startaddress + ((uint32_t)BlockNum * FLASH_BLOCK_SIZE));
 #endif
 
-  /* Enable erase block mode */
-  FLASH->CR2 |= FLASH_CR2_ERASE;
+    /* Enable erase block mode */
+    FLASH->CR2 |= FLASH_CR2_ERASE;
 
 #if defined (STM8L15X_MD) || defined (STM8L15X_MDP) || defined (STM8L15X_LD)
-  *pwFlash = (uint32_t)0;
+    *pwFlash = (uint32_t)0;
 #elif defined (STM8L15X_HD)
-  *pwFlash = (uint8_t)0;
-  *(pwFlash + 1) = (uint8_t)0;
-  *(pwFlash + 2) = (uint8_t)0;
-  *(pwFlash + 3) = (uint8_t)0;
+    *pwFlash = (uint8_t)0;
+    *(pwFlash + 1) = (uint8_t)0;
+    *(pwFlash + 2) = (uint8_t)0;
+    *(pwFlash + 3) = (uint8_t)0;
 #endif
 }
 
@@ -851,43 +823,37 @@ IN_RAM(void FLASH_EraseBlock(uint16_t BlockNum, FLASH_MemType_TypeDef FLASH_MemT
   * @param  FLASH_MemType : Memory type
   *          This parameter can be one of the following values:
   *            @arg FLASH_MemType_Program: Program memory
-  *            @arg FLASH_MemType_Data: Data EEPROM memory 
+  *            @arg FLASH_MemType_Data: Data EEPROM memory
   * @retval FLASH status
   */
 IN_RAM(FLASH_Status_TypeDef FLASH_WaitForLastOperation(FLASH_MemType_TypeDef FLASH_MemType))
 {
-  uint32_t timeout = OPERATION_TIMEOUT;
-  uint8_t flagstatus = 0x00;
-  /* Wait until operation completion or write protected page occurred */
-  if (FLASH_MemType == FLASH_MemType_Program)
-  {
-  while ((flagstatus == 0x00) && (timeout != 0x00))
-    {
-      flagstatus = (uint8_t)(FLASH->IAPSR & (uint8_t)(FLASH_IAPSR_EOP |
-                             FLASH_IAPSR_WR_PG_DIS));
-      timeout--;
+    uint32_t timeout = OPERATION_TIMEOUT;
+    uint8_t flagstatus = 0x00;
+    /* Wait until operation completion or write protected page occurred */
+    if (FLASH_MemType == FLASH_MemType_Program) {
+        while ((flagstatus == 0x00) && (timeout != 0x00)) {
+            flagstatus = (uint8_t)(FLASH->IAPSR & (uint8_t)(FLASH_IAPSR_EOP |
+                                   FLASH_IAPSR_WR_PG_DIS));
+            timeout--;
+        }
+    } else {
+        while ((flagstatus == 0x00) && (timeout != 0x00)) {
+            flagstatus = (uint8_t)(FLASH->IAPSR & (uint8_t)(FLASH_IAPSR_HVOFF |
+                                   FLASH_IAPSR_WR_PG_DIS));
+            timeout--;
+        }
     }
-  }
-  else
-  {
-    while ((flagstatus == 0x00) && (timeout != 0x00))
-    {
-      flagstatus = (uint8_t)(FLASH->IAPSR & (uint8_t)(FLASH_IAPSR_HVOFF |
-                             FLASH_IAPSR_WR_PG_DIS));
-      timeout--;
+    if (timeout == 0x00 ) {
+        flagstatus = FLASH_Status_TimeOut;
     }
-  }
-  if (timeout == 0x00 )
-  {
-  flagstatus = FLASH_Status_TimeOut;
-  }
 
-  return((FLASH_Status_TypeDef)flagstatus);
+    return((FLASH_Status_TypeDef)flagstatus);
 }
 
 #if defined (_COSMIC_) && defined (RAM_EXECUTION)
- /* End of FLASH_CODE section */
- #pragma section ()
+/* End of FLASH_CODE section */
+#pragma section ()
 #endif /* _COSMIC_ && RAM_EXECUTION */
 
 /**
@@ -897,13 +863,13 @@ IN_RAM(FLASH_Status_TypeDef FLASH_WaitForLastOperation(FLASH_MemType_TypeDef FLA
 /**
   * @}
   */
-   
-  /**
-  * @}
-  */ 
-  
-  /**
-  * @}
-  */ 
-  
+
+/**
+* @}
+*/
+
+/**
+* @}
+*/
+
 /******************* (C) COPYRIGHT 2011 STMicroelectronics *****END OF FILE****/

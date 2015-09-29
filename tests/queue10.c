@@ -43,8 +43,7 @@ static uint32_t queue1_storage[QUEUE_ENTRIES];
 
 
 /* Test message values (more values than can fit in an entire 8 message queue) */
-uint32_t test_values[] =
-{
+uint32_t test_values[] = {
     0x12345678,
     0xFF000000,
     0x00FF0000,
@@ -86,116 +85,90 @@ uint32_t test_start (void)
     failures = 0;
 
     /* Create test queue */
-    if (atomQueueCreate (&queue1, (uint8_t *)&queue1_storage[0], sizeof(queue1_storage[0]), QUEUE_ENTRIES) != ATOM_OK)
-    {
+    if (atomQueueCreate (&queue1, (uint8_t *)&queue1_storage[0], sizeof(queue1_storage[0]), QUEUE_ENTRIES) != ATOM_OK) {
         ATOMLOG (_STR("Error creating test queue\n"));
         failures++;
     }
 
-    else
-    {
+    else {
         /* Reset tx/rx counts */
         tx_count = rx_count = 0;
 
         /* Post 2 messages to the queue */
-        for (; tx_count < 2; tx_count++)
-        {
+        for (; tx_count < 2; tx_count++) {
             msg = test_values[tx_count];
-            if (atomQueuePut (&queue1, 0, (uint8_t *)&msg) != ATOM_OK)
-            {
+            if (atomQueuePut (&queue1, 0, (uint8_t *)&msg) != ATOM_OK) {
                 ATOMLOG (_STR("Failed post\n"));
                 failures++;
             }
         }
 
         /* Receive 1 message from the queue */
-        for (; rx_count < 2; rx_count++)
-        {
-            if (atomQueueGet (&queue1, 0, (uint8_t *)&msg) != ATOM_OK)
-            {
+        for (; rx_count < 2; rx_count++) {
+            if (atomQueueGet (&queue1, 0, (uint8_t *)&msg) != ATOM_OK) {
                 ATOMLOG (_STR("Failed get\n"));
                 failures++;
-            }
-            else if (msg != test_values[rx_count])
-            {
+            } else if (msg != test_values[rx_count]) {
                 ATOMLOG (_STR("Val%d\n"), rx_count);
                 failures++;
             }
         }
 
         /* Post 3 messages to the queue */
-        for (; tx_count < 5; tx_count++)
-        {
+        for (; tx_count < 5; tx_count++) {
             msg = test_values[tx_count];
-            if (atomQueuePut (&queue1, 0, (uint8_t *)&msg) != ATOM_OK)
-            {
+            if (atomQueuePut (&queue1, 0, (uint8_t *)&msg) != ATOM_OK) {
                 ATOMLOG (_STR("Failed post\n"));
                 failures++;
             }
         }
 
         /* Receive 2 messages from the queue */
-        for (; rx_count < 3; rx_count++)
-        {
-            if (atomQueueGet (&queue1, 0, (uint8_t *)&msg) != ATOM_OK)
-            {
+        for (; rx_count < 3; rx_count++) {
+            if (atomQueueGet (&queue1, 0, (uint8_t *)&msg) != ATOM_OK) {
                 ATOMLOG (_STR("Failed get\n"));
                 failures++;
-            }
-            else if (msg != test_values[rx_count])
-            {
+            } else if (msg != test_values[rx_count]) {
                 ATOMLOG (_STR("Val%d\n"), rx_count);
                 failures++;
             }
         }
 
         /* Post 5 messages to the queue */
-        for (; tx_count < 10; tx_count++)
-        {
+        for (; tx_count < 10; tx_count++) {
             msg = test_values[tx_count];
-            if (atomQueuePut (&queue1, 0, (uint8_t *)&msg) != ATOM_OK)
-            {
+            if (atomQueuePut (&queue1, 0, (uint8_t *)&msg) != ATOM_OK) {
                 ATOMLOG (_STR("Failed post\n"));
                 failures++;
             }
         }
 
         /* Receive 3 messages from the queue */
-        for (; rx_count < 6; rx_count++)
-        {
-            if (atomQueueGet (&queue1, 0, (uint8_t *)&msg) != ATOM_OK)
-            {
+        for (; rx_count < 6; rx_count++) {
+            if (atomQueueGet (&queue1, 0, (uint8_t *)&msg) != ATOM_OK) {
                 ATOMLOG (_STR("Failed get\n"));
                 failures++;
-            }
-            else if (msg != test_values[rx_count])
-            {
+            } else if (msg != test_values[rx_count]) {
                 ATOMLOG (_STR("Val%d\n"), rx_count);
                 failures++;
             }
         }
 
         /* Post 2 messages to the queue */
-        for (; tx_count < 12; tx_count++)
-        {
+        for (; tx_count < 12; tx_count++) {
             msg = test_values[tx_count];
-            if (atomQueuePut (&queue1, 0, (uint8_t *)&msg) != ATOM_OK)
-            {
+            if (atomQueuePut (&queue1, 0, (uint8_t *)&msg) != ATOM_OK) {
                 ATOMLOG (_STR("Failed post\n"));
                 failures++;
             }
         }
 
         /* Receive 6 messages from the queue */
-        for (; rx_count < 12; rx_count++)
-        {
-            if (atomQueueGet (&queue1, 0, (uint8_t *)&msg) != ATOM_OK)
-            {
+        for (; rx_count < 12; rx_count++) {
+            if (atomQueueGet (&queue1, 0, (uint8_t *)&msg) != ATOM_OK) {
                 ATOMLOG (_STR("Failed get\n"));
                 failures++;
-            }
-            else if (msg != test_values[rx_count])
-            {
+            } else if (msg != test_values[rx_count]) {
                 ATOMLOG (_STR("Val%d\n"), rx_count);
                 failures++;
             }

@@ -19,31 +19,28 @@ static ATOM_MUTEX uart_mutex;
  */
 int uart_init(uint32_t baudrate)
 {
-  int status;
-	 
-  SYSCFG_REMAPPinConfig(REMAP_Pin_USART1TxRxPortA, ENABLE);
-  CLK_PeripheralClockConfig(CLK_Peripheral_USART1, ENABLE);
-  GPIO_ExternalPullUpConfig(GPIOA, GPIO_Pin_2, ENABLE);
-  GPIO_ExternalPullUpConfig(GPIOA, GPIO_Pin_3, ENABLE);
+    int status;
 
-  USART_Init(USART1, baudrate,
-             USART_WordLength_8b,
-             USART_StopBits_1,
-             USART_Parity_No,
-             (USART_Mode_TypeDef)(USART_Mode_Tx | USART_Mode_Rx));	
-  
-  /* Create a mutex for single-threaded putchar() access */
-  if (atomMutexCreate (&uart_mutex) != ATOM_OK)
-  {
-    status = -1;
-  }
-  else
-  {
-    status = 0;
-  }
+    SYSCFG_REMAPPinConfig(REMAP_Pin_USART1TxRxPortA, ENABLE);
+    CLK_PeripheralClockConfig(CLK_Peripheral_USART1, ENABLE);
+    GPIO_ExternalPullUpConfig(GPIOA, GPIO_Pin_2, ENABLE);
+    GPIO_ExternalPullUpConfig(GPIOA, GPIO_Pin_3, ENABLE);
 
-  /* Finished */
-  return (status);
+    USART_Init(USART1, baudrate,
+               USART_WordLength_8b,
+               USART_StopBits_1,
+               USART_Parity_No,
+               (USART_Mode_TypeDef)(USART_Mode_Tx | USART_Mode_Rx));
+
+    /* Create a mutex for single-threaded putchar() access */
+    if (atomMutexCreate (&uart_mutex) != ATOM_OK) {
+        status = -1;
+    } else {
+        status = 0;
+    }
+
+    /* Finished */
+    return (status);
 }
 
 
@@ -59,15 +56,14 @@ int uart_init(uint32_t baudrate)
 char uart_putchar (char c)
 {
     /* Block on private access to the UART */
-    if (atomMutexGet(&uart_mutex, 0) == ATOM_OK)
-    {
+    if (atomMutexGet(&uart_mutex, 0) == ATOM_OK) {
         /* Convert \n to \r\n */
         if (c == '\n')
             putchar('\r');
 
         /* Write a character to the UART2 */
         USART_SendData8(USART1, c);
-      
+
         /* Loop until the end of transmission */
         while (USART_GetFlagStatus(USART1, USART_FLAG_TC) == RESET);
 
@@ -133,27 +129,23 @@ int putchar (char c)
 size_t __write(int handle, const unsigned char *buf, size_t bufSize)
 {
     size_t chars_written = 0;
-    
+
     /* Ignore flushes */
-    if (handle == -1)
-    {
-      chars_written = (size_t)0; 
+    if (handle == -1) {
+        chars_written = (size_t)0;
     }
     /* Only allow stdout/stderr output */
-    else if ((handle != 1) && (handle != 2))
-    {
-      chars_written = (size_t)-1; 
+    else if ((handle != 1) && (handle != 2)) {
+        chars_written = (size_t)-1;
     }
     /* Parameters OK, call the low-level character output routine */
-    else
-    {
-        while (chars_written < bufSize)
-        {
+    else {
+        while (chars_written < bufSize) {
             uart_putchar (buf[chars_written]);
             chars_written++;
         }
     }
-    
+
     return (chars_written);
 }
 #endif /* __IAR_SYSTEMS_ICC__ */

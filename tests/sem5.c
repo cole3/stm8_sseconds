@@ -69,24 +69,19 @@ uint32_t test_start (void)
     failures = 0;
 
     /* Create sem with count zero for second thread to block on */
-    if (atomSemCreate (&sem1, 0) != ATOM_OK)
-    {
+    if (atomSemCreate (&sem1, 0) != ATOM_OK) {
         ATOMLOG (_STR("Error creating test semaphore 1\n"));
         failures++;
     }
     /* Create sem to receive test-passed notification */
-    else if (atomSemCreate (&sem2, 0) != ATOM_OK)
-    {
+    else if (atomSemCreate (&sem2, 0) != ATOM_OK) {
         ATOMLOG (_STR("Error creating test semaphore 1\n"));
         failures++;
-    }
-    else
-    {
+    } else {
         /* Create second thread */
         if (atomThreadCreate(&tcb[0], TEST_THREAD_PRIO, test_thread_func, 1,
-              &test_thread_stack[0][TEST_THREAD_STACK_SIZE - 1],
-              TEST_THREAD_STACK_SIZE) != ATOM_OK)
-        {
+                             &test_thread_stack[0][TEST_THREAD_STACK_SIZE - 1],
+                             TEST_THREAD_STACK_SIZE) != ATOM_OK) {
             /* Fail */
             ATOMLOG (_STR("Error creating test thread\n"));
             failures++;
@@ -108,28 +103,24 @@ uint32_t test_start (void)
          * already posted sem2, i.e. did not wait until sem1 was posted.
          */
         atomTimerDelay (SYSTEM_TICKS_PER_SEC/4);
-        if (atomSemGet (&sem2, -1) != ATOM_WOULDBLOCK)
-        {
+        if (atomSemGet (&sem2, -1) != ATOM_WOULDBLOCK) {
             ATOMLOG (_STR("Did not wait\n"));
             failures++;
         }
 
         /* Post sem1 to stop the second thread blocking */
-        else if (atomSemPut (&sem1) != ATOM_OK)
-        {
+        else if (atomSemPut (&sem1) != ATOM_OK) {
             ATOMLOG (_STR("Put fail\n"));
             failures++;
         }
 
         /* Now check that the second thread has woken up and posted sem2 */
-        else
-        {
+        else {
             /* Give the thread some time to wake up and post sem2 */
             atomTimerDelay (SYSTEM_TICKS_PER_SEC/4);
 
             /* Check that the second thread has now woken and posted sem2 */
-            if (atomSemGet (&sem2, -1) != ATOM_OK)
-            {
+            if (atomSemGet (&sem2, -1) != ATOM_OK) {
                 ATOMLOG (_STR("Sem2 not posted\n"));
                 failures++;
             }
@@ -137,13 +128,11 @@ uint32_t test_start (void)
         }
 
         /* Delete semaphores, test finished */
-        if (atomSemDelete (&sem1) != ATOM_OK)
-        {
+        if (atomSemDelete (&sem1) != ATOM_OK) {
             ATOMLOG (_STR("Delete failed\n"));
             failures++;
         }
-        if (atomSemDelete (&sem2) != ATOM_OK)
-        {
+        if (atomSemDelete (&sem2) != ATOM_OK) {
             ATOMLOG (_STR("Delete failed\n"));
             failures++;
         }
@@ -156,19 +145,14 @@ uint32_t test_start (void)
         int thread;
 
         /* Check all threads */
-        for (thread = 0; thread < NUM_TEST_THREADS; thread++)
-        {
+        for (thread = 0; thread < NUM_TEST_THREADS; thread++) {
             /* Check thread stack usage */
-            if (atomThreadStackCheck (&tcb[thread], &used_bytes, &free_bytes) != ATOM_OK)
-            {
+            if (atomThreadStackCheck (&tcb[thread], &used_bytes, &free_bytes) != ATOM_OK) {
                 ATOMLOG (_STR("StackCheck\n"));
                 failures++;
-            }
-            else
-            {
+            } else {
                 /* Check the thread did not use up to the end of stack */
-                if (free_bytes == 0)
-                {
+                if (free_bytes == 0) {
                     ATOMLOG (_STR("StackOverflow %d\n"), thread);
                     failures++;
                 }
@@ -205,22 +189,19 @@ static void test_thread_func (uint32_t param)
     param = param;
 
     /* Block on sem1. Main thread will post when we should wake up. */
-    if ((status = atomSemGet (&sem1, 0)) != ATOM_OK)
-    {
+    if ((status = atomSemGet (&sem1, 0)) != ATOM_OK) {
         /* Error getting semaphore, notify the status code */
         ATOMLOG (_STR("G%d\n"), status);
     }
 
     /* Post sem2 to notify that we received the sem1 notification */
-    else if ((status = atomSemPut (&sem2)) != ATOM_OK)
-    {
+    else if ((status = atomSemPut (&sem2)) != ATOM_OK) {
         /* Error putting semaphore, notify the status code */
         ATOMLOG (_STR("P%d\n"), status);
     }
 
     /* Loop forever */
-    while (1)
-    {
+    while (1) {
         atomTimerDelay (SYSTEM_TICKS_PER_SEC);
     }
 }

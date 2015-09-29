@@ -79,8 +79,7 @@ uint32_t test_start (void)
     timer_cb[0].cb_ticks = 2;
     timer_cb[0].cb_func = testCallback;
     timer_cb[0].cb_data = (POINTER)0;
-    if (atomTimerRegister (&timer_cb[0]) != ATOM_OK)
-    {
+    if (atomTimerRegister (&timer_cb[0]) != ATOM_OK) {
         ATOMLOG (_STR("TimerReg0\n"));
         failures++;
     }
@@ -89,8 +88,7 @@ uint32_t test_start (void)
     timer_cb[1].cb_ticks = 10;
     timer_cb[1].cb_func = testCallback;
     timer_cb[1].cb_data = (POINTER)3;
-    if (atomTimerRegister (&timer_cb[1]) != ATOM_OK)
-    {
+    if (atomTimerRegister (&timer_cb[1]) != ATOM_OK) {
         ATOMLOG (_STR("TimerReg1\n"));
         failures++;
     }
@@ -99,8 +97,7 @@ uint32_t test_start (void)
     timer_cb[2].cb_ticks = 4;
     timer_cb[2].cb_func = testCallback;
     timer_cb[2].cb_data = (POINTER)1;
-    if (atomTimerRegister (&timer_cb[2]) != ATOM_OK)
-    {
+    if (atomTimerRegister (&timer_cb[2]) != ATOM_OK) {
         ATOMLOG (_STR("TimerReg2\n"));
         failures++;
     }
@@ -109,15 +106,13 @@ uint32_t test_start (void)
     timer_cb[3].cb_ticks = 9;
     timer_cb[3].cb_func = testCallback;
     timer_cb[3].cb_data = (POINTER)2;
-    if (atomTimerRegister (&timer_cb[3]) != ATOM_OK)
-    {
+    if (atomTimerRegister (&timer_cb[3]) != ATOM_OK) {
         ATOMLOG (_STR("TimerReg3\n"));
         failures++;
     }
 
     /* Initialise the cb_order delay to known values */
-    for (i = 0; i < 4; i++)
-    {
+    for (i = 0; i < 4; i++) {
         cb_order[i] = 99;
     }
 
@@ -131,10 +126,8 @@ uint32_t test_start (void)
     atomTimerDelay (20);
 
     /* Check the order the callbacks came in matched our expectations */
-    for (i = 0; i < 4; i++)
-    {
-        if (cb_order[i] != i)
-        {
+    for (i = 0; i < 4; i++) {
+        if (cb_order[i] != i) {
             ATOMLOG (_STR("T%d=%d\n"), i, (int)cb_order[i]);
             failures++;
         }

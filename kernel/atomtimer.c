@@ -28,7 +28,7 @@
  */
 
 
-/** 
+/**
  * \file
  * Timer and system tick library.
  *
@@ -58,7 +58,7 @@
  * list is checked for any timers which have expired. Those which have expired
  * have their callback functions called. It is also on this system tick that
  * round-robin rescheduling time-slices occur. On exit from the tick interrupt
- * handler the kernel checks whether there are two or more threads 
+ * handler the kernel checks whether there are two or more threads
  * ready-to-run at the same priority, and if so uses round-robin to schedule
  * in the next thread. This is in contrast to other (non-timer-tick)
  * interrupts which do not allow for round-robin rescheduling to occur, as
@@ -74,8 +74,7 @@
 /* Data types */
 
 /* Delay callbacks data structure */
-typedef struct delay_timer
-{
+typedef struct delay_timer {
     ATOM_TCB *tcb_ptr;  /* Thread which is suspended with timeout */
 
 } DELAY_TIMER;
@@ -130,13 +129,10 @@ uint8_t atomTimerRegister (ATOM_TIMER *timer_ptr)
 
     /* Parameter check */
     if ((timer_ptr == NULL) || (timer_ptr->cb_func == NULL)
-        || (timer_ptr->cb_ticks == 0))
-    {
+        || (timer_ptr->cb_ticks == 0)) {
         /* Return error */
         status = ATOM_ERR_PARAM;
-    }
-    else
-    {
+    } else {
         /* Protect the list */
         CRITICAL_START ();
 
@@ -149,14 +145,11 @@ uint8_t atomTimerRegister (ATOM_TIMER *timer_ptr)
          * Once the remaining ticks reaches zero, the timer callback is
          * made.
          */
-        if (timer_queue == NULL)
-        {
+        if (timer_queue == NULL) {
             /* List is empty, insert new head */
             timer_ptr->next_timer = NULL;
             timer_queue = timer_ptr;
-        }
-        else
-        {
+        } else {
             /* List has at least one entry, enqueue new timer before */
             timer_ptr->next_timer = timer_queue;
             timer_queue = timer_ptr;
@@ -195,30 +188,22 @@ uint8_t atomTimerCancel (ATOM_TIMER *timer_ptr)
     CRITICAL_STORE;
 
     /* Parameter check */
-    if (timer_ptr == NULL)
-    {
+    if (timer_ptr == NULL) {
         /* Return error */
         status = ATOM_ERR_PARAM;
-    }
-    else
-    {
+    } else {
         /* Protect the list */
         CRITICAL_START ();
 
         /* Walk the list to find the relevant timer */
         prev_ptr = next_ptr = timer_queue;
-        while (next_ptr)
-        {
+        while (next_ptr) {
             /* Is this entry the one we're looking for? */
-            if (next_ptr == timer_ptr)
-            {
-                if (next_ptr == timer_queue)
-                {
+            if (next_ptr == timer_ptr) {
+                if (next_ptr == timer_queue) {
                     /* We're removing the list head */
                     timer_queue = next_ptr->next_timer;
-                }
-                else
-                {
+                } else {
                     /* We're removing a mid or tail TCB */
                     prev_ptr->next_timer = next_ptr->next_timer;
                 }
@@ -236,7 +221,7 @@ uint8_t atomTimerCancel (ATOM_TIMER *timer_ptr)
 
         /* End of list protection */
         CRITICAL_END ();
-     }
+    }
 
     return (status);
 }
@@ -296,8 +281,7 @@ void atomTimeSet(uint32_t new_time)
 void atomTimerTick (void)
 {
     /* Only do anything if the OS is started */
-    if (atomOSStarted)
-    {
+    if (atomOSStarted) {
         /* Increment the system tick count */
         system_ticks++;
 
@@ -337,22 +321,19 @@ uint8_t atomTimerDelay (uint32_t ticks)
     curr_tcb_ptr = atomCurrentContext();
 
     /* Parameter check */
-    if (ticks == 0)
-    {
+    if (ticks == 0) {
         /* Return error */
         status = ATOM_ERR_PARAM;
     }
 
     /* Check we are actually in thread context */
-    else if (curr_tcb_ptr == NULL)
-    {
+    else if (curr_tcb_ptr == NULL) {
         /* Not currently in thread context, can't suspend */
         status = ATOM_ERR_CONTEXT;
     }
 
     /* Otherwise safe to proceed */
-    else
-    {
+    else {
         /* Protect the system queues */
         CRITICAL_START ();
 
@@ -373,16 +354,13 @@ uint8_t atomTimerDelay (uint32_t ticks)
         curr_tcb_ptr->suspend_timo_cb = &timer_cb;
 
         /* Register the callback */
-        if (atomTimerRegister (&timer_cb) != ATOM_OK)
-        {
+        if (atomTimerRegister (&timer_cb) != ATOM_OK) {
             /* Exit critical region */
             CRITICAL_END ();
 
             /* Timer registration didn't work, won't get a callback */
             status = ATOM_ERR_TIMER;
-        }
-        else
-        {
+        } else {
             /* Exit critical region */
             CRITICAL_END ();
 
@@ -416,26 +394,20 @@ static void atomTimerCallbacks (void)
      * looking for due callbacks.
      */
     prev_ptr = next_ptr = timer_queue;
-    while (next_ptr)
-    {
+    while (next_ptr) {
         /* Is this entry due? */
-        if (--(next_ptr->cb_ticks) == 0)
-        {
+        if (--(next_ptr->cb_ticks) == 0) {
             /* Remove the entry from the timer list */
-            if (next_ptr == timer_queue)
-            {
+            if (next_ptr == timer_queue) {
                 /* We're removing the list head */
                 timer_queue = next_ptr->next_timer;
-            }
-            else
-            {
+            } else {
                 /* We're removing a mid or tail timer */
                 prev_ptr->next_timer = next_ptr->next_timer;
             }
 
             /* Call the registered callback */
-            if (next_ptr->cb_func)
-            {
+            if (next_ptr->cb_func) {
                 next_ptr->cb_func (next_ptr->cb_data);
             }
 
@@ -444,8 +416,7 @@ static void atomTimerCallbacks (void)
         }
 
         /* Entry is not due, leave it in there with its count decremented */
-        else
-        {
+        else {
             /*
              * Update prev_ptr to this entry. We will need it if we want
              * to remove a mid or tail timer.
@@ -481,8 +452,7 @@ static void atomTimerDelayCallback (POINTER cb_data)
     timer_data_ptr = (DELAY_TIMER *)cb_data;
 
     /* Check parameter is valid */
-    if (timer_data_ptr)
-    {
+    if (timer_data_ptr) {
         /* Enter critical region */
         CRITICAL_START ();
 

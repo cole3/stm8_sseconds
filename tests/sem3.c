@@ -94,18 +94,14 @@ uint32_t test_start (void)
     failures = 0;
 
     /* Create sem with count zero (so that all threads will block) */
-    if (atomSemCreate (&sem1, 0) != ATOM_OK)
-    {
+    if (atomSemCreate (&sem1, 0) != ATOM_OK) {
         ATOMLOG (_STR("Error creating test semaphore 1\n"));
         failures++;
-    }
-    else
-    {
+    } else {
         /* Create Thread 1 (lower priority thread A) */
         if (atomThreadCreate(&tcb[0], TEST_THREAD_PRIO+1, test_thread_func, 1,
-              &test_thread_stack[0][TEST_THREAD_STACK_SIZE - 1],
-              TEST_THREAD_STACK_SIZE) != ATOM_OK)
-        {
+                             &test_thread_stack[0][TEST_THREAD_STACK_SIZE - 1],
+                             TEST_THREAD_STACK_SIZE) != ATOM_OK) {
             /* Fail */
             ATOMLOG (_STR("Error creating test thread\n"));
             failures++;
@@ -116,9 +112,8 @@ uint32_t test_start (void)
 
         /* Create Thread 2 (lower priority thread B) */
         if (atomThreadCreate(&tcb[1], TEST_THREAD_PRIO+1, test_thread_func, 2,
-              &test_thread_stack[1][TEST_THREAD_STACK_SIZE - 1],
-              TEST_THREAD_STACK_SIZE) != ATOM_OK)
-        {
+                             &test_thread_stack[1][TEST_THREAD_STACK_SIZE - 1],
+                             TEST_THREAD_STACK_SIZE) != ATOM_OK) {
             /* Fail */
             ATOMLOG (_STR("Error creating test thread\n"));
             failures++;
@@ -129,9 +124,8 @@ uint32_t test_start (void)
 
         /* Create Thread 3 (higher priority thread A) */
         if (atomThreadCreate(&tcb[2], TEST_THREAD_PRIO, test_thread_func, 3,
-              &test_thread_stack[2][TEST_THREAD_STACK_SIZE - 1],
-              TEST_THREAD_STACK_SIZE) != ATOM_OK)
-        {
+                             &test_thread_stack[2][TEST_THREAD_STACK_SIZE - 1],
+                             TEST_THREAD_STACK_SIZE) != ATOM_OK) {
             /* Fail */
             ATOMLOG (_STR("Error creating test thread\n"));
             failures++;
@@ -142,9 +136,8 @@ uint32_t test_start (void)
 
         /* Create Thread 4 (higher priority thread B) */
         if (atomThreadCreate(&tcb[3], TEST_THREAD_PRIO, test_thread_func, 4,
-              &test_thread_stack[3][TEST_THREAD_STACK_SIZE - 1],
-              TEST_THREAD_STACK_SIZE) != ATOM_OK)
-        {
+                             &test_thread_stack[3][TEST_THREAD_STACK_SIZE - 1],
+                             TEST_THREAD_STACK_SIZE) != ATOM_OK) {
             /* Fail */
             ATOMLOG (_STR("Error creating test thread\n"));
             failures++;
@@ -166,11 +159,9 @@ uint32_t test_start (void)
          * each wake up for them to deal with global data in a
          * thread-safe fashion.
          */
-        for (i = 0; i < 4; i++)
-        {
+        for (i = 0; i < 4; i++) {
             /* Post semaphore to wake one of the threads up */
-            if (atomSemPut (&sem1) != ATOM_OK)
-            {
+            if (atomSemPut (&sem1) != ATOM_OK) {
                 ATOMLOG (_STR("Post fail\n"));
                 failures++;
             }
@@ -181,16 +172,14 @@ uint32_t test_start (void)
 
         /* All four threads now woken up, check they woke in correct order */
         if ((wake_order[0] != 3) || (wake_order[1] != 4)
-            || (wake_order[2] != 1) || (wake_order[3] != 2))
-        {
+            || (wake_order[2] != 1) || (wake_order[3] != 2)) {
             ATOMLOG (_STR("Bad order %d,%d,%d,%d\n"),
-                wake_order[0], wake_order[1], wake_order[2], wake_order[3]);
+                     wake_order[0], wake_order[1], wake_order[2], wake_order[3]);
             failures++;
         }
 
         /* Delete semaphore, test finished */
-        if (atomSemDelete (&sem1) != ATOM_OK)
-        {
+        if (atomSemDelete (&sem1) != ATOM_OK) {
             ATOMLOG (_STR("Delete failed\n"));
             failures++;
         }
@@ -203,19 +192,14 @@ uint32_t test_start (void)
         int thread;
 
         /* Check all threads */
-        for (thread = 0; thread < NUM_TEST_THREADS; thread++)
-        {
+        for (thread = 0; thread < NUM_TEST_THREADS; thread++) {
             /* Check thread stack usage */
-            if (atomThreadStackCheck (&tcb[thread], &used_bytes, &free_bytes) != ATOM_OK)
-            {
+            if (atomThreadStackCheck (&tcb[thread], &used_bytes, &free_bytes) != ATOM_OK) {
                 ATOMLOG (_STR("StackCheck\n"));
                 failures++;
-            }
-            else
-            {
+            } else {
                 /* Check the thread did not use up to the end of stack */
-                if (free_bytes == 0)
-                {
+                if (free_bytes == 0) {
                     ATOMLOG (_STR("StackOverflow %d\n"), thread);
                     failures++;
                 }
@@ -258,12 +242,9 @@ static void test_thread_func (uint32_t param)
      * the semaphore count is zero, so all four threads will block
      * here.
      */
-    if (atomSemGet (&sem1, 0) != ATOM_OK)
-    {
+    if (atomSemGet (&sem1, 0) != ATOM_OK) {
         ATOMLOG (_STR("Thread sem fail\n"));
-    }
-    else
-    {
+    } else {
         /*
          * Store our thread ID in the array using the current
          * wake_cnt order. The threads are deliberately woken up
@@ -274,8 +255,7 @@ static void test_thread_func (uint32_t param)
     }
 
     /* Loop forever */
-    while (1)
-    {
+    while (1) {
         atomTimerDelay (SYSTEM_TICKS_PER_SEC);
     }
 }

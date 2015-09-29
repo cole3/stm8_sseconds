@@ -88,8 +88,7 @@ uint32_t test_start (void)
      * requested starting in one second, with the others
      * at 1 tick intervals thereafter.
      */
-    for (i = 0; i < 4; i++)
-    {
+    for (i = 0; i < 4; i++) {
         /*
          * testCallback() is passed the expected
          * callback time via cb_data.
@@ -101,48 +100,34 @@ uint32_t test_start (void)
     }
 
     /* Register the timers in a different order */
-    if (atomTimerRegister (&timer_cb[1]) != ATOM_OK)
-    {
+    if (atomTimerRegister (&timer_cb[1]) != ATOM_OK) {
         ATOMLOG (_STR("TimerReg1\n"));
         failures++;
-    }
-    else if (atomTimerRegister (&timer_cb[3]) != ATOM_OK)
-    {
+    } else if (atomTimerRegister (&timer_cb[3]) != ATOM_OK) {
         ATOMLOG (_STR("TimerReg3\n"));
         failures++;
-    }
-    else if (atomTimerRegister (&timer_cb[2]) != ATOM_OK)
-    {
+    } else if (atomTimerRegister (&timer_cb[2]) != ATOM_OK) {
         ATOMLOG (_STR("TimerReg2\n"));
         failures++;
-    }
-    else if (atomTimerRegister (&timer_cb[0]) != ATOM_OK)
-    {
+    } else if (atomTimerRegister (&timer_cb[0]) != ATOM_OK) {
         ATOMLOG (_STR("TimerReg0\n"));
         failures++;
-    }
-    else
-    {
+    } else {
         /* Successfully registered timers */
 
         /* Wait two seconds for callbacks to complete */
-        if (atomTimerDelay(2 * SYSTEM_TICKS_PER_SEC) != ATOM_OK)
-        {
+        if (atomTimerDelay(2 * SYSTEM_TICKS_PER_SEC) != ATOM_OK) {
             ATOMLOG (_STR("Wait\n"));
             failures++;
-        }
-        else
-        {
+        } else {
             /*
              * The callbacks should have cleared down cb_ticks[x]
              * to zero if they were called at the expected
              * system time.
              */
-            for (i = 0; i < 4; i++)
-            {
+            for (i = 0; i < 4; i++) {
                 /* Check the callback has zeroed the area */
-                if (cb_ticks[i] != 0)
-                {
+                if (cb_ticks[i] != 0) {
                     ATOMLOG (_STR("Clear%d\n"), i);
                     failures++;
                 }
@@ -180,13 +165,10 @@ static void testCallback (POINTER cb_data)
      * Check the callback time (now) matches the time
      * we expected the callback.
      */
-    if (atomTimeGet() == expected_end_time)
-    {
+    if (atomTimeGet() == expected_end_time) {
         /* Called back when we expected, clear the passed location */
         *(uint32_t *)cb_data = 0;
-    }
-    else
-    {
+    } else {
         /* Not called at expected time, don't clear the location */
     }
 

@@ -17,7 +17,7 @@
   * CODING INFORMATION CONTAINED HEREIN IN CONNECTION WITH THEIR PRODUCTS.
   *
   * <h2><center>&copy; COPYRIGHT 2011 STMicroelectronics</center></h2>
-  ******************************************************************************  
+  ******************************************************************************
   */
 
 /* Define to prevent recursive inclusion -------------------------------------*/
@@ -40,34 +40,34 @@
 /** @addtogroup FLASH_Exported_Constants
   * @{
   */
-#define FLASH_PROGRAM_START_PHYSICAL_ADDRESS       ((uint32_t)0x00008000) /*!< Flash: start address */  
+#define FLASH_PROGRAM_START_PHYSICAL_ADDRESS       ((uint32_t)0x00008000) /*!< Flash: start address */
 #define FLASH_DATA_EEPROM_START_PHYSICAL_ADDRESS   ((uint32_t)0x00001000) /*!< Data Eeprom: start address */
 
 /* STM8L15x High density devices */
 #ifdef STM8L15X_HD
- #define FLASH_PROGRAM_END_PHYSICAL_ADDRESS         ((uint32_t)0x00017FFF) /*!< Flash: end address */
- #define FLASH_DATA_EEPROM_END_PHYSICAL_ADDRESS     ((uint32_t)0x000017FF) /*!< Data Eeprom: end address */
- #define FLASH_PROGRAM_BLOCKS_NUMBER                ((uint16_t)0x200)      /*!< Flash memory: total number of Block */
- #define FLASH_DATA_EEPROM_BLOCKS_NUMBER            ((uint8_t)0x10)        /*!< Data EEprom: total number of Block */
- #define FLASH_BLOCK_SIZE                           ((uint8_t)0x80)        /*!< Number of bytes in a Block 
-                                                                              (common for Program and Data EEprom memories) */
- 
-/* STM8L15x Medium density and Medium density plus devices */ 
-#elif defined (STM8L15X_MD) || defined (STM8L15X_MDP)
- #define FLASH_PROGRAM_END_PHYSICAL_ADDRESS         ((uint32_t)0x0000FFFF) /*!< Flash: end address */
- #define FLASH_DATA_EEPROM_END_PHYSICAL_ADDRESS     ((uint32_t)0x000013FF) /*!< Data Eeprom: end address */
- #define FLASH_PROGRAM_BLOCKS_NUMBER                ((uint16_t)0x100)      /*!< Flash memory: total number of Block */
- #define FLASH_DATA_EEPROM_BLOCKS_NUMBER            ((uint8_t)0x8)         /*!< Data EEprom: total number of Block */
- #define FLASH_BLOCK_SIZE                           ((uint8_t)0x80)        /*!< Number of bytes in a Block 
+#define FLASH_PROGRAM_END_PHYSICAL_ADDRESS         ((uint32_t)0x00017FFF) /*!< Flash: end address */
+#define FLASH_DATA_EEPROM_END_PHYSICAL_ADDRESS     ((uint32_t)0x000017FF) /*!< Data Eeprom: end address */
+#define FLASH_PROGRAM_BLOCKS_NUMBER                ((uint16_t)0x200)      /*!< Flash memory: total number of Block */
+#define FLASH_DATA_EEPROM_BLOCKS_NUMBER            ((uint8_t)0x10)        /*!< Data EEprom: total number of Block */
+#define FLASH_BLOCK_SIZE                           ((uint8_t)0x80)        /*!< Number of bytes in a Block 
                                                                               (common for Program and Data EEprom memories) */
 
-/* STM8L15x Low density devices */ 
+/* STM8L15x Medium density and Medium density plus devices */
+#elif defined (STM8L15X_MD) || defined (STM8L15X_MDP)
+#define FLASH_PROGRAM_END_PHYSICAL_ADDRESS         ((uint32_t)0x0000FFFF) /*!< Flash: end address */
+#define FLASH_DATA_EEPROM_END_PHYSICAL_ADDRESS     ((uint32_t)0x000013FF) /*!< Data Eeprom: end address */
+#define FLASH_PROGRAM_BLOCKS_NUMBER                ((uint16_t)0x100)      /*!< Flash memory: total number of Block */
+#define FLASH_DATA_EEPROM_BLOCKS_NUMBER            ((uint8_t)0x8)         /*!< Data EEprom: total number of Block */
+#define FLASH_BLOCK_SIZE                           ((uint8_t)0x80)        /*!< Number of bytes in a Block 
+                                                                              (common for Program and Data EEprom memories) */
+
+/* STM8L15x Low density devices */
 #elif defined (STM8L15X_LD)
- #define FLASH_PROGRAM_END_PHYSICAL_ADDRESS         ((uint32_t)0x00009FFF) /*!< Flash: end address */
- #define FLASH_DATA_EEPROM_END_PHYSICAL_ADDRESS     ((uint32_t)0x000010FF) /*!< Data Eeprom: end address */
- #define FLASH_PROGRAM_BLOCKS_NUMBER                ((uint16_t)0x80)       /*!< Flash memory: total number of Block */
- #define FLASH_DATA_EEPROM_BLOCKS_NUMBER            ((uint8_t)0x4)         /*!< Data EEprom: total number of Block */
- #define FLASH_BLOCK_SIZE                           ((uint8_t)0x40)        /*!< Number of bytes in a Block 
+#define FLASH_PROGRAM_END_PHYSICAL_ADDRESS         ((uint32_t)0x00009FFF) /*!< Flash: end address */
+#define FLASH_DATA_EEPROM_END_PHYSICAL_ADDRESS     ((uint32_t)0x000010FF) /*!< Data Eeprom: end address */
+#define FLASH_PROGRAM_BLOCKS_NUMBER                ((uint16_t)0x80)       /*!< Flash memory: total number of Block */
+#define FLASH_DATA_EEPROM_BLOCKS_NUMBER            ((uint8_t)0x4)         /*!< Data EEprom: total number of Block */
+#define FLASH_BLOCK_SIZE                           ((uint8_t)0x40)        /*!< Number of bytes in a Block 
                                                                               (common for Program and Data EEprom memories) */
 #endif /* STM8L15X_HD */
 
@@ -91,81 +91,75 @@
 /** @defgroup FLASH_Memory_Type
   * @{
   */
-  typedef enum
-  {
+typedef enum {
     FLASH_MemType_Program      = (uint8_t)0xFD, /*!< Program memory */
     FLASH_MemType_Data         = (uint8_t)0xF7  /*!< Data EEPROM memory */
-  } FLASH_MemType_TypeDef;
+} FLASH_MemType_TypeDef;
 
 /**
   * @}
   */
-  
+
 /** @defgroup FLASH_Programming_Mode
   * @{
   */
-typedef enum
-{
-  FLASH_ProgramMode_Standard = (uint8_t)0x00, /*!< Standard programming mode */
-  FLASH_ProgramMode_Fast     = (uint8_t)0x10  /*!< Fast programming mode */
+typedef enum {
+    FLASH_ProgramMode_Standard = (uint8_t)0x00, /*!< Standard programming mode */
+    FLASH_ProgramMode_Fast     = (uint8_t)0x10  /*!< Fast programming mode */
 } FLASH_ProgramMode_TypeDef;
 
 /**
   * @}
   */
-  
+
 /** @defgroup FLASH_Programming_Time
   * @{
   */
-typedef enum
-{
-  FLASH_ProgramTime_Standard = (uint8_t)0x00, /*!< Standard programming time fixed at 1/2 tprog */
-  FLASH_ProgramTime_TProg    = (uint8_t)0x01  /*!< Programming time fixed at tprog */
+typedef enum {
+    FLASH_ProgramTime_Standard = (uint8_t)0x00, /*!< Standard programming time fixed at 1/2 tprog */
+    FLASH_ProgramTime_TProg    = (uint8_t)0x01  /*!< Programming time fixed at tprog */
 } FLASH_ProgramTime_TypeDef;
 
 /**
   * @}
   */
-  
+
 /** @defgroup FLASH_Power_Mode
   * @{
   */
-typedef enum
-{
-  FLASH_Power_IDDQ = (uint8_t)0x00,  /*!< Flash program and data EEPROM in IDDQ */
-  FLASH_Power_On    = (uint8_t)0x01  /*!< Flash program and data EEPROM not in IDDQ */
+typedef enum {
+    FLASH_Power_IDDQ = (uint8_t)0x00,  /*!< Flash program and data EEPROM in IDDQ */
+    FLASH_Power_On    = (uint8_t)0x01  /*!< Flash program and data EEPROM not in IDDQ */
 } FLASH_Power_TypeDef;
 
 /**
   * @}
   */
-  
+
 /** @defgroup FLASH_Status
   * @{
   */
-typedef enum
-{
-  FLASH_Status_Write_Protection_Error = (uint8_t)0x01, /*!< Write attempted to protected Block */
-  FLASH_Status_TimeOut                = (uint8_t)0x02, /*!< Time out error */
-  FLASH_Status_Successful_Operation   = (uint8_t)0x04  /*!< End of operation flag */
+typedef enum {
+    FLASH_Status_Write_Protection_Error = (uint8_t)0x01, /*!< Write attempted to protected Block */
+    FLASH_Status_TimeOut                = (uint8_t)0x02, /*!< Time out error */
+    FLASH_Status_Successful_Operation   = (uint8_t)0x04  /*!< End of operation flag */
 } FLASH_Status_TypeDef;
 
 /**
   * @}
   */
-  
+
 /** @defgroup FLASH_Power_Status
   * @{
   */
-typedef enum
-{
-  FLASH_PowerStatus_IDDQDuringWaitMode          = (uint8_t)0x04, /*!< Flash program and data EEPROM
+typedef enum {
+    FLASH_PowerStatus_IDDQDuringWaitMode          = (uint8_t)0x04, /*!< Flash program and data EEPROM
                                                                             in IDDQ during Wait mode*/
-  FLASH_PowerStatus_IDDQDuringRunMode           = (uint8_t)0x08, /*!< Flash program and data EEPROM
+    FLASH_PowerStatus_IDDQDuringRunMode           = (uint8_t)0x08, /*!< Flash program and data EEPROM
                                                                             in IDDQ mode during Run mode*/
-  FLASH_PowerStatus_IDDQDuringWaitAndRunModes   = (uint8_t)0x0C,  /*!<Flash program and data EEPROM
+    FLASH_PowerStatus_IDDQDuringWaitAndRunModes   = (uint8_t)0x0C,  /*!<Flash program and data EEPROM
                                                                             in IDDQ during Wait and run modes*/
-  FLASH_PowerStatus_On                          = (uint8_t)0x00  /*!< Flash program and data EEPROM
+    FLASH_PowerStatus_On                          = (uint8_t)0x00  /*!< Flash program and data EEPROM
                                                                                     is powered on during Wait and Run modes */
 } FLASH_PowerStatus_TypeDef;
 
@@ -177,17 +171,17 @@ typedef enum
   * @{
   */
 typedef enum {
-  FLASH_FLAG_HVOFF     = (uint8_t)0x40,     /*!< End of high voltage flag */
-  FLASH_FLAG_DUL       = (uint8_t)0x08,     /*!< Data EEPROM unlocked flag */
-  FLASH_FLAG_EOP       = (uint8_t)0x04,     /*!< End of programming (write or erase operation) flag */
-  FLASH_FLAG_PUL       = (uint8_t)0x02,     /*!< Flash Program memory unlocked flag */
-  FLASH_FLAG_WR_PG_DIS = (uint8_t)0x01      /*!< Write attempted to protected page flag */
+    FLASH_FLAG_HVOFF     = (uint8_t)0x40,     /*!< End of high voltage flag */
+    FLASH_FLAG_DUL       = (uint8_t)0x08,     /*!< Data EEPROM unlocked flag */
+    FLASH_FLAG_EOP       = (uint8_t)0x04,     /*!< End of programming (write or erase operation) flag */
+    FLASH_FLAG_PUL       = (uint8_t)0x02,     /*!< Flash Program memory unlocked flag */
+    FLASH_FLAG_WR_PG_DIS = (uint8_t)0x01      /*!< Write attempted to protected page flag */
 } FLASH_FLAG_TypeDef;
 
 /**
   * @}
   */
-  
+
 /**
   * @}
   */
@@ -318,15 +312,15 @@ FlagStatus FLASH_GetFlagStatus(FLASH_FLAG_TypeDef FLASH_FLAG);
 
 /**
 @code
- All the functions declared below must be executed from RAM exclusively, except 
+ All the functions declared below must be executed from RAM exclusively, except
  for the FLASH_WaitForLastOperation function which can be executed from Flash.
- 
+
  Steps of the execution from RAM differs from one toolchain to another.
  for more details refer to stm8l15x_flash.c file.
- 
- To enable execution from RAM you can either uncomment the following define 
+
+ To enable execution from RAM you can either uncomment the following define
  in the stm8s.h file or define it in your toolchain compiler preprocessor
- - #define RAM_EXECUTION  (1) 
+ - #define RAM_EXECUTION  (1)
 
 @endcode
 */
@@ -335,7 +329,7 @@ IN_RAM(void FLASH_PowerRunModeConfig(FLASH_Power_TypeDef FLASH_Power));
 IN_RAM(FLASH_PowerStatus_TypeDef FLASH_GetPowerStatus(void));
 
 IN_RAM(void FLASH_ProgramBlock(uint16_t BlockNum, FLASH_MemType_TypeDef FLASH_MemType,
-                        FLASH_ProgramMode_TypeDef FLASH_ProgMode, uint8_t *Buffer));
+                               FLASH_ProgramMode_TypeDef FLASH_ProgMode, uint8_t *Buffer));
 IN_RAM(void FLASH_EraseBlock(uint16_t BlockNum, FLASH_MemType_TypeDef FLASH_MemType));
 
 IN_RAM(FLASH_Status_TypeDef FLASH_WaitForLastOperation(FLASH_MemType_TypeDef FLASH_MemType));
@@ -345,7 +339,7 @@ IN_RAM(FLASH_Status_TypeDef FLASH_WaitForLastOperation(FLASH_MemType_TypeDef FLA
 /**
   * @}
   */
-  
+
 /**
   * @}
   */

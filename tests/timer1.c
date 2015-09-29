@@ -64,20 +64,16 @@ uint32_t test_start (void)
     failures = 0;
 
     /* Test parameter-checks */
-    if (atomTimerDelay(0) != ATOM_ERR_PARAM)
-    {
+    if (atomTimerDelay(0) != ATOM_ERR_PARAM) {
         ATOMLOG(_STR("Param\n"));
         failures++;
     }
 
     /* Create a semaphore for receiving test notification */
-    if (atomSemCreate (&sem1, 0) != ATOM_OK)
-    {
+    if (atomSemCreate (&sem1, 0) != ATOM_OK) {
         ATOMLOG (_STR("SemCreate\n"));
         failures++;
-    }
-    else
-    {
+    } else {
         /*
          * Create a timer callback which will attempt to
          * call atomTimerDelay() at interrupt context.
@@ -87,22 +83,19 @@ uint32_t test_start (void)
         timer_cb.cb_ticks = SYSTEM_TICKS_PER_SEC;
 
         /* Request the timer callback to run in one second */
-        if (atomTimerRegister (&timer_cb) != ATOM_OK)
-        {
+        if (atomTimerRegister (&timer_cb) != ATOM_OK) {
             ATOMLOG (_STR("TimerRegister\n"));
             failures++;
         }
 
         /* Wait up to two seconds for sem1 to be posted indicating success */
-        else if (atomSemGet (&sem1, 2 * SYSTEM_TICKS_PER_SEC) != ATOM_OK)
-        {
+        else if (atomSemGet (&sem1, 2 * SYSTEM_TICKS_PER_SEC) != ATOM_OK) {
             ATOMLOG (_STR("Context check\n"));
             failures++;
         }
 
         /* Delete the test semaphore */
-        if (atomSemDelete (&sem1) != ATOM_OK)
-        {
+        if (atomSemDelete (&sem1) != ATOM_OK) {
             ATOMLOG (_STR("Delete\n"));
             failures++;
         }
@@ -113,32 +106,28 @@ uint32_t test_start (void)
      * has increased by exactly 1 tick.
      */
 
-     /*
-      * We first delay by 1 tick to ensure that the thread
-      * is running at the start of a new tick, which should
-      * ensure that the time does not tick over between
-      * setting start_time and actually calling
-      * atomTimerDelay().
-      */
+    /*
+     * We first delay by 1 tick to ensure that the thread
+     * is running at the start of a new tick, which should
+     * ensure that the time does not tick over between
+     * setting start_time and actually calling
+     * atomTimerDelay().
+     */
     atomTimerDelay(1);
 
     /* Record the start time */
     start_time = atomTimeGet();
 
     /* Request a 1 tick sleep */
-    if (atomTimerDelay(1) != ATOM_OK)
-    {
+    if (atomTimerDelay(1) != ATOM_OK) {
         ATOMLOG (_STR("Delay1\n"));
         failures++;
-    }
-    else
-    {
+    } else {
         /* Record the time we woke up */
         end_time = atomTimeGet();
 
         /* Check that time has advanced by exactly 1 tick */
-        if ((end_time - start_time) != 1)
-        {
+        if ((end_time - start_time) != 1) {
             ATOMLOG (_STR("Tick1:%d\n"), (int)(end_time-start_time));
             failures++;
         }
@@ -149,32 +138,28 @@ uint32_t test_start (void)
      * has increased by exactly 2 ticks.
      */
 
-     /*
-      * We first delay by 1 tick to ensure that the thread
-      * is running at the start of a new tick, which should
-      * ensure that the time does not tick over between
-      * setting start_time and actually calling
-      * atomTimerDelay().
-      */
+    /*
+     * We first delay by 1 tick to ensure that the thread
+     * is running at the start of a new tick, which should
+     * ensure that the time does not tick over between
+     * setting start_time and actually calling
+     * atomTimerDelay().
+     */
     atomTimerDelay(1);
 
     /* Record the start time */
     start_time = atomTimeGet();
 
     /* Request a 2 tick sleep */
-    if (atomTimerDelay(2) != ATOM_OK)
-    {
+    if (atomTimerDelay(2) != ATOM_OK) {
         ATOMLOG (_STR("Delay2\n"));
         failures++;
-    }
-    else
-    {
+    } else {
         /* Record the time we woke up */
         end_time = atomTimeGet();
 
         /* Check that time has advanced by exactly 2 ticks */
-        if ((end_time - start_time) != 2)
-        {
+        if ((end_time - start_time) != 2) {
             ATOMLOG (_STR("Tick2:%d\n"), (int)(end_time-start_time));
             failures++;
         }
@@ -185,32 +170,28 @@ uint32_t test_start (void)
      * has increased by exactly 500 ticks.
      */
 
-     /*
-      * We first delay by 1 tick to ensure that the thread
-      * is running at the start of a new tick, which should
-      * ensure that the time does not tick over between
-      * setting start_time and actually calling
-      * atomTimerDelay().
-      */
+    /*
+     * We first delay by 1 tick to ensure that the thread
+     * is running at the start of a new tick, which should
+     * ensure that the time does not tick over between
+     * setting start_time and actually calling
+     * atomTimerDelay().
+     */
     atomTimerDelay(1);
 
     /* Record the start time */
     start_time = atomTimeGet();
 
     /* Request a 500 tick sleep */
-    if (atomTimerDelay(500) != ATOM_OK)
-    {
+    if (atomTimerDelay(500) != ATOM_OK) {
         ATOMLOG (_STR("Delay500\n"));
         failures++;
-    }
-    else
-    {
+    } else {
         /* Record the time we woke up */
         end_time = atomTimeGet();
 
         /* Check that time has advanced by exactly 500 ticks */
-        if ((end_time - start_time) != 500)
-        {
+        if ((end_time - start_time) != 500) {
             ATOMLOG (_STR("Tick500:%d\n"), (int)(end_time-start_time));
             failures++;
         }
@@ -233,13 +214,10 @@ uint32_t test_start (void)
 static void testCallback (POINTER cb_data)
 {
     /* Check the return value from atomTimerDelay() */
-    if (atomTimerDelay(1) == ATOM_ERR_CONTEXT)
-    {
+    if (atomTimerDelay(1) == ATOM_ERR_CONTEXT) {
         /* Received the error we expected, post sem1 to notify success */
         atomSemPut(&sem1);
-    }
-    else
-    {
+    } else {
         /*
          * Did not get the expected error, don't post sem1 and the test
          * thread will time out, signifying an error.

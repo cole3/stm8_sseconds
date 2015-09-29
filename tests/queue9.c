@@ -87,25 +87,20 @@ uint32_t test_start (void)
     g_failures = 0;
 
     /* Create queue to stress */
-    if (atomQueueCreate (&queue1, &queue1_storage[0], sizeof(queue1_storage[0]), QUEUE_ENTRIES) != ATOM_OK)
-    {
+    if (atomQueueCreate (&queue1, &queue1_storage[0], sizeof(queue1_storage[0]), QUEUE_ENTRIES) != ATOM_OK) {
         ATOMLOG (_STR("Error creating Q\n"));
         g_failures++;
     }
 
     /* Create sem to receive thread-finished notification */
-    else if (atomSemCreate (&sem1, 0) != ATOM_OK)
-    {
+    else if (atomSemCreate (&sem1, 0) != ATOM_OK) {
         ATOMLOG (_STR("Error creating sem\n"));
         g_failures++;
-    }
-    else
-    {
+    } else {
         /* Create Thread 1 */
         if (atomThreadCreate(&tcb[0], TEST_THREAD_PRIO, test_thread_func, 1,
-              &test_thread_stack[0][TEST_THREAD_STACK_SIZE - 1],
-              TEST_THREAD_STACK_SIZE) != ATOM_OK)
-        {
+                             &test_thread_stack[0][TEST_THREAD_STACK_SIZE - 1],
+                             TEST_THREAD_STACK_SIZE) != ATOM_OK) {
             /* Fail */
             ATOMLOG (_STR("Error creating test thread\n"));
             CRITICAL_START ();
@@ -115,9 +110,8 @@ uint32_t test_start (void)
 
         /* Create Thread 2 */
         if (atomThreadCreate(&tcb[1], TEST_THREAD_PRIO, test_thread_func, 2,
-              &test_thread_stack[1][TEST_THREAD_STACK_SIZE - 1],
-              TEST_THREAD_STACK_SIZE) != ATOM_OK)
-        {
+                             &test_thread_stack[1][TEST_THREAD_STACK_SIZE - 1],
+                             TEST_THREAD_STACK_SIZE) != ATOM_OK) {
             /* Fail */
             ATOMLOG (_STR("Error creating test thread\n"));
             CRITICAL_START ();
@@ -127,9 +121,8 @@ uint32_t test_start (void)
 
         /* Create Thread 3 */
         if (atomThreadCreate(&tcb[2], TEST_THREAD_PRIO, test_thread_func, 3,
-              &test_thread_stack[2][TEST_THREAD_STACK_SIZE - 1],
-              TEST_THREAD_STACK_SIZE) != ATOM_OK)
-        {
+                             &test_thread_stack[2][TEST_THREAD_STACK_SIZE - 1],
+                             TEST_THREAD_STACK_SIZE) != ATOM_OK) {
             /* Fail */
             ATOMLOG (_STR("Error creating test thread\n"));
             CRITICAL_START ();
@@ -139,9 +132,8 @@ uint32_t test_start (void)
 
         /* Create Thread 4 */
         if (atomThreadCreate(&tcb[3], TEST_THREAD_PRIO, test_thread_func, 4,
-              &test_thread_stack[3][TEST_THREAD_STACK_SIZE - 1],
-              TEST_THREAD_STACK_SIZE) != ATOM_OK)
-        {
+                             &test_thread_stack[3][TEST_THREAD_STACK_SIZE - 1],
+                             TEST_THREAD_STACK_SIZE) != ATOM_OK) {
             /* Fail */
             ATOMLOG (_STR("Error creating test thread\n"));
             CRITICAL_START ();
@@ -155,36 +147,31 @@ uint32_t test_start (void)
          * until sem1 is posted four times.
          */
         finish_cnt = 0;
-        while (1)
-        {
+        while (1) {
             /*
              * Attempt to Get sem1. When we have managed to get
              * the semaphore four times, it must have been posted
              * by all four threads.
              */
-            if (atomSemGet (&sem1, 0) == ATOM_OK)
-            {
+            if (atomSemGet (&sem1, 0) == ATOM_OK) {
                 /* Increment our count of finished threads */
                 finish_cnt++;
 
                 /* Check if all four threads have now posted sem1 */
-                if (finish_cnt == 4)
-                {
+                if (finish_cnt == 4) {
                     break;
                 }
             }
         }
 
         /* Delete OS objects, test finished */
-        if (atomQueueDelete (&queue1) != ATOM_OK)
-        {
+        if (atomQueueDelete (&queue1) != ATOM_OK) {
             ATOMLOG (_STR("Delete failed\n"));
             CRITICAL_START ();
             g_failures++;
             CRITICAL_END ();
         }
-        if (atomSemDelete (&sem1) != ATOM_OK)
-        {
+        if (atomSemDelete (&sem1) != ATOM_OK) {
             ATOMLOG (_STR("Delete failed\n"));
             CRITICAL_START ();
             g_failures++;
@@ -199,19 +186,14 @@ uint32_t test_start (void)
         int thread;
 
         /* Check all threads */
-        for (thread = 0; thread < NUM_TEST_THREADS; thread++)
-        {
+        for (thread = 0; thread < NUM_TEST_THREADS; thread++) {
             /* Check thread stack usage */
-            if (atomThreadStackCheck (&tcb[thread], &used_bytes, &free_bytes) != ATOM_OK)
-            {
+            if (atomThreadStackCheck (&tcb[thread], &used_bytes, &free_bytes) != ATOM_OK) {
                 ATOMLOG (_STR("StackCheck\n"));
                 g_failures++;
-            }
-            else
-            {
+            } else {
                 /* Check the thread did not use up to the end of stack */
-                if (free_bytes == 0)
-                {
+                if (free_bytes == 0) {
                     ATOMLOG (_STR("StackOverflow %d\n"), thread);
                     g_failures++;
                 }
@@ -253,12 +235,10 @@ static void test_thread_func (uint32_t param)
 
     /* Run a Put/Get pair many times */
     loop_cnt = NUM_TEST_LOOPS;
-    while (loop_cnt--)
-    {
+    while (loop_cnt--) {
         /* Put a message in the queue */
         msg = 0x66;
-        if ((status = atomQueuePut (&queue1, 0, &msg)) != ATOM_OK)
-        {
+        if ((status = atomQueuePut (&queue1, 0, &msg)) != ATOM_OK) {
             /* Error putting mutex, notify the status code */
             ATOMLOG (_STR("P%d\n"), status);
             CRITICAL_START ();
@@ -268,8 +248,7 @@ static void test_thread_func (uint32_t param)
         }
 
         /* Retrieve a messages from the queue */
-        if ((status = atomQueueGet (&queue1, 0, &msg)) != ATOM_OK)
-        {
+        if ((status = atomQueueGet (&queue1, 0, &msg)) != ATOM_OK) {
             /* Error getting queue msg, notify the status code */
             ATOMLOG (_STR("G%d\n"), status);
             CRITICAL_START ();
@@ -280,8 +259,7 @@ static void test_thread_func (uint32_t param)
     }
 
     /* Post sem1 to notify the main thread we're finished */
-    if (atomSemPut (&sem1) != ATOM_OK)
-    {
+    if (atomSemPut (&sem1) != ATOM_OK) {
         ATOMLOG (_STR("Sem1 putfail\n"));
         CRITICAL_START ();
         g_failures++;
@@ -289,8 +267,7 @@ static void test_thread_func (uint32_t param)
     }
 
     /* Loop forever */
-    while (1)
-    {
+    while (1) {
         atomTimerDelay (SYSTEM_TICKS_PER_SEC);
     }
 }

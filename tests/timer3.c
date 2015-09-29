@@ -64,8 +64,7 @@ uint32_t test_start (void)
     failures = 0;
 
     /* Create a semaphore for receiving test notifications */
-    if (atomSemCreate (&sem1, 0) != ATOM_OK)
-    {
+    if (atomSemCreate (&sem1, 0) != ATOM_OK) {
         ATOMLOG (_STR("SemCreate\n"));
         failures++;
     }
@@ -73,8 +72,7 @@ uint32_t test_start (void)
     /* Test that bad parameters are trapped */
 
     /* NULL parameter check */
-    if (atomTimerRegister(NULL) != ATOM_ERR_PARAM)
-    {
+    if (atomTimerRegister(NULL) != ATOM_ERR_PARAM) {
         ATOMLOG (_STR("Param1\n"));
         failures++;
     }
@@ -82,8 +80,7 @@ uint32_t test_start (void)
     /* NULL callback function */
     timer_cb.cb_ticks = 1;
     timer_cb.cb_func = NULL;
-    if (atomTimerRegister(&timer_cb) != ATOM_ERR_PARAM)
-    {
+    if (atomTimerRegister(&timer_cb) != ATOM_ERR_PARAM) {
         ATOMLOG (_STR("Param2\n"));
         failures++;
     }
@@ -91,8 +88,7 @@ uint32_t test_start (void)
     /* Zero ticks */
     timer_cb.cb_ticks = 0;
     timer_cb.cb_func = testCallback;
-    if (atomTimerRegister(&timer_cb) != ATOM_ERR_PARAM)
-    {
+    if (atomTimerRegister(&timer_cb) != ATOM_ERR_PARAM) {
         ATOMLOG (_STR("Param3\n"));
         failures++;
     }
@@ -116,15 +112,13 @@ uint32_t test_start (void)
     timer_cb.cb_data = &expected_time;
 
     /* Register the timer callback */
-    if (atomTimerRegister (&timer_cb) != ATOM_OK)
-    {
+    if (atomTimerRegister (&timer_cb) != ATOM_OK) {
         ATOMLOG (_STR("TimerReg1\n"));
         failures++;
     }
 
     /* Wait up to 5 ticks for sem1 to be posted indicating success */
-    else if (atomSemGet (&sem1, 5) != ATOM_OK)
-    {
+    else if (atomSemGet (&sem1, 5) != ATOM_OK) {
         ATOMLOG (_STR("Tick1\n"));
         failures++;
     }
@@ -149,15 +143,13 @@ uint32_t test_start (void)
     timer_cb.cb_data = &expected_time;
 
     /* Register the timer callback */
-    if (atomTimerRegister (&timer_cb) != ATOM_OK)
-    {
+    if (atomTimerRegister (&timer_cb) != ATOM_OK) {
         ATOMLOG (_STR("TimerReg2\n"));
         failures++;
     }
 
     /* Wait up to 5 ticks for sem1 to be posted indicating success */
-    else if (atomSemGet (&sem1, 5) != ATOM_OK)
-    {
+    else if (atomSemGet (&sem1, 5) != ATOM_OK) {
         ATOMLOG (_STR("Tick2\n"));
         failures++;
     }
@@ -182,22 +174,19 @@ uint32_t test_start (void)
     timer_cb.cb_data = &expected_time;
 
     /* Register the timer callback */
-    if (atomTimerRegister (&timer_cb) != ATOM_OK)
-    {
+    if (atomTimerRegister (&timer_cb) != ATOM_OK) {
         ATOMLOG (_STR("TimerReg500\n"));
         failures++;
     }
 
     /* Wait up to 600 ticks for sem1 to be posted indicating success */
-    else if (atomSemGet (&sem1, 600) != ATOM_OK)
-    {
+    else if (atomSemGet (&sem1, 600) != ATOM_OK) {
         ATOMLOG (_STR("Tick500\n"));
         failures++;
     }
 
     /* Delete the test semaphore */
-    if (atomSemDelete (&sem1) != ATOM_OK)
-    {
+    if (atomSemDelete (&sem1) != ATOM_OK) {
         ATOMLOG (_STR("Delete\n"));
         failures++;
     }
@@ -227,13 +216,10 @@ static void testCallback (POINTER cb_data)
      * Check the callback time (now) matches the time
      * we expected the callback.
      */
-    if (atomTimeGet() == expected_end_time)
-    {
+    if (atomTimeGet() == expected_end_time) {
         /* Called back when we expected, post sem1 to notify success */
         atomSemPut(&sem1);
-    }
-    else
-    {
+    } else {
         /*
          * Not called at expected time, don't post sem1 and the test
          * thread will time out, signifying an error.

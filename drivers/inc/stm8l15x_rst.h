@@ -17,7 +17,7 @@
   * CODING INFORMATION CONTAINED HEREIN IN CONNECTION WITH THEIR PRODUCTS.
   *
   * <h2><center>&copy; COPYRIGHT 2011 STMicroelectronics</center></h2>
-  ******************************************************************************  
+  ******************************************************************************
   */
 
 /* Define to prevent recursive inclusion -------------------------------------*/
@@ -30,27 +30,27 @@
 /** @addtogroup STM8L15x_StdPeriph_Driver
   * @{
   */
-  
+
 /** @addtogroup RST
   * @{
-  */ 
-  
+  */
+
 /* Exported variables ------------------------------------------------------- */
 /* Exported types ------------------------------------------------------------*/
 /** @defgroup RST_Exported_Types
   * @{
   */
 
-/** @defgroup RST_Flags 
+/** @defgroup RST_Flags
   * @{
   */
 typedef enum {
-  RST_FLAG_PORF   = (uint8_t)0x01, /*!< POR reset flag */
-  RST_FLAG_SWIMF  = (uint8_t)0x08, /*!< SWIM reset flag */
-  RST_FLAG_ILLOPF = (uint8_t)0x04, /*!< Illegal opcode reset flag */
-  RST_FLAG_IWDGF  = (uint8_t)0x02, /*!< Independent watchdog reset flag */
-  RST_FLAG_WWDGF  = (uint8_t)0x10, /*!< Window watchdog reset flag */
-  RST_FLAG_BORF   = (uint8_t)0x20  /*!< BOR reset flag */
+    RST_FLAG_PORF   = (uint8_t)0x01, /*!< POR reset flag */
+    RST_FLAG_SWIMF  = (uint8_t)0x08, /*!< SWIM reset flag */
+    RST_FLAG_ILLOPF = (uint8_t)0x04, /*!< Illegal opcode reset flag */
+    RST_FLAG_IWDGF  = (uint8_t)0x02, /*!< Independent watchdog reset flag */
+    RST_FLAG_WWDGF  = (uint8_t)0x10, /*!< Window watchdog reset flag */
+    RST_FLAG_BORF   = (uint8_t)0x20  /*!< BOR reset flag */
 } RST_FLAG_TypeDef;
 
 #define IS_RST_FLAG(FLAG)  (((FLAG) == RST_FLAG_PORF) || ((FLAG) == RST_FLAG_BORF) || \
@@ -59,7 +59,7 @@ typedef enum {
 /**
   * @}
   */
-  
+
 /**
   * @}
   */
@@ -77,7 +77,7 @@ void RST_GPOutputEnable(void);
 /**
   * @}
   */
-  
+
 /**
   * @}
   */

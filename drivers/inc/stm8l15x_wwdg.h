@@ -17,7 +17,7 @@
   * CODING INFORMATION CONTAINED HEREIN IN CONNECTION WITH THEIR PRODUCTS.
   *
   * <h2><center>&copy; COPYRIGHT 2011 STMicroelectronics</center></h2>
-  ******************************************************************************  
+  ******************************************************************************
   */
 
 /* Define to prevent recursive inclusion -------------------------------------*/
@@ -30,11 +30,11 @@
 /** @addtogroup STM8L15x_StdPeriph_Driver
   * @{
   */
-  
+
 /** @addtogroup WWDG
   * @{
-  */ 
-  
+  */
+
 /* Exported types ------------------------------------------------------------*/
 /* Exported constants --------------------------------------------------------*/
 /* Exported macro ------------------------------------------------------------*/
@@ -43,23 +43,23 @@
   * @{
   */
 
-/** @defgroup WWDG_WindowLimitValue 
+/** @defgroup WWDG_WindowLimitValue
   * @{
-  */ 
+  */
 #define IS_WWDG_WINDOW_LIMIT_VALUE(WindowLimitValue) ((WindowLimitValue) <= 0x7F)
 
 /**
   * @}
   */
 
-/** @defgroup WWDG_CounterValue 
+/** @defgroup WWDG_CounterValue
   * @{
   */
 #define IS_WWDG_COUNTER_VALUE(CounterValue) ((CounterValue) <= 0x7F)
 /**
   * @}
   */
-  
+
 /**
   * @}
   */

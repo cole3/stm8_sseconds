@@ -3,7 +3,7 @@
   * @author  MCD Application Team
   * @version V1.5.0
   * @date    13-May-2011
-  * @brief   This file contains all the functions prototypes for the IWDG 
+  * @brief   This file contains all the functions prototypes for the IWDG
   *          firmware library.
   ******************************************************************************
   * @attention
@@ -16,7 +16,7 @@
   * CODING INFORMATION CONTAINED HEREIN IN CONNECTION WITH THEIR PRODUCTS.
   *
   * <h2><center>&copy; COPYRIGHT 2011 STMicroelectronics</center></h2>
-  ******************************************************************************  
+  ******************************************************************************
   */
 
 /* Define to prevent recursive inclusion -------------------------------------*/
@@ -33,7 +33,7 @@
 /** @addtogroup IWDG
   * @{
   */
-  
+
 /* Exported variables ------------------------------------------------------- */
 /* Exported constants --------------------------------------------------------*/
 
@@ -49,7 +49,7 @@
 /**
  * @}
  */
- 
+
 /** @defgroup IWDG_KeyEnable
   * @{
   */
@@ -72,29 +72,27 @@
 /** @defgroup IWDG_WriteAccess
   * @{
   */
-typedef enum
-{
-  IWDG_WriteAccess_Enable  = (uint8_t)0x55, 
-  IWDG_WriteAccess_Disable = (uint8_t)0x00
+typedef enum {
+    IWDG_WriteAccess_Enable  = (uint8_t)0x55,
+    IWDG_WriteAccess_Disable = (uint8_t)0x00
 } IWDG_WriteAccess_TypeDef;
 #define IS_IWDG_WRITE_ACCESS_MODE(MODE) (((MODE) == IWDG_WriteAccess_Enable) || \
                                          ((MODE) == IWDG_WriteAccess_Disable))
 /**
  * @}
  */
- 
-/** @defgroup IWDG_prescaler 
+
+/** @defgroup IWDG_prescaler
   * @{
   */
-typedef enum
-{
-  IWDG_Prescaler_4   = (uint8_t)0x00, /*!< Used to set prescaler register to 4 */
-  IWDG_Prescaler_8   = (uint8_t)0x01, /*!< Used to set prescaler register to 8 */
-  IWDG_Prescaler_16  = (uint8_t)0x02, /*!< Used to set prescaler register to 16 */
-  IWDG_Prescaler_32  = (uint8_t)0x03, /*!< Used to set prescaler register to 32 */
-  IWDG_Prescaler_64  = (uint8_t)0x04, /*!< Used to set prescaler register to 64 */
-  IWDG_Prescaler_128 = (uint8_t)0x05, /*!< Used to set prescaler register to 128 */
-  IWDG_Prescaler_256 = (uint8_t)0x06  /*!< Used to set prescaler register to 256 */
+typedef enum {
+    IWDG_Prescaler_4   = (uint8_t)0x00, /*!< Used to set prescaler register to 4 */
+    IWDG_Prescaler_8   = (uint8_t)0x01, /*!< Used to set prescaler register to 8 */
+    IWDG_Prescaler_16  = (uint8_t)0x02, /*!< Used to set prescaler register to 16 */
+    IWDG_Prescaler_32  = (uint8_t)0x03, /*!< Used to set prescaler register to 32 */
+    IWDG_Prescaler_64  = (uint8_t)0x04, /*!< Used to set prescaler register to 64 */
+    IWDG_Prescaler_128 = (uint8_t)0x05, /*!< Used to set prescaler register to 128 */
+    IWDG_Prescaler_256 = (uint8_t)0x06  /*!< Used to set prescaler register to 256 */
 } IWDG_Prescaler_TypeDef;
 #define IS_IWDG_PRESCALER_VALUE(VALUE) (((VALUE) == IWDG_Prescaler_4)   || \
                                         ((VALUE) == IWDG_Prescaler_8)   || \
@@ -105,8 +103,8 @@ typedef enum
                                         ((VALUE) == IWDG_Prescaler_256))
 /**
  * @}
- */        
-                                 
+ */
+
 /**
   * @}
   */
@@ -126,7 +124,7 @@ void IWDG_Enable(void);
 /**
   * @}
   */
-  
+
 /**
   * @}
   */

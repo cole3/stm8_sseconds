@@ -28,7 +28,7 @@
  */
 
 
-/** 
+/**
  * \file
  * Semaphore library.
  *
@@ -72,7 +72,7 @@
  * a call is made to atomSemPut() while threads are blocking on a zero-count
  * semaphore, the highest priority thread is woken. Where multiple threads of
  * the same priority are blocking, they are woken in the order in which the
- * threads started blocking. 
+ * threads started blocking.
  *
  * A semaphore which is no longer required can be deleted using
  * atomSemDelete(). This function automatically wakes up any threads which are
@@ -96,8 +96,7 @@
 
 /* Local data types */
 
-typedef struct sem_timer
-{
+typedef struct sem_timer {
     ATOM_TCB *tcb_ptr;  /* Thread which is suspended with timeout */
     ATOM_SEM *sem_ptr;  /* Semaphore the thread is suspended on */
 } SEM_TIMER;
@@ -131,13 +130,10 @@ uint8_t atomSemCreate (ATOM_SEM *sem, uint8_t initial_count)
     uint8_t status;
 
     /* Parameter check */
-    if (sem == NULL)
-    {
+    if (sem == NULL) {
         /* Bad semaphore pointer */
         status = ATOM_ERR_PARAM;
-    }
-    else
-    {
+    } else {
         /* Set the initial count */
         sem->count = initial_count;
 
@@ -180,19 +176,15 @@ uint8_t atomSemDelete (ATOM_SEM *sem)
     uint8_t woken_threads = FALSE;
 
     /* Parameter check */
-    if (sem == NULL)
-    {
+    if (sem == NULL) {
         /* Bad semaphore pointer */
         status = ATOM_ERR_PARAM;
-    }
-    else
-    {
+    } else {
         /* Default to success status unless errors occur during wakeup */
         status = ATOM_OK;
 
         /* Wake up all suspended tasks */
-        while (1)
-        {
+        while (1) {
             /* Enter critical region */
             CRITICAL_START ();
 
@@ -200,14 +192,12 @@ uint8_t atomSemDelete (ATOM_SEM *sem)
             tcb_ptr = tcbDequeueHead (&sem->suspQ);
 
             /* A thread is suspended on the semaphore */
-            if (tcb_ptr)
-            {
+            if (tcb_ptr) {
                 /* Return error status to the waiting thread */
                 tcb_ptr->suspend_wake_status = ATOM_ERR_DELETED;
 
                 /* Put the thread on the ready queue */
-                if (tcbEnqueuePriority (&tcbReadyQ, tcb_ptr) != ATOM_OK)
-                {
+                if (tcbEnqueuePriority (&tcbReadyQ, tcb_ptr) != ATOM_OK) {
                     /* Exit critical region */
                     CRITICAL_END ();
 
@@ -217,11 +207,9 @@ uint8_t atomSemDelete (ATOM_SEM *sem)
                 }
 
                 /* If there's a timeout on this suspension, cancel it */
-                if (tcb_ptr->suspend_timo_cb)
-                {
+                if (tcb_ptr->suspend_timo_cb) {
                     /* Cancel the callback */
-                    if (atomTimerCancel (tcb_ptr->suspend_timo_cb) != ATOM_OK)
-                    {
+                    if (atomTimerCancel (tcb_ptr->suspend_timo_cb) != ATOM_OK) {
                         /* Exit critical region */
                         CRITICAL_END ();
 
@@ -243,8 +231,7 @@ uint8_t atomSemDelete (ATOM_SEM *sem)
             }
 
             /* No more suspended threads */
-            else
-            {
+            else {
                 /* Exit critical region and quit the loop */
                 CRITICAL_END ();
                 break;
@@ -252,8 +239,7 @@ uint8_t atomSemDelete (ATOM_SEM *sem)
         }
 
         /* Call scheduler if any threads were woken up */
-        if (woken_threads == TRUE)
-        {
+        if (woken_threads == TRUE) {
             /**
              * Only call the scheduler if we are in thread context, otherwise
              * it will be called on exiting the ISR by atomIntExit().
@@ -320,41 +306,32 @@ uint8_t atomSemGet (ATOM_SEM *sem, int32_t timeout)
     ATOM_TCB *curr_tcb_ptr;
 
     /* Check parameters */
-    if (sem == NULL)
-    {
+    if (sem == NULL) {
         /* Bad semaphore pointer */
         status = ATOM_ERR_PARAM;
-    }
-    else
-    {
+    } else {
         /* Protect access to the semaphore object and OS queues */
         CRITICAL_START ();
 
         /* If count is zero, block the calling thread */
-        if (sem->count == 0)
-        {
+        if (sem->count == 0) {
             /* If called with timeout >= 0, we should block */
-            if (timeout >= 0)
-            {
+            if (timeout >= 0) {
                 /* Count is zero, block the calling thread */
 
                 /* Get the current TCB */
                 curr_tcb_ptr = atomCurrentContext();
 
                 /* Check we are actually in thread context */
-                if (curr_tcb_ptr)
-                {
+                if (curr_tcb_ptr) {
                     /* Add current thread to the suspend list on this semaphore */
-                    if (tcbEnqueuePriority (&sem->suspQ, curr_tcb_ptr) != ATOM_OK)
-                    {
+                    if (tcbEnqueuePriority (&sem->suspQ, curr_tcb_ptr) != ATOM_OK) {
                         /* Exit critical region */
                         CRITICAL_END ();
 
                         /* There was an error putting this thread on the suspend list */
                         status = ATOM_ERR_QUEUE;
-                    }
-                    else
-                    {
+                    } else {
                         /* Set suspended status for the current thread */
                         curr_tcb_ptr->suspended = TRUE;
 
@@ -362,8 +339,7 @@ uint8_t atomSemGet (ATOM_SEM *sem, int32_t timeout)
                         status = ATOM_OK;
 
                         /* Register a timer callback if requested */
-                        if (timeout)
-                        {
+                        if (timeout) {
                             /* Fill out the data needed by the callback to wake us up */
                             timer_data.tcb_ptr = curr_tcb_ptr;
                             timer_data.sem_ptr = sem;
@@ -381,8 +357,7 @@ uint8_t atomSemGet (ATOM_SEM *sem, int32_t timeout)
                             curr_tcb_ptr->suspend_timo_cb = &timer_cb;
 
                             /* Register a callback on timeout */
-                            if (atomTimerRegister (&timer_cb) != ATOM_OK)
-                            {
+                            if (atomTimerRegister (&timer_cb) != ATOM_OK) {
                                 /* Timer registration failed */
                                 status = ATOM_ERR_TIMER;
 
@@ -394,8 +369,7 @@ uint8_t atomSemGet (ATOM_SEM *sem, int32_t timeout)
                         }
 
                         /* Set no timeout requested */
-                        else
-                        {
+                        else {
                             /* No need to cancel timeouts on this one */
                             curr_tcb_ptr->suspend_timo_cb = NULL;
                         }
@@ -404,8 +378,7 @@ uint8_t atomSemGet (ATOM_SEM *sem, int32_t timeout)
                         CRITICAL_END ();
 
                         /* Check no errors have occurred */
-                        if (status == ATOM_OK)
-                        {
+                        if (status == ATOM_OK) {
                             /**
                              * Current thread now blocking, schedule in a new
                              * one. We already know we are in thread context
@@ -439,25 +412,19 @@ uint8_t atomSemGet (ATOM_SEM *sem, int32_t timeout)
 
                         }
                     }
-                }
-                else
-                {
+                } else {
                     /* Exit critical region */
                     CRITICAL_END ();
 
                     /* Not currently in thread context, can't suspend */
                     status = ATOM_ERR_CONTEXT;
                 }
-            }
-            else
-            {
+            } else {
                 /* timeout == -1, requested not to block and count is zero */
                 CRITICAL_END();
                 status = ATOM_WOULDBLOCK;
             }
-        }
-        else
-        {
+        } else {
             /* Count is non-zero, just decrement it and return to calling thread */
             sem->count--;
 
@@ -502,47 +469,37 @@ uint8_t atomSemPut (ATOM_SEM * sem)
     ATOM_TCB *tcb_ptr;
 
     /* Check parameters */
-    if (sem == NULL)
-    {
+    if (sem == NULL) {
         /* Bad semaphore pointer */
         status = ATOM_ERR_PARAM;
-    }
-    else
-    {
+    } else {
         /* Protect access to the semaphore object and OS queues */
         CRITICAL_START ();
 
         /* If any threads are blocking on the semaphore, wake up one */
-        if (sem->suspQ)
-        {
+        if (sem->suspQ) {
             /**
              * Threads are woken up in priority order, with a FIFO system
              * used on same priority threads. We always take the head,
              * ordering is taken care of by an ordered list enqueue.
              */
             tcb_ptr = tcbDequeueHead (&sem->suspQ);
-            if (tcbEnqueuePriority (&tcbReadyQ, tcb_ptr) != ATOM_OK)
-            {
+            if (tcbEnqueuePriority (&tcbReadyQ, tcb_ptr) != ATOM_OK) {
                 /* Exit critical region */
                 CRITICAL_END ();
 
                 /* There was a problem putting the thread on the ready queue */
                 status = ATOM_ERR_QUEUE;
-            }
-            else
-            {
+            } else {
                 /* Set OK status to be returned to the waiting thread */
                 tcb_ptr->suspend_wake_status = ATOM_OK;
 
                 /* If there's a timeout on this suspension, cancel it */
                 if ((tcb_ptr->suspend_timo_cb != NULL)
-                    && (atomTimerCancel (tcb_ptr->suspend_timo_cb) != ATOM_OK))
-                {
+                    && (atomTimerCancel (tcb_ptr->suspend_timo_cb) != ATOM_OK)) {
                     /* There was a problem cancelling a timeout on this semaphore */
                     status = ATOM_ERR_TIMER;
-                }
-                else
-                {
+                } else {
                     /* Flag as no timeout registered */
                     tcb_ptr->suspend_timo_cb = NULL;
 
@@ -564,16 +521,12 @@ uint8_t atomSemPut (ATOM_SEM * sem)
         }
 
         /* If no threads waiting, just increment the count and return */
-        else
-        {
+        else {
             /* Check for count overflow */
-            if (sem->count == 255)
-            {
+            if (sem->count == 255) {
                 /* Don't increment, just return error status */
                 status = ATOM_ERR_OVF;
-            }
-            else
-            {
+            } else {
                 /* Increment the count and return success */
                 sem->count++;
                 status = ATOM_OK;
@@ -610,13 +563,10 @@ uint8_t atomSemResetCount (ATOM_SEM *sem, uint8_t count)
     uint8_t status;
 
     /* Parameter check */
-    if (sem == NULL)
-    {
+    if (sem == NULL) {
         /* Bad semaphore pointer */
         status = ATOM_ERR_PARAM;
-    }
-    else
-    {
+    } else {
         /* Set the count */
         sem->count = count;
 
@@ -650,8 +600,7 @@ static void atomSemTimerCallback (POINTER cb_data)
     timer_data_ptr = (SEM_TIMER *)cb_data;
 
     /* Check parameter is valid */
-    if (timer_data_ptr)
-    {
+    if (timer_data_ptr) {
         /* Enter critical region */
         CRITICAL_START ();
 

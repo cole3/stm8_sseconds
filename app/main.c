@@ -73,15 +73,15 @@ static void TIM1_Config(void)
 
     /* Channels 1, 2 and 3 Configuration in TIMING mode */
     TIM1_OC1Init(TIM1_OCMode_Timing, TIM1_OutputState_Enable, TIM1_OutputNState_Enable, CCR1_VAL,
-               TIM1_OCPolarity_High, TIM1_OCNPolarity_High, TIM1_OCIdleState_Reset, TIM1_OCNIdleState_Reset);
+                 TIM1_OCPolarity_High, TIM1_OCNPolarity_High, TIM1_OCIdleState_Reset, TIM1_OCNIdleState_Reset);
     TIM1_OC2Init(TIM1_OCMode_Timing, TIM1_OutputState_Enable, TIM1_OutputNState_Enable, CCR2_VAL,
-               TIM1_OCPolarity_High, TIM1_OCNPolarity_High, TIM1_OCIdleState_Reset, TIM1_OCNIdleState_Reset);
+                 TIM1_OCPolarity_High, TIM1_OCNPolarity_High, TIM1_OCIdleState_Reset, TIM1_OCNIdleState_Reset);
     TIM1_OC3Init(TIM1_OCMode_Timing, TIM1_OutputState_Enable, TIM1_OutputNState_Enable, CCR3_VAL,
-               TIM1_OCPolarity_High, TIM1_OCNPolarity_High, TIM1_OCIdleState_Reset, TIM1_OCNIdleState_Reset);
+                 TIM1_OCPolarity_High, TIM1_OCNPolarity_High, TIM1_OCIdleState_Reset, TIM1_OCNIdleState_Reset);
 
     /* Automatic Output Enable, Break, dead time and lock configuration*/
     TIM1_BDTRConfig(TIM1_OSSIState_Enable, TIM1_LockLevel_Off, DEADTIME,
-                  TIM1_BreakState_Enable, TIM1_BreakPolarity_Low, TIM1_AutomaticOutput_Disable);
+                    TIM1_BreakState_Enable, TIM1_BreakPolarity_Low, TIM1_AutomaticOutput_Disable);
 
     TIM1_CCPreloadControl(ENABLE);
     TIM1_ITConfig(TIM1_IT_COM, ENABLE);
@@ -117,10 +117,9 @@ static void TIM4_Config(void)
 
 static void first_thread_func (uint32_t param)
 {
-		int cnt = 0;
-		
-    while (1)
-    {
+    int cnt = 0;
+
+    while (1) {
         printf("first_thread_func cnt=%d\n", cnt++);
 
         /* Sleep then toggle LED again */
@@ -131,30 +130,27 @@ static void first_thread_func (uint32_t param)
 static void main_thread_func (uint32_t param)
 {
     int cnt = 0;
-		int8_t status;
-		int i = 0;
-		int flag = 1;
-		
-		status = atomThreadCreate(&first_tcb,
-								 TEST_THREAD_PRIO, first_thread_func, 0,
-								 &first_thread_stack[MAIN_STACK_SIZE_BYTES - 1],
-								 MAIN_STACK_SIZE_BYTES);
-		if (status != ATOM_OK)
-		{
-				printf("atomThreadCreate first_thread_func fail!\n");
-		}
-		
+    int8_t status;
+    int i = 0;
+    int flag = 1;
+
+    status = atomThreadCreate(&first_tcb,
+                              TEST_THREAD_PRIO, first_thread_func, 0,
+                              &first_thread_stack[MAIN_STACK_SIZE_BYTES - 1],
+                              MAIN_STACK_SIZE_BYTES);
+    if (status != ATOM_OK) {
+        printf("atomThreadCreate first_thread_func fail!\n");
+    }
+
     /* Test finished, flash slowly for pass, fast for fail */
-    while (1)
-    {
-				cnt = flag ? (cnt + 1) : (cnt - 1);
-				
-				flag = (cnt == 20) ? 0 : ((cnt == 0) ? 1 : flag);
-				
-				for(i=0; i<cnt; i++)
-				{
-						printf(" ", cnt);
-				}
+    while (1) {
+        cnt = flag ? (cnt + 1) : (cnt - 1);
+
+        flag = (cnt == 20) ? 0 : ((cnt == 0) ? 1 : flag);
+
+        for(i=0; i<cnt; i++) {
+            printf(" ", cnt);
+        }
         printf("+\n");
 
         /* Sleep then toggle LED again */
@@ -169,11 +165,11 @@ static void main_thread_func (uint32_t param)
   */
 void main(void)
 {
-	int8_t status;
+    int8_t status;
 
-	CLK_SYSCLKDivConfig(CLK_SYSCLKDiv_1);
+    CLK_SYSCLKDivConfig(CLK_SYSCLKDiv_1);
 
-	SYSCFG_REMAPPinConfig(REMAP_Pin_USART1TxRxPortA, ENABLE);
+    SYSCFG_REMAPPinConfig(REMAP_Pin_USART1TxRxPortA, ENABLE);
 
     /* Enable USART clock */
     CLK_PeripheralClockConfig(CLK_Peripheral_USART1, ENABLE);
@@ -186,46 +182,44 @@ void main(void)
 
     /* USART configuration */
     USART_Init(USART1, 115200,
-             USART_WordLength_8b,
-             USART_StopBits_1,
-             USART_Parity_No,
-             (USART_Mode_TypeDef)(USART_Mode_Tx | USART_Mode_Rx));
+               USART_WordLength_8b,
+               USART_StopBits_1,
+               USART_Parity_No,
+               (USART_Mode_TypeDef)(USART_Mode_Tx | USART_Mode_Rx));
 
     /* Initialize LEDs mounted on STM8L152X-EVAL board */
     GPIO_Init(LED_GPIO_PORT, LED_GPIO_PINS, GPIO_Mode_Out_PP_Low_Fast);
 
-	enableInterrupts();
+    enableInterrupts();
 
-	status = atomOSInit(&idle_thread_stack[IDLE_STACK_SIZE_BYTES - 1], IDLE_STACK_SIZE_BYTES);
-	if (status == ATOM_OK)
-	{
-			/* Enable the system tick timer */
-			archInitSystemTickTimer();
+    status = atomOSInit(&idle_thread_stack[IDLE_STACK_SIZE_BYTES - 1], IDLE_STACK_SIZE_BYTES);
+    if (status == ATOM_OK) {
+        /* Enable the system tick timer */
+        archInitSystemTickTimer();
 
-			/* Create an application thread */
-			status = atomThreadCreate(&main_tcb,
-									 TEST_THREAD_PRIO, main_thread_func, 0,
-									 &main_thread_stack[MAIN_STACK_SIZE_BYTES - 1],
-									 MAIN_STACK_SIZE_BYTES);
-									 
-									 
-			if (status == ATOM_OK)
-			{
-					/**
-					 * First application thread successfully created. It is
-					 * now possible to start the OS. Execution will not return
-					 * from atomOSStart(), which will restore the context of
-					 * our application thread and start executing it.
-					 *
-					 * Note that interrupts are still disabled at this point.
-					 * They will be enabled as we restore and execute our first
-					 * thread in archFirstThreadRestore().
-					 */
-					atomOSStart();
-			}
-	}
+        /* Create an application thread */
+        status = atomThreadCreate(&main_tcb,
+                                  TEST_THREAD_PRIO, main_thread_func, 0,
+                                  &main_thread_stack[MAIN_STACK_SIZE_BYTES - 1],
+                                  MAIN_STACK_SIZE_BYTES);
 
-  while (1);
+
+        if (status == ATOM_OK) {
+            /**
+             * First application thread successfully created. It is
+             * now possible to start the OS. Execution will not return
+             * from atomOSStart(), which will restore the context of
+             * our application thread and start executing it.
+             *
+             * Note that interrupts are still disabled at this point.
+             * They will be enabled as we restore and execute our first
+             * thread in archFirstThreadRestore().
+             */
+            atomOSStart();
+        }
+    }
+
+    while (1);
 }
 
 /**
@@ -235,11 +229,10 @@ void main(void)
   */
 void Delay(__IO uint16_t nCount)
 {
-  /* Decrement nCount value */
-  while (nCount != 0)
-  {
-    nCount--;
-  }
+    /* Decrement nCount value */
+    while (nCount != 0) {
+        nCount--;
+    }
 }
 
 #ifdef  USE_FULL_ASSERT
@@ -253,11 +246,11 @@ void Delay(__IO uint16_t nCount)
   */
 void assert_failed(uint8_t* file, uint32_t line)
 {
-  /* User can add his own implementation to report the file name and line number,
-     ex: printf("Wrong parameters value: file %s on line %d\r\n", file, line) */
-  /* Infinite loop */
-  while (1)
-  {}
+    /* User can add his own implementation to report the file name and line number,
+       ex: printf("Wrong parameters value: file %s on line %d\r\n", file, line) */
+    /* Infinite loop */
+    while (1) {
+    }
 }
 #endif
 

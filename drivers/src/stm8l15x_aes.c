@@ -4,17 +4,17 @@
   * @author  MCD Application Team
   * @version V1.5.0
   * @date    13-May-2011
-  * @brief   This file provides firmware functions to manage the following 
-  *          functionalities of the Advanced Encryption Standard (AES) peripheral:           
+  * @brief   This file provides firmware functions to manage the following
+  *          functionalities of the Advanced Encryption Standard (AES) peripheral:
   *           - Configuration
   *           - Read/Write operations
-  *           - DMA transfers management  
+  *           - DMA transfers management
   *           - Interrupts and flags management
   *
-  *  @verbatim  
+  *  @verbatim
   *          ===================================================================
   *                                 How to use this driver
-  *          ===================================================================  
+  *          ===================================================================
   *          1- Enable AES clock to get write access to AES registers
   *             using CLK_PeripheralClockConfig(CLK_Peripheral_AES, ENABLE);
   *
@@ -22,15 +22,15 @@
   *
   *          3- If required, enable interrupt source using AES_ITConfig()
   *
-  *          4- If required, when using the DMA mode 
+  *          4- If required, when using the DMA mode
   *               - Configure the DMA using DMA_Init()
   *               - Enable DMA requests using AES_DMAConfig()
   *
   *          5- Enable the AES peripheral using AES_Cmd()
   *
   *          6- Write data/key using AES_WriteSubData() / AES_WriteSubKey()
-  *            
-  *  @endverbatim   
+  *
+  *  @endverbatim
   ******************************************************************************
   * @attention
   *
@@ -42,7 +42,7 @@
   * CODING INFORMATION CONTAINED HEREIN IN CONNECTION WITH THEIR PRODUCTS.
   *
   * <h2><center>&copy; COPYRIGHT 2011 STMicroelectronics</center></h2>
-  ******************************************************************************  
+  ******************************************************************************
   */
 
 /* Includes ------------------------------------------------------------------*/
@@ -51,11 +51,11 @@
 /** @addtogroup STM8L15x_StdPeriph_Driver
   * @{
   */
-  
-/** @defgroup AES 
+
+/** @defgroup AES
   * @brief AES driver modules
   * @{
-  */ 
+  */
 /* Private typedef -----------------------------------------------------------*/
 /* Private define ------------------------------------------------------------*/
 /* Private macro -------------------------------------------------------------*/
@@ -65,20 +65,20 @@
 
 /** @defgroup AES_Private_Functions
   * @{
-  */ 
+  */
 
 /** @defgroup AES_Group1 Configuration
  *  @brief   Configuration
  *
-@verbatim   
+@verbatim
  ===============================================================================
                            Configuration
- ===============================================================================  
+ ===============================================================================
 
 @endverbatim
   * @{
-  */  
-  
+  */
+
 /**
   * @brief   Deinitializes the AES peripheral.
   * @param   None.
@@ -86,10 +86,10 @@
   */
 void AES_DeInit(void)
 {
-  /* Set AES_CR to reset value 0x00, AES_SR is reset by setting ERRC and CCFC bits in CR */
-  AES->CR = AES_CR_ERRC | AES_CR_CCFC;
-  AES->DINR = AES_DINR_RESET_VALUE;       /* Set AES_DINR to reset value 0x00 */
-  AES->DOUTR = AES_DOUTR_RESET_VALUE;     /* Set AES_DOUTR to reset value 0x00 */
+    /* Set AES_CR to reset value 0x00, AES_SR is reset by setting ERRC and CCFC bits in CR */
+    AES->CR = AES_CR_ERRC | AES_CR_CCFC;
+    AES->DINR = AES_DINR_RESET_VALUE;       /* Set AES_DINR to reset value 0x00 */
+    AES->DOUTR = AES_DOUTR_RESET_VALUE;     /* Set AES_DOUTR to reset value 0x00 */
 }
 
 /**
@@ -105,14 +105,14 @@ void AES_DeInit(void)
   */
 void AES_OperationModeConfig(AES_Operation_TypeDef AES_Operation)
 {
-  /* Check the parameter */
-  assert_param(IS_AES_MODE(AES_Operation));
+    /* Check the parameter */
+    assert_param(IS_AES_MODE(AES_Operation));
 
-  /* Reset the operation mode bits in CR register */
-  AES->CR &= (uint8_t) (~AES_CR_MODE);
+    /* Reset the operation mode bits in CR register */
+    AES->CR &= (uint8_t) (~AES_CR_MODE);
 
-  /* Set the new operaton mode bits in CR register */
-  AES->CR |= (uint8_t) (AES_Operation);
+    /* Set the new operaton mode bits in CR register */
+    AES->CR |= (uint8_t) (AES_Operation);
 }
 
 /**
@@ -120,22 +120,19 @@ void AES_OperationModeConfig(AES_Operation_TypeDef AES_Operation)
   * @param  NewState : The new state of the AES peripheral.
     *         This parameter can be: ENABLE or DISABLE.
   * @note   AES peripheral can be enabled once operation mode is configured using
-  *         AES_OperationModeConfig()  
+  *         AES_OperationModeConfig()
   * @retval None
   */
 void AES_Cmd(FunctionalState NewState)
 {
-  /* Check the parameter */
-  assert_param(IS_FUNCTIONAL_STATE(NewState));
+    /* Check the parameter */
+    assert_param(IS_FUNCTIONAL_STATE(NewState));
 
-  if (NewState != DISABLE)
-  {
-    AES->CR |= (uint8_t) AES_CR_EN;   /**< AES Enable */
-  }
-  else
-  {
-    AES->CR &= (uint8_t)(~AES_CR_EN);  /**< AES Disable */
-  }
+    if (NewState != DISABLE) {
+        AES->CR |= (uint8_t) AES_CR_EN;   /**< AES Enable */
+    } else {
+        AES->CR &= (uint8_t)(~AES_CR_EN);  /**< AES Disable */
+    }
 }
 
 /**
@@ -145,10 +142,10 @@ void AES_Cmd(FunctionalState NewState)
 /** @defgroup AES_Group2 AES Read and Write
  *  @brief   AES Read and Write
  *
-@verbatim   
+@verbatim
  ===============================================================================
                         AES Read and Write operations
- ===============================================================================  
+ ===============================================================================
 
 @endverbatim
   * @{
@@ -163,8 +160,8 @@ void AES_Cmd(FunctionalState NewState)
   */
 void AES_WriteSubData(uint8_t Data)
 {
-  /* Write Data */
-  AES->DINR = Data;
+    /* Write Data */
+    AES->DINR = Data;
 }
 
 /**
@@ -176,8 +173,8 @@ void AES_WriteSubData(uint8_t Data)
   */
 void AES_WriteSubKey(uint8_t Key)
 {
-  /* Write key */
-  AES->DINR = Key;
+    /* Write key */
+    AES->DINR = Key;
 }
 
 /**
@@ -188,18 +185,18 @@ void AES_WriteSubKey(uint8_t Key)
   */
 uint8_t AES_ReadSubData(void)
 {
-  return AES->DOUTR;
+    return AES->DOUTR;
 }
 
 /**
   * @brief  Returns the DOUTR register content.
   * @retval The derivation key.
   * @note   When an unexpected read of DOUTR register is detected, RDERR flag is
-  *         set.  
+  *         set.
   */
 uint8_t AES_ReadSubKey(void)
 {
-  return AES->DOUTR;
+    return AES->DOUTR;
 }
 
 /**
@@ -209,15 +206,15 @@ uint8_t AES_ReadSubKey(void)
 /** @defgroup AES_Group3 DMA transfers management functions
  *  @brief   DMA transfers management function
  *
-@verbatim   
+@verbatim
  ===============================================================================
                       DMA transfers management functions
- ===============================================================================  
+ ===============================================================================
 
 @endverbatim
   * @{
   */
-  
+
 /**
   * @brief  Configures the AES DMA interface.
   * @param  AES_DMATransfer: Specifies the AES DMA transfer.
@@ -230,19 +227,16 @@ uint8_t AES_ReadSubKey(void)
   */
 void AES_DMAConfig(AES_DMATransfer_TypeDef AES_DMATransfer, FunctionalState NewState)
 {
-  /* Check the parameter */
-  assert_param(IS_AES_DMATRANSFER(AES_DMATransfer));
+    /* Check the parameter */
+    assert_param(IS_AES_DMATRANSFER(AES_DMATransfer));
 
-  if (NewState != DISABLE)
-  {
-    /* Enable the DMA transfer */
-    AES->CR |= (uint8_t) AES_DMATransfer;
-  }
-  else
-  {
-    /* Disable the DMA transfer */
-    AES->CR &= (uint8_t)(~AES_DMATransfer);
-  }
+    if (NewState != DISABLE) {
+        /* Enable the DMA transfer */
+        AES->CR |= (uint8_t) AES_DMATransfer;
+    } else {
+        /* Disable the DMA transfer */
+        AES->CR &= (uint8_t)(~AES_DMATransfer);
+    }
 }
 
 
@@ -253,7 +247,7 @@ void AES_DMAConfig(AES_DMATransfer_TypeDef AES_DMATransfer, FunctionalState NewS
 /** @defgroup AES_Group4 Interrupts and flags management functions
  *  @brief   Interrupts and flags management functions
  *
-@verbatim   
+@verbatim
 
  ===============================================================================
                    Interrupts and flags management functions
@@ -274,18 +268,15 @@ void AES_DMAConfig(AES_DMATransfer_TypeDef AES_DMATransfer, FunctionalState NewS
   */
 void AES_ITConfig(AES_IT_TypeDef AES_IT, FunctionalState NewState)
 {
-  /* Check the parameters */
-  assert_param(IS_FUNCTIONAL_STATE(NewState));
-  assert_param(IS_AES_IT(AES_IT));
+    /* Check the parameters */
+    assert_param(IS_FUNCTIONAL_STATE(NewState));
+    assert_param(IS_AES_IT(AES_IT));
 
-  if (NewState != DISABLE)
-  {
-    AES->CR |= (uint8_t) AES_IT;    /**< AES_IT Enable */
-  }
-  else
-  {
-    AES->CR &= (uint8_t)(~AES_IT);  /**< AES_IT Disable */
-  }
+    if (NewState != DISABLE) {
+        AES->CR |= (uint8_t) AES_IT;    /**< AES_IT Enable */
+    } else {
+        AES->CR &= (uint8_t)(~AES_IT);  /**< AES_IT Disable */
+    }
 }
 
 /**
@@ -294,58 +285,44 @@ void AES_ITConfig(AES_IT_TypeDef AES_IT, FunctionalState NewState)
   *          This parameter can be one of the following values:
   *            @arg AES_FLAG_CCF: Computation Complete Flag
   *            @arg AES_FLAG_RDERR: Read Error Flag
-  *            @arg AES_FLAG_WRERR: Write Error Flag 
+  *            @arg AES_FLAG_WRERR: Write Error Flag
   * @retval FlagStatus (SET or RESET)
   * @note   CCF bit has a meaning only when DMA requests are disabled (DMAEN bit = 0).
   */
 FlagStatus AES_GetFlagStatus(AES_FLAG_TypeDef AES_FLAG)
 {
-  FlagStatus status = RESET;
+    FlagStatus status = RESET;
 
-  /* Check parameters */
-  assert_param(IS_AES_FLAG(AES_FLAG));
+    /* Check parameters */
+    assert_param(IS_AES_FLAG(AES_FLAG));
 
-  if (AES_FLAG == AES_FLAG_CCF)
-  {
-    if ((AES->SR & (uint8_t)AES_FLAG_CCF) != (uint8_t)0x00)
-    {
-      /* Computation Complete Flag CCF is set */
-      status = (FlagStatus) SET;
+    if (AES_FLAG == AES_FLAG_CCF) {
+        if ((AES->SR & (uint8_t)AES_FLAG_CCF) != (uint8_t)0x00) {
+            /* Computation Complete Flag CCF is set */
+            status = (FlagStatus) SET;
+        } else {
+            /* Computation Complete Flag CCF is reset */
+            status = (FlagStatus) RESET;
+        }
+    } else if (AES_FLAG == AES_FLAG_RDERR) {
+        if ((AES->SR & (uint8_t)AES_FLAG_RDERR) != (uint8_t)0x00) {
+            /* Read Error Flag RDERR is set */
+            status = (FlagStatus) SET;
+        } else {
+            /* Read Error Flag RDERR is reset */
+            status = (FlagStatus) RESET;
+        }
+    } else {
+        if ((AES->SR & (uint8_t)AES_FLAG_WRERR) != (uint8_t)0x00) {
+            /* Write Error Flag WRERR is set */
+            status = (FlagStatus) SET;
+        } else {
+            /* Write Error Flag WRERR is reset */
+            status = (FlagStatus) RESET;
+        }
     }
-    else
-    {
-      /* Computation Complete Flag CCF is reset */
-      status = (FlagStatus) RESET;
-    }
-  }
-  else if (AES_FLAG == AES_FLAG_RDERR)
-  {
-    if ((AES->SR & (uint8_t)AES_FLAG_RDERR) != (uint8_t)0x00)
-    {
-      /* Read Error Flag RDERR is set */
-      status = (FlagStatus) SET;
-    }
-    else
-    {
-      /* Read Error Flag RDERR is reset */
-      status = (FlagStatus) RESET;
-    }
-  }
-  else
-  {
-    if ((AES->SR & (uint8_t)AES_FLAG_WRERR) != (uint8_t)0x00)
-    {
-      /* Write Error Flag WRERR is set */
-      status = (FlagStatus) SET;
-    }
-    else
-    {
-      /* Write Error Flag WRERR is reset */
-      status = (FlagStatus) RESET;
-    }
-  }
-  /* Return the AES_FLAG status */
-  return ((FlagStatus) status);
+    /* Return the AES_FLAG status */
+    return ((FlagStatus) status);
 }
 
 /**
@@ -354,25 +331,22 @@ FlagStatus AES_GetFlagStatus(AES_FLAG_TypeDef AES_FLAG)
   *          This parameter can be one of the following values:
   *            @arg AES_FLAG_CCF: Computation Complete Flag
   *            @arg AES_FLAG_RDERR: Read Error Flag
-  *            @arg AES_FLAG_WRERR: Write Error Flag 
+  *            @arg AES_FLAG_WRERR: Write Error Flag
   * @retval None
   */
 void AES_ClearFlag(AES_FLAG_TypeDef AES_FLAG)
 {
-  /* Check the parameters */
-  assert_param(IS_AES_FLAG(AES_FLAG));
+    /* Check the parameters */
+    assert_param(IS_AES_FLAG(AES_FLAG));
 
-  /* Check if AES_FLAG is AES_FLAG_CCF */
-  if (AES_FLAG == AES_FLAG_CCF)
-  {
-    /* Clear CCF flag by setting CCFC bit */
-    AES->CR |= (uint8_t) AES_CR_CCFC;
-  }
-  else /* AES_FLAG is AES_FLAG_RDERR or AES_FLAG_WRERR */
-  {
-    /* Clear RDERR and WRERR flags by setting ERRC bit */
-    AES->CR |= (uint8_t) AES_CR_ERRC;
-  }
+    /* Check if AES_FLAG is AES_FLAG_CCF */
+    if (AES_FLAG == AES_FLAG_CCF) {
+        /* Clear CCF flag by setting CCFC bit */
+        AES->CR |= (uint8_t) AES_CR_CCFC;
+    } else { /* AES_FLAG is AES_FLAG_RDERR or AES_FLAG_WRERR */
+        /* Clear RDERR and WRERR flags by setting ERRC bit */
+        AES->CR |= (uint8_t) AES_CR_ERRC;
+    }
 }
 
 /**
@@ -385,56 +359,44 @@ void AES_ClearFlag(AES_FLAG_TypeDef AES_FLAG)
   */
 ITStatus AES_GetITStatus(AES_IT_TypeDef AES_IT)
 {
-  ITStatus itstatus = RESET;
-  BitStatus cciebitstatus, ccfbitstatus = RESET;
+    ITStatus itstatus = RESET;
+    BitStatus cciebitstatus, ccfbitstatus = RESET;
 
-  /* Check parameters */
-  assert_param(IS_AES_IT(AES_IT));
+    /* Check parameters */
+    assert_param(IS_AES_IT(AES_IT));
 
-  cciebitstatus = (BitStatus) (AES->CR & AES_CR_CCIE);
-  ccfbitstatus =  (BitStatus) (AES->SR & AES_SR_CCF);
+    cciebitstatus = (BitStatus) (AES->CR & AES_CR_CCIE);
+    ccfbitstatus =  (BitStatus) (AES->SR & AES_SR_CCF);
 
-  /* Check if AES_IT is AES_IT_CCIE */
-  if (AES_IT == AES_IT_CCIE)
-  {
-    /* Check the status of the specified AES interrupt */
-    if (((cciebitstatus) != RESET) && ((ccfbitstatus) != RESET))
-    {
-      /* Interrupt occurred */
-      itstatus = (ITStatus) SET;
+    /* Check if AES_IT is AES_IT_CCIE */
+    if (AES_IT == AES_IT_CCIE) {
+        /* Check the status of the specified AES interrupt */
+        if (((cciebitstatus) != RESET) && ((ccfbitstatus) != RESET)) {
+            /* Interrupt occurred */
+            itstatus = (ITStatus) SET;
+        } else {
+            /* Interrupt not occurred */
+            itstatus = (ITStatus) RESET;
+        }
+    } else { /* AES_IT is AES_IT_ERRIE */
+        /* Check the status of the specified AES interrupt */
+        if ((AES->CR & AES_CR_ERRIE) != RESET) {
+            /* Check if WRERR or RDERR flags are set */
+            if ((AES->SR & (uint8_t)(AES_SR_WRERR | AES_SR_RDERR)) != RESET) {
+                /* Interrupt occurred */
+                itstatus = (ITStatus) SET;
+            } else {
+                /* Interrupt not occurred */
+                itstatus = (ITStatus) RESET;
+            }
+        } else {
+            /* Interrupt not occurred */
+            itstatus = (ITStatus) RESET;
+        }
     }
-    else
-    {
-      /* Interrupt not occurred */
-      itstatus = (ITStatus) RESET;
-    }
-  }
-  else /* AES_IT is AES_IT_ERRIE */
-  {
-    /* Check the status of the specified AES interrupt */
-    if ((AES->CR & AES_CR_ERRIE) != RESET)
-    {
-      /* Check if WRERR or RDERR flags are set */
-      if ((AES->SR & (uint8_t)(AES_SR_WRERR | AES_SR_RDERR)) != RESET)
-      {
-        /* Interrupt occurred */
-        itstatus = (ITStatus) SET;
-      }
-      else
-      {
-        /* Interrupt not occurred */
-        itstatus = (ITStatus) RESET;
-      }
-    }
-    else
-    {
-      /* Interrupt not occurred */
-      itstatus = (ITStatus) RESET;
-    }
-  }
 
-  /* Return the AES_IT status */
-  return ((ITStatus)itstatus);
+    /* Return the AES_IT status */
+    return ((ITStatus)itstatus);
 }
 
 /**
@@ -447,25 +409,18 @@ ITStatus AES_GetITStatus(AES_IT_TypeDef AES_IT)
   */
 void AES_ClearITPendingBit(AES_IT_TypeDef AES_IT)
 {
-  /* Check the parameters */
-  assert_param(IS_AES_IT(AES_IT));
+    /* Check the parameters */
+    assert_param(IS_AES_IT(AES_IT));
 
-  /* Check if AES_IT is AES_IT_CCIE */
-  if (AES_IT == AES_IT_CCIE)
-  {
-    /* Clear CCF flag by setting CCFC bit */
-    AES->CR |= (uint8_t) AES_CR_CCFC;
-  }
-  else /* AES_IT is AES_IT_ERRIE */
-  {
-    /* Clear RDERR and WRERR flags by setting ERRC bit */
-    AES->CR |= (uint8_t) AES_CR_ERRC;
-  }
+    /* Check if AES_IT is AES_IT_CCIE */
+    if (AES_IT == AES_IT_CCIE) {
+        /* Clear CCF flag by setting CCFC bit */
+        AES->CR |= (uint8_t) AES_CR_CCFC;
+    } else { /* AES_IT is AES_IT_ERRIE */
+        /* Clear RDERR and WRERR flags by setting ERRC bit */
+        AES->CR |= (uint8_t) AES_CR_ERRC;
+    }
 }
-
-/**
-  * @}
-  */ 
 
 /**
   * @}
@@ -473,10 +428,14 @@ void AES_ClearITPendingBit(AES_IT_TypeDef AES_IT)
 
 /**
   * @}
-  */ 
+  */
 
 /**
   * @}
-  */ 
+  */
+
+/**
+  * @}
+  */
 
 /******************* (C) COPYRIGHT 2011 STMicroelectronics *****END OF FILE****/

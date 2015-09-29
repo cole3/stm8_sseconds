@@ -89,7 +89,7 @@ uint32_t test_start (void)
     /* Set test as not started until all threads are ready to go */
     test_started = FALSE;
 
-    /* 
+    /*
      * Create all four threads at the same priority as each other.
      * They are given a lower priority than this thread, however,
      * to ensure that once this thread wakes up to stop the test it
@@ -97,30 +97,23 @@ uint32_t test_start (void)
      * a spell in which this thread was run.
      */
     if (atomThreadCreate (&tcb[0], TEST_THREAD_PRIO + 1, test_thread_func, 0,
-            &test_thread_stack[0][TEST_THREAD_STACK_SIZE - 1],
-            TEST_THREAD_STACK_SIZE) != ATOM_OK)
-    {
+                          &test_thread_stack[0][TEST_THREAD_STACK_SIZE - 1],
+                          TEST_THREAD_STACK_SIZE) != ATOM_OK) {
         ATOMLOG (_STR("Bad thread create\n"));
         failures++;
-    }
-    else if (atomThreadCreate (&tcb[1], TEST_THREAD_PRIO + 1, test_thread_func, 1,
-            &test_thread_stack[1][TEST_THREAD_STACK_SIZE - 1],
-            TEST_THREAD_STACK_SIZE) != ATOM_OK)
-    {
+    } else if (atomThreadCreate (&tcb[1], TEST_THREAD_PRIO + 1, test_thread_func, 1,
+                                 &test_thread_stack[1][TEST_THREAD_STACK_SIZE - 1],
+                                 TEST_THREAD_STACK_SIZE) != ATOM_OK) {
         ATOMLOG (_STR("Bad thread create\n"));
         failures++;
-    }
-    else if (atomThreadCreate (&tcb[2], TEST_THREAD_PRIO + 1, test_thread_func, 2,
-            &test_thread_stack[2][TEST_THREAD_STACK_SIZE - 1],
-            TEST_THREAD_STACK_SIZE) != ATOM_OK)
-    {
+    } else if (atomThreadCreate (&tcb[2], TEST_THREAD_PRIO + 1, test_thread_func, 2,
+                                 &test_thread_stack[2][TEST_THREAD_STACK_SIZE - 1],
+                                 TEST_THREAD_STACK_SIZE) != ATOM_OK) {
         ATOMLOG (_STR("Bad thread create\n"));
         failures++;
-    }
-    else if (atomThreadCreate (&tcb[3], TEST_THREAD_PRIO + 1, test_thread_func, 3,
-            &test_thread_stack[3][TEST_THREAD_STACK_SIZE - 1],
-            TEST_THREAD_STACK_SIZE) != ATOM_OK)
-    {
+    } else if (atomThreadCreate (&tcb[3], TEST_THREAD_PRIO + 1, test_thread_func, 3,
+                                 &test_thread_stack[3][TEST_THREAD_STACK_SIZE - 1],
+                                 TEST_THREAD_STACK_SIZE) != ATOM_OK) {
         ATOMLOG (_STR("Bad thread create\n"));
         failures++;
     }
@@ -147,19 +140,14 @@ uint32_t test_start (void)
         int thread;
 
         /* Check all threads */
-        for (thread = 0; thread < NUM_TEST_THREADS; thread++)
-        {
+        for (thread = 0; thread < NUM_TEST_THREADS; thread++) {
             /* Check thread stack usage */
-            if (atomThreadStackCheck (&tcb[thread], &used_bytes, &free_bytes) != ATOM_OK)
-            {
+            if (atomThreadStackCheck (&tcb[thread], &used_bytes, &free_bytes) != ATOM_OK) {
                 ATOMLOG (_STR("StackCheck\n"));
                 failures++;
-            }
-            else
-            {
+            } else {
                 /* Check the thread did not use up to the end of stack */
-                if (free_bytes == 0)
-                {
+                if (free_bytes == 0) {
                     ATOMLOG (_STR("StackOverflow %d\n"), thread);
                     failures++;
                 }
@@ -199,11 +187,9 @@ static void test_thread_func (uint32_t param)
     thread_id = (int)param;
 
     /* Run forever */
-    while (1)
-    {
+    while (1) {
         /* Check if test is currently in operation */
-        if (test_started)
-        {
+        if (test_started) {
             /*
              * If the system time has ticked over, check that the currently
              * running thread is not the one that was running last tick.
@@ -219,14 +205,11 @@ static void test_thread_func (uint32_t param)
             new_time = atomTimeGet();
 
             /* Only perform the check if this is not the first thread to run */
-            if ((last_time != 0) && (last_thread_id != -1))
-            {
+            if ((last_time != 0) && (last_thread_id != -1)) {
                 /* Check if the time has ticked over */
-                if (new_time != last_time)
-                {
+                if (new_time != last_time) {
                     /* Check time only ticked over by 1 */
-                    if ((new_time - last_time) != 1)
-                    {
+                    if ((new_time - last_time) != 1) {
                         time_error = 1;
                     }
 
@@ -235,14 +218,12 @@ static void test_thread_func (uint32_t param)
                      * minus one.
                      */
                     expected_thread = thread_id - 1;
-                    if (expected_thread == -1)
-                    {
+                    if (expected_thread == -1) {
                         expected_thread = 3;
                     }
 
                     /* Check that the last thread was the expected one */
-                    if (last_thread_id != expected_thread)
-                    {
+                    if (last_thread_id != expected_thread) {
                         thread_error = TRUE;
                     }
 
@@ -259,8 +240,7 @@ static void test_thread_func (uint32_t param)
             CRITICAL_END();
 
             /* If we got an error above, increment the total failure count */
-            if (test_started && (thread_error || time_error))
-            {
+            if (test_started && (thread_error || time_error)) {
                 failure_cnt[thread_id]++;
                 ATOMLOG(_STR("T%d\n"), thread_id);
             }

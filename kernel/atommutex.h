@@ -29,8 +29,7 @@
 #ifndef __ATOM_MUTEX_H
 #define __ATOM_MUTEX_H
 
-typedef struct atom_mutex
-{
+typedef struct atom_mutex {
     ATOM_TCB *  suspQ;  /* Queue of threads suspended on this mutex */
     ATOM_TCB *  owner;  /* Thread which currently owns the lock */
     uint8_t     count;  /* Recursive count of locks by the owner  */
