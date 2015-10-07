@@ -306,11 +306,6 @@ Next=Root.Kernel...\kernel\atommutex.h
 [Root.Kernel...\kernel\atommutex.h]
 ElemType=File
 PathName=..\kernel\atommutex.h
-Next=Root.Kernel...\kernel\atomport-template.h
-
-[Root.Kernel...\kernel\atomport-template.h]
-ElemType=File
-PathName=..\kernel\atomport-template.h
 Next=Root.Kernel...\kernel\atomqueue.c
 
 [Root.Kernel...\kernel\atomqueue.c]

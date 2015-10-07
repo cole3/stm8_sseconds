@@ -55,6 +55,8 @@ Release\atommutex.o
 Release\atomqueue.o
 Release\atomsem.o
 Release\atomtimer.o
+Release\cli.o
+Release\display.o
 Release\main.o
 Release\uart.o
 Release\atomport-asm-cosmic.o

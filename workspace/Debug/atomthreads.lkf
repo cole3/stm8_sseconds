@@ -55,6 +55,8 @@ Debug\atommutex.o
 Debug\atomqueue.o
 Debug\atomsem.o
 Debug\atomtimer.o
+Debug\cli.o
+Debug\display.o
 Debug\main.o
 Debug\uart.o
 Debug\atomport-asm-cosmic.o

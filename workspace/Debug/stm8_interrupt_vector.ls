@@ -4,7 +4,7 @@
   34                     ; 15 {
   35                     	switch	.text
   36  0000               f_NonHandledInterrupt:
-  40                     ; 19 	return;
+  40                     ; 19     return;
   43  0000 80            	iret
   45                     .const:	section	.text
   46  0000               __vectab:
