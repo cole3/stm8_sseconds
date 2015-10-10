@@ -1,6 +1,7 @@
 #include <stdio.h>
 
 #include "atom.h"
+#include "atomqueue.h"
 #include "atomport-private.h"
 #include "stm8l15x_conf.h"
 #include "display.h"
@@ -30,15 +31,57 @@ static ATOM_TCB cli_tcb;
 static ATOM_TCB display_tcb;
 
 
+
 void delay(uint16_t nCount);
 
 
+static void rtc_alarm_init(void)
+{
+    CLK_RTCClockConfig(CLK_RTCCLKSource_LSE, CLK_RTCCLKDiv_1);
 
+    /* Enable RTC clock */
+    CLK_PeripheralClockConfig(CLK_Peripheral_RTC, ENABLE);
+
+    /* Configures the RTC */
+    RTC_WakeUpClockConfig(RTC_WakeUpClock_CK_SPRE_16bits);
+
+    RTC_ITConfig(RTC_IT_WUT, ENABLE);
+
+    while (RTC_WaitForSynchro() != SUCCESS);
+}
 
 static void main_thread(uint32_t param)
 {
+    CRITICAL_STORE;
+    RTC_DateTypeDef date;
+    RTC_TimeTypeDef clock;
+    struct display_msg msg;
+
+    rtc_alarm_init();
+
     while (1) {
-        atomTimerDelay(SYSTEM_TICKS_PER_SEC);
+        {
+            CRITICAL_START();
+            RTC_GetDate(RTC_Format_BIN, &date);
+            CRITICAL_END();
+
+            msg.type = DISPLAY_DATE;
+            msg.u.date.month = date.RTC_Month;
+            msg.u.date.day = date.RTC_Date;
+            atomQueuePut(pt_display_queue, 0, (uint8_t *)&msg);
+        }
+        {
+            CRITICAL_START();
+            RTC_GetTime(RTC_Format_BIN, &clock);
+            CRITICAL_END();
+
+            msg.type = DISPLAY_CLOCK;
+            msg.u.clock.hour = clock.RTC_Hours;
+            msg.u.clock.minute = clock.RTC_Minutes;
+            msg.u.clock.pm = clock.RTC_H12;
+            atomQueuePut(pt_display_queue, 0, (uint8_t *)&msg);
+        }
+        atomTimerDelay(10 * SYSTEM_TICKS_PER_SEC);
     }
 }
 
@@ -83,21 +126,21 @@ void main(void)
         goto err;
     }
 
-    status = atomThreadCreate(&cli_tcb,
-                              CLI_THREAD_PRIO, cli_thread, 0,
-                              &cli_thread_stack[CLI_STACK_SIZE - 1],
-                              CLI_STACK_SIZE);
-    if (status != ATOM_OK) {
-        printf("atomThreadCreate cli_thread failed!\n");
-        goto err;
-    }
-
     status = atomThreadCreate(&display_tcb,
                               DISPLAY_THREAD_PRIO, display_thread, 0,
                               &display_thread_stack[DISPLAY_STACK_SIZE - 1],
                               DISPLAY_STACK_SIZE);
     if (status != ATOM_OK) {
         printf("atomThreadCreate display_thread failed!\n");
+        goto err;
+    }
+
+    status = atomThreadCreate(&cli_tcb,
+                              CLI_THREAD_PRIO, cli_thread, 0,
+                              &cli_thread_stack[CLI_STACK_SIZE - 1],
+                              CLI_STACK_SIZE);
+    if (status != ATOM_OK) {
+        printf("atomThreadCreate cli_thread failed!\n");
         goto err;
     }
 

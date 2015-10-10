@@ -1,12 +1,13 @@
 #include <stdio.h>
 #include "atom.h"
+#include "atomqueue.h"
 #include "display.h"
 
 /*
  * 18月88日 上午/下午 18:88
  * ++ +---+ +---+ +---+  ++
  * || |   | |   | |   |  ||
- * || +---+ +---+ +---+  ++
+ * || +---+ +---+ +---+  ++
  * || |   | |   | |   |
  * ++ +---+.+---+.+---+ 888
  * 校正插入进血等待结果错误
@@ -135,18 +136,30 @@ static void display_am_pm(bool pm, bool on)
     display_char(PM, on && pm);
 }
 
-static void display_update_time(void)
+#if 0
+static void display_update_date(void)
 {
     RTC_DateTypeDef date;
-    RTC_TimeTypeDef time;
+    CRITICAL_STORE;
 
+    CRITICAL_START();
     RTC_GetDate(RTC_Format_BIN, &date);
+    CRITICAL_END();
     display_date((uint8_t)date.RTC_Month, date.RTC_Date, TRUE);
-
-    RTC_GetTime(RTC_Format_BIN, &time);
-    display_clock(time.RTC_Hours, time.RTC_Minutes, TRUE);
-    display_am_pm(time.RTC_H12, TRUE);
 }
+
+static void display_update_clock(void)
+{
+    RTC_TimeTypeDef clock;
+    CRITICAL_STORE;
+
+    CRITICAL_START();
+    RTC_GetTime(RTC_Format_BIN, &clock);
+    CRITICAL_END();
+    display_clock(clock.RTC_Hours, clock.RTC_Minutes, TRUE);
+    display_am_pm(clock.RTC_H12, TRUE);
+}
+#endif
 
 static void lcd_glass_init(void)
 {
@@ -172,32 +185,49 @@ static void lcd_glass_init(void)
     LCD_Cmd(ENABLE); /*!< Enable LCD peripheral */
 }
 
-static void rtc_alarm_init(void)
-{
-    CLK_RTCClockConfig(CLK_RTCCLKSource_LSE, CLK_RTCCLKDiv_1);
 
-    /* Enable RTC clock */
-    CLK_PeripheralClockConfig(CLK_Peripheral_RTC, ENABLE);
+#define DISPLAY_QUEUE_ENTRIES       4
 
-    /* Configures the RTC */
-    RTC_WakeUpClockConfig(RTC_WakeUpClock_CK_SPRE_16bits);
+void *pt_display_queue = NULL;
 
-    RTC_ITConfig(RTC_IT_WUT, ENABLE);
-
-    while (RTC_WaitForSynchro() != SUCCESS);
-}
-
+static ATOM_QUEUE display_queue;
+static struct display_msg display_queue_storage[DISPLAY_QUEUE_ENTRIES];
 
 void display_thread(uint32_t param)
 {
+    int8_t status;
     int32_t cnt = 0;
+    struct display_msg msg;
 
     lcd_glass_init();
-    rtc_alarm_init();
+
+    status = atomQueueCreate(&display_queue, (uint8_t *)display_queue_storage,
+                sizeof(display_queue_storage[0]), DISPLAY_QUEUE_ENTRIES);
+    if (status != ATOM_OK) {
+        printf("atomQueueCreate display_queue failed!\n");
+        return;
+    }
+
+    pt_display_queue = (void *)&display_queue;
 
     while (1) {
-        display_update_time();
-        atomTimerDelay(10 * SYSTEM_TICKS_PER_SEC);
+        status = atomQueueGet(pt_display_queue, 0, (uint8_t *)&msg);
+        if (status != ATOM_OK) {
+            continue;
+        }
+
+        switch (msg.type)
+        {
+        case DISPLAY_DATE:
+            display_date(msg.u.date.month, msg.u.date.day, TRUE);
+            break;
+        case DISPLAY_CLOCK:
+            display_clock(msg.u.clock.hour, msg.u.clock.minute, TRUE);
+            display_am_pm(msg.u.clock.pm, TRUE);
+            break;
+        default:
+            break;
+        }
     }
 }
 

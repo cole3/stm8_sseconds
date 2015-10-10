@@ -340,7 +340,7 @@ PathName=..\kernel\atomtimer.h
 [Root.Apps]
 ElemType=Folder
 PathName=Apps
-Child=Root.Apps...\app\main.c
+Child=Root.Apps...\app\cli.h
 Next=Root.Arch
 Config.0=Root.Apps.Config.0
 Config.1=Root.Apps.Config.1
@@ -410,6 +410,26 @@ String.3.0=
 String.4.0=
 String.5.0=
 String.6.0=2015,9,20,21,16,17
+
+[Root.Apps...\app\cli.h]
+ElemType=File
+PathName=..\app\cli.h
+Next=Root.Apps...\app\cli.c
+
+[Root.Apps...\app\cli.c]
+ElemType=File
+PathName=..\app\cli.c
+Next=Root.Apps...\app\display.h
+
+[Root.Apps...\app\display.h]
+ElemType=File
+PathName=..\app\display.h
+Next=Root.Apps...\app\display.c
+
+[Root.Apps...\app\display.c]
+ElemType=File
+PathName=..\app\display.c
+Next=Root.Apps...\app\main.c
 
 [Root.Apps...\app\main.c]
 ElemType=File
