@@ -53,6 +53,6 @@ struct interrupt_vector const _vectab[] = {
     {0x82, (interrupt_handler_t)TIM4_SystemTickISR}, /* irq25 */
     {0x82, NonHandledInterrupt}, /* irq26 */
     {0x82, NonHandledInterrupt}, /* irq27 */
-    {0x82, NonHandledInterrupt}, /* irq28 */
+    {0x82, (interrupt_handler_t)UART_RcvISR}, /* irq28 */
     {0x82, NonHandledInterrupt}, /* irq29 */
 };

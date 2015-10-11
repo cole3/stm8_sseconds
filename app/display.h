@@ -27,8 +27,7 @@ struct display_msg {
 };
 
 
-extern void *pt_display_queue;
-
+extern volatile void *pt_display_queue;
 
 void display_thread(uint32_t param);
 

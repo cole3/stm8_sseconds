@@ -46,7 +46,7 @@ static void set_date(int32_t argc, char **argv)
     msg.u.date.month = rtc_date.RTC_Month;
     msg.u.date.day = rtc_date.RTC_Date;
     printf("set_date send to diapQ [%d-%d-%d]\n", (uint16_t)rtc_date.RTC_Year,
-           (uint16_t)rtc_date.RTC_Month, (uint16_t)rtc_date.RTC_Date);
+        (uint16_t)rtc_date.RTC_Month, (uint16_t)rtc_date.RTC_Date);
     atomQueuePut(pt_display_queue, 0, (uint8_t *)&msg);
 }
 
@@ -60,7 +60,7 @@ static void get_date(int32_t argc, char **argv)
     CRITICAL_END();
 
     printf("current date: %d/%d/%d %d\n", rtc_date.RTC_Year,
-           rtc_date.RTC_Month, rtc_date.RTC_Date, rtc_date.RTC_WeekDay);
+        rtc_date.RTC_Month, rtc_date.RTC_Date, rtc_date.RTC_WeekDay);
 }
 
 static void set_clock(int32_t argc, char **argv)
@@ -107,8 +107,8 @@ static void get_clock(int32_t argc, char **argv)
     CRITICAL_END();
 
     printf("current clock: %02d:%02d:%02d (%s)\n",
-           rtc_clock.RTC_Hours, rtc_clock.RTC_Minutes, rtc_clock.RTC_Seconds,
-           (rtc_clock.RTC_H12 == RTC_H12_AM) ? "AM" : "PM");
+        rtc_clock.RTC_Hours, rtc_clock.RTC_Minutes, rtc_clock.RTC_Seconds,
+        (rtc_clock.RTC_H12 == RTC_H12_AM) ? "AM" : "PM");
 }
 
 static cli_func find_cli_cmd(struct CLI_TAB *cli_tab, char *cmd)
@@ -197,7 +197,8 @@ void cli_thread(uint32_t param)
             }
         }
         argc = 0;
-        while ((argv[argc] != NULL) && ((int16_t)argv[argc][0] != 0)) {
+        while ((argv[argc] != NULL) && ((int16_t)argv[argc][0] != 0))
+        {
             argc++;
         }
 

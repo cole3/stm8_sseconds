@@ -1,0 +1,236 @@
+main() <void main (void) at ./app/main.c:102>:
+    CLK_SYSCLKDivConfig() <void CLK_SYSCLKDivConfig (CLK_SYSCLKDiv_TypeDef CLK_SYSCLKDiv) at ./drivers/src/stm8l15x_clk.c:506>:
+        assert_param()
+        IS_CLK_SYSTEM_DIVIDER()
+    uart_init() <void uart_init (void) at ./app/main.c:88>:
+        SYSCFG_REMAPPinConfig() <void SYSCFG_REMAPPinConfig (REMAP_Pin_TypeDef REMAP_Pin, FunctionalState NewState) at ./drivers/src/stm8l15x_syscfg.c:374>:
+            assert_param()
+            IS_REMAP_PIN()
+            IS_FUNCTIONAL_STATE()
+        CLK_PeripheralClockConfig() <void CLK_PeripheralClockConfig (CLK_Peripheral_TypeDef CLK_Peripheral, FunctionalState NewState) at ./drivers/src/stm8l15x_clk.c:652>:
+            assert_param()
+            IS_CLK_PERIPHERAL()
+            IS_FUNCTIONAL_STATE()
+        GPIO_ExternalPullUpConfig() <void GPIO_ExternalPullUpConfig (GPIO_TypeDef *GPIOx, uint8_t GPIO_Pin, FunctionalState NewState) at ./drivers/src/stm8l15x_gpio.c:195>:
+            assert_param()
+            IS_GPIO_PIN()
+            IS_FUNCTIONAL_STATE()
+        USART_Init() <void USART_Init (USART_TypeDef *USARTx, uint32_t BaudRate, USART_WordLength_TypeDef USART_WordLength, USART_StopBits_TypeDef USART_StopBits, USART_Parity_TypeDef USART_Parity, USART_Mode_TypeDef USART_Mode) at ./drivers/src/stm8l15x_usart.c:186>:
+            assert_param()
+            IS_USART_BAUDRATE()
+            IS_USART_WORDLENGTH()
+            IS_USART_STOPBITS()
+            IS_USART_PARITY()
+            IS_USART_MODE()
+            CLK_GetClockFreq() <uint32_t CLK_GetClockFreq (void) at ./drivers/src/stm8l15x_clk.c:463>:
+    enableInterrupts()
+    atomOSInit() <uint8_t atomOSInit (void *idle_thread_stack_top, uint32_t idle_thread_stack_size) at ./kernel/atomkernel.c:634>:
+        atomThreadCreate() <uint8_t atomThreadCreate (ATOM_TCB *tcb_ptr, uint8_t priority, void (*entry_point) (uint32_t), uint32_t entry_param, void *stack_top, uint32_t stack_size) at ./kernel/atomkernel.c:375>:
+            archThreadContextInit() <void archThreadContextInit (ATOM_TCB *tcb_ptr, void *stack_top, void (*entry_point) (uint32_t), uint32_t entry_param) at ./port/stm8/atomport.c:165>:
+                thread_shell() <NO_REG_SAVE void thread_shell (void) at ./port/stm8/atomport.c:81>:
+                    atomCurrentContext() <ATOM_TCB *atomCurrentContext (void) at ./kernel/atomkernel.c:593>:
+                    rim()
+            CRITICAL_START()
+            tcbEnqueuePriority() <uint8_t tcbEnqueuePriority (ATOM_TCB **tcb_queue_ptr, ATOM_TCB *tcb_ptr) at ./kernel/atomkernel.c:753>:
+            CRITICAL_END()
+            atomCurrentContext() <ATOM_TCB *atomCurrentContext (void) at ./kernel/atomkernel.c:593>:
+            atomSched() <void atomSched (uint8_t timer_tick) at ./kernel/atomkernel.c:224>:
+                CRITICAL_START()
+                tcbDequeueHead() <ATOM_TCB *tcbDequeueHead (ATOM_TCB **tcb_queue_ptr) at ./kernel/atomkernel.c:828>:
+                atomThreadSwitch() <void atomThreadSwitch (ATOM_TCB *old_tcb, ATOM_TCB *new_tcb) at ./kernel/atomkernel.c:323>:
+                    archContextSwitch()
+                tcbDequeuePriority() <ATOM_TCB *tcbDequeuePriority (ATOM_TCB **tcb_queue_ptr, uint8_t priority) at ./kernel/atomkernel.c:949>:
+                tcbEnqueuePriority() <uint8_t tcbEnqueuePriority (ATOM_TCB **tcb_queue_ptr, ATOM_TCB *tcb_ptr) at ./kernel/atomkernel.c:753>:
+                CRITICAL_END()
+        atomIdleThread() <void atomIdleThread (uint32_t param) at ./kernel/atomkernel.c:718>
+    printf()
+    archInitSystemTickTimer() <void archInitSystemTickTimer (void) at ./port/stm8/atomport.c:236>:
+        TIM4_DeInit() <void TIM4_DeInit (void) at ./drivers/src/stm8l15x_tim4.c:124>:
+        CLK_PeripheralClockConfig() <void CLK_PeripheralClockConfig (CLK_Peripheral_TypeDef CLK_Peripheral, FunctionalState NewState) at ./drivers/src/stm8l15x_clk.c:652>:
+            assert_param()
+            IS_CLK_PERIPHERAL()
+            IS_FUNCTIONAL_STATE()
+        TIM4_TimeBaseInit() <void TIM4_TimeBaseInit (TIM4_Prescaler_TypeDef TIM4_Prescaler, uint8_t TIM4_Period) at ./drivers/src/stm8l15x_tim4.c:159>:
+            assert_param()
+            IS_TIM4_Prescaler()
+        TIM4_ClearFlag() <void TIM4_ClearFlag (TIM4_FLAG_TypeDef TIM4_FLAG) at ./drivers/src/stm8l15x_tim4.c:470>:
+            assert_param()
+            IS_TIM4_CLEAR_FLAG()
+        TIM4_ITConfig() <void TIM4_ITConfig (TIM4_IT_TypeDef TIM4_IT, FunctionalState NewState) at ./drivers/src/stm8l15x_tim4.c:406>:
+            assert_param()
+            IS_TIM4_IT()
+            IS_FUNCTIONAL_STATE()
+        TIM4_Cmd() <void TIM4_Cmd (FunctionalState NewState) at ./drivers/src/stm8l15x_tim4.c:367>:
+            assert_param()
+            IS_FUNCTIONAL_STATE()
+    atomThreadCreate() <uint8_t atomThreadCreate (ATOM_TCB *tcb_ptr, uint8_t priority, void (*entry_point) (uint32_t), uint32_t entry_param, void *stack_top, uint32_t stack_size) at ./kernel/atomkernel.c:375>:
+        archThreadContextInit() <void archThreadContextInit (ATOM_TCB *tcb_ptr, void *stack_top, void (*entry_point) (uint32_t), uint32_t entry_param) at ./port/stm8/atomport.c:165>:
+            thread_shell() <NO_REG_SAVE void thread_shell (void) at ./port/stm8/atomport.c:81>:
+                atomCurrentContext() <ATOM_TCB *atomCurrentContext (void) at ./kernel/atomkernel.c:593>:
+                rim()
+        CRITICAL_START()
+        tcbEnqueuePriority() <uint8_t tcbEnqueuePriority (ATOM_TCB **tcb_queue_ptr, ATOM_TCB *tcb_ptr) at ./kernel/atomkernel.c:753>:
+        CRITICAL_END()
+        atomCurrentContext() <ATOM_TCB *atomCurrentContext (void) at ./kernel/atomkernel.c:593>:
+        atomSched() <void atomSched (uint8_t timer_tick) at ./kernel/atomkernel.c:224>:
+            CRITICAL_START()
+            tcbDequeueHead() <ATOM_TCB *tcbDequeueHead (ATOM_TCB **tcb_queue_ptr) at ./kernel/atomkernel.c:828>:
+            atomThreadSwitch() <void atomThreadSwitch (ATOM_TCB *old_tcb, ATOM_TCB *new_tcb) at ./kernel/atomkernel.c:323>:
+                archContextSwitch()
+            tcbDequeuePriority() <ATOM_TCB *tcbDequeuePriority (ATOM_TCB **tcb_queue_ptr, uint8_t priority) at ./kernel/atomkernel.c:949>:
+            tcbEnqueuePriority() <uint8_t tcbEnqueuePriority (ATOM_TCB **tcb_queue_ptr, ATOM_TCB *tcb_ptr) at ./kernel/atomkernel.c:753>:
+            CRITICAL_END()
+    main_thread() <void main_thread (uint32_t param) at ./app/main.c:53>:
+        rtc_alarm_init() <void rtc_alarm_init (void) at ./app/main.c:38>:
+            CLK_RTCClockConfig() <void CLK_RTCClockConfig (CLK_RTCCLKSource_TypeDef CLK_RTCCLKSource, CLK_RTCCLKDiv_TypeDef CLK_RTCCLKDiv) at ./drivers/src/stm8l15x_clk.c:591>:
+                assert_param()
+                IS_CLK_CLOCK_RTC()
+                IS_CLK_CLOCK_RTC_DIV()
+            CLK_PeripheralClockConfig() <void CLK_PeripheralClockConfig (CLK_Peripheral_TypeDef CLK_Peripheral, FunctionalState NewState) at ./drivers/src/stm8l15x_clk.c:652>:
+                assert_param()
+                IS_CLK_PERIPHERAL()
+                IS_FUNCTIONAL_STATE()
+            RTC_WakeUpClockConfig() <void RTC_WakeUpClockConfig (RTC_WakeUpClock_TypeDef RTC_WakeUpClock) at ./drivers/src/stm8l15x_rtc.c:1260>:
+                assert_param()
+                IS_RTC_WAKEUP_CLOCK()
+            RTC_ITConfig() <void RTC_ITConfig (RTC_IT_TypeDef RTC_IT, FunctionalState NewState) at ./drivers/src/stm8l15x_rtc.c:1920>:
+                assert_param()
+                IS_RTC_CONFIG_IT()
+                IS_FUNCTIONAL_STATE()
+            RTC_WaitForSynchro() <ErrorStatus RTC_WaitForSynchro (void) at ./drivers/src/stm8l15x_rtc.c:495>:
+        CRITICAL_START()
+        RTC_GetDate() <void RTC_GetDate (RTC_Format_TypeDef RTC_Format, RTC_DateTypeDef *RTC_DateStruct) at ./drivers/src/stm8l15x_rtc.c:905>:
+            assert_param()
+            IS_RTC_FORMAT()
+            Bcd2ToByte() <uint8_t Bcd2ToByte (uint8_t Value) at ./drivers/src/stm8l15x_rtc.c:2072>:
+        CRITICAL_END()
+        atomQueuePut() <uint8_t atomQueuePut (ATOM_QUEUE *qptr, int32_t timeout, uint8_t *msgptr) at ./kernel/atomqueue.c:507>:
+            CRITICAL_START()
+            atomCurrentContext() <ATOM_TCB *atomCurrentContext (void) at ./kernel/atomkernel.c:593>:
+            tcbEnqueuePriority() <uint8_t tcbEnqueuePriority (ATOM_TCB **tcb_queue_ptr, ATOM_TCB *tcb_ptr) at ./kernel/atomkernel.c:753>:
+            atomQueueTimerCallback() <void atomQueueTimerCallback (POINTER cb_data) at ./kernel/atomqueue.c:670>:
+                CRITICAL_START()
+                tcbDequeueEntry() <ATOM_TCB *tcbDequeueEntry (ATOM_TCB **tcb_queue_ptr, ATOM_TCB *tcb_ptr) at ./kernel/atomkernel.c:876>:
+                tcbEnqueuePriority() <uint8_t tcbEnqueuePriority (ATOM_TCB **tcb_queue_ptr, ATOM_TCB *tcb_ptr) at ./kernel/atomkernel.c:753>:
+                CRITICAL_END()
+            atomTimerRegister() <uint8_t atomTimerRegister (ATOM_TIMER *timer_ptr) at ./kernel/atomtimer.c:125>:
+                CRITICAL_START()
+                CRITICAL_END()
+            tcbDequeueEntry() <ATOM_TCB *tcbDequeueEntry (ATOM_TCB **tcb_queue_ptr, ATOM_TCB *tcb_ptr) at ./kernel/atomkernel.c:876>:
+            CRITICAL_END()
+            atomSched() <void atomSched (uint8_t timer_tick) at ./kernel/atomkernel.c:224>:
+                CRITICAL_START()
+                tcbDequeueHead() <ATOM_TCB *tcbDequeueHead (ATOM_TCB **tcb_queue_ptr) at ./kernel/atomkernel.c:828>:
+                atomThreadSwitch() <void atomThreadSwitch (ATOM_TCB *old_tcb, ATOM_TCB *new_tcb) at ./kernel/atomkernel.c:323>:
+                    archContextSwitch()
+                tcbDequeuePriority() <ATOM_TCB *tcbDequeuePriority (ATOM_TCB **tcb_queue_ptr, uint8_t priority) at ./kernel/atomkernel.c:949>:
+                tcbEnqueuePriority() <uint8_t tcbEnqueuePriority (ATOM_TCB **tcb_queue_ptr, ATOM_TCB *tcb_ptr) at ./kernel/atomkernel.c:753>:
+                CRITICAL_END()
+            queue_insert() <uint8_t queue_insert (ATOM_QUEUE *qptr, uint8_t *msgptr) at ./kernel/atomqueue.c:813>:
+                memcpy()
+                tcbDequeueHead() <ATOM_TCB *tcbDequeueHead (ATOM_TCB **tcb_queue_ptr) at ./kernel/atomkernel.c:828>:
+                tcbEnqueuePriority() <uint8_t tcbEnqueuePriority (ATOM_TCB **tcb_queue_ptr, ATOM_TCB *tcb_ptr) at ./kernel/atomkernel.c:753>:
+                atomTimerCancel() <uint8_t atomTimerCancel (ATOM_TIMER *timer_ptr) at ./kernel/atomtimer.c:184>:
+                    CRITICAL_START()
+                    CRITICAL_END()
+        RTC_GetTime() <void RTC_GetTime (RTC_Format_TypeDef RTC_Format, RTC_TimeTypeDef *RTC_TimeStruct) at ./drivers/src/stm8l15x_rtc.c:732>:
+            assert_param()
+            IS_RTC_FORMAT()
+            Bcd2ToByte() <uint8_t Bcd2ToByte (uint8_t Value) at ./drivers/src/stm8l15x_rtc.c:2072>:
+        atomTimerDelay() <uint8_t atomTimerDelay (uint32_t ticks) at ./kernel/atomtimer.c:312>:
+            atomCurrentContext() <ATOM_TCB *atomCurrentContext (void) at ./kernel/atomkernel.c:593>:
+            CRITICAL_START()
+            atomTimerDelayCallback() <void atomTimerDelayCallback (POINTER cb_data) at ./kernel/atomtimer.c:446>:
+                CRITICAL_START()
+                tcbEnqueuePriority() <uint8_t tcbEnqueuePriority (ATOM_TCB **tcb_queue_ptr, ATOM_TCB *tcb_ptr) at ./kernel/atomkernel.c:753>:
+                CRITICAL_END()
+            atomTimerRegister() <uint8_t atomTimerRegister (ATOM_TIMER *timer_ptr) at ./kernel/atomtimer.c:125>:
+                CRITICAL_START()
+                CRITICAL_END()
+            CRITICAL_END()
+            atomSched() <void atomSched (uint8_t timer_tick) at ./kernel/atomkernel.c:224>:
+                CRITICAL_START()
+                tcbDequeueHead() <ATOM_TCB *tcbDequeueHead (ATOM_TCB **tcb_queue_ptr) at ./kernel/atomkernel.c:828>:
+                atomThreadSwitch() <void atomThreadSwitch (ATOM_TCB *old_tcb, ATOM_TCB *new_tcb) at ./kernel/atomkernel.c:323>:
+                    archContextSwitch()
+                tcbDequeuePriority() <ATOM_TCB *tcbDequeuePriority (ATOM_TCB **tcb_queue_ptr, uint8_t priority) at ./kernel/atomkernel.c:949>:
+                tcbEnqueuePriority() <uint8_t tcbEnqueuePriority (ATOM_TCB **tcb_queue_ptr, ATOM_TCB *tcb_ptr) at ./kernel/atomkernel.c:753>:
+                CRITICAL_END()
+    display_thread() <void display_thread (uint32_t param) at ./app/display.c:196>:
+        lcd_glass_init() <void lcd_glass_init (void) at ./app/display.c:164>:
+            CLK_PeripheralClockConfig() <void CLK_PeripheralClockConfig (CLK_Peripheral_TypeDef CLK_Peripheral, FunctionalState NewState) at ./drivers/src/stm8l15x_clk.c:652>:
+                assert_param()
+                IS_CLK_PERIPHERAL()
+                IS_FUNCTIONAL_STATE()
+            LCD_Init() <void LCD_Init (LCD_Prescaler_TypeDef LCD_Prescaler, LCD_Divider_TypeDef LCD_Divider, LCD_Duty_TypeDef LCD_Duty, LCD_Bias_TypeDef LCD_Bias, LCD_VoltageSource_TypeDef LCD_VoltageSource) at ./drivers/src/stm8l15x_lcd.c:192>:
+                assert_param()
+                IS_LCD_CLOCK_PRESCALER()
+                IS_LCD_CLOCK_DIVIDER()
+                IS_LCD_DUTY()
+                IS_LCD_BIAS()
+                IS_LCD_VOLTAGE_SOURCE()
+            LCD_PortMaskConfig() <void LCD_PortMaskConfig (LCD_PortMaskRegister_TypeDef LCD_PortMaskRegister, uint8_t LCD_Mask) at ./drivers/src/stm8l15x_lcd.c:248>:
+                assert_param()
+                IS_LCD_PORT_MASK()
+            LCD_ContrastConfig() <void LCD_ContrastConfig (LCD_Contrast_TypeDef LCD_Contrast) at ./drivers/src/stm8l15x_lcd.c:399>:
+                assert_param()
+                IS_LCD_CONTRAST()
+            LCD_DeadTimeConfig() <void LCD_DeadTimeConfig (LCD_DeadTime_TypeDef LCD_DeadTime) at ./drivers/src/stm8l15x_lcd.c:338>:
+                assert_param()
+                IS_LCD_DEAD_TIME()
+            LCD_PulseOnDurationConfig() <void LCD_PulseOnDurationConfig (LCD_PulseOnDuration_TypeDef LCD_PulseOnDuration) at ./drivers/src/stm8l15x_lcd.c:315>:
+                assert_param()
+                IS_LCD_PULSE_DURATION()
+            LCD_Cmd() <void LCD_Cmd (FunctionalState NewState) at ./drivers/src/stm8l15x_lcd.c:265>:
+                assert_param()
+                IS_FUNCTIONAL_STATE()
+        atomQueueCreate() <uint8_t atomQueueCreate (ATOM_QUEUE *qptr, uint8_t *buff_ptr, uint32_t unit_size, uint32_t max_num_msgs) at ./kernel/atomqueue.c:145>:
+        printf()
+        atomQueueGet() <uint8_t atomQueueGet (ATOM_QUEUE *qptr, int32_t timeout, uint8_t *msgptr) at ./kernel/atomqueue.c:321>:
+            CRITICAL_START()
+            atomCurrentContext() <ATOM_TCB *atomCurrentContext (void) at ./kernel/atomkernel.c:593>:
+            tcbEnqueuePriority() <uint8_t tcbEnqueuePriority (ATOM_TCB **tcb_queue_ptr, ATOM_TCB *tcb_ptr) at ./kernel/atomkernel.c:753>:
+            atomQueueTimerCallback() <void atomQueueTimerCallback (POINTER cb_data) at ./kernel/atomqueue.c:670>:
+                CRITICAL_START()
+                tcbDequeueEntry() <ATOM_TCB *tcbDequeueEntry (ATOM_TCB **tcb_queue_ptr, ATOM_TCB *tcb_ptr) at ./kernel/atomkernel.c:876>:
+                tcbEnqueuePriority() <uint8_t tcbEnqueuePriority (ATOM_TCB **tcb_queue_ptr, ATOM_TCB *tcb_ptr) at ./kernel/atomkernel.c:753>:
+                CRITICAL_END()
+            atomTimerRegister() <uint8_t atomTimerRegister (ATOM_TIMER *timer_ptr) at ./kernel/atomtimer.c:125>:
+                CRITICAL_START()
+                CRITICAL_END()
+            tcbDequeueEntry() <ATOM_TCB *tcbDequeueEntry (ATOM_TCB **tcb_queue_ptr, ATOM_TCB *tcb_ptr) at ./kernel/atomkernel.c:876>:
+            CRITICAL_END()
+            atomSched() <void atomSched (uint8_t timer_tick) at ./kernel/atomkernel.c:224>:
+                CRITICAL_START()
+                tcbDequeueHead() <ATOM_TCB *tcbDequeueHead (ATOM_TCB **tcb_queue_ptr) at ./kernel/atomkernel.c:828>:
+                atomThreadSwitch() <void atomThreadSwitch (ATOM_TCB *old_tcb, ATOM_TCB *new_tcb) at ./kernel/atomkernel.c:323>:
+                    archContextSwitch()
+                tcbDequeuePriority() <ATOM_TCB *tcbDequeuePriority (ATOM_TCB **tcb_queue_ptr, uint8_t priority) at ./kernel/atomkernel.c:949>:
+                tcbEnqueuePriority() <uint8_t tcbEnqueuePriority (ATOM_TCB **tcb_queue_ptr, ATOM_TCB *tcb_ptr) at ./kernel/atomkernel.c:753>:
+                CRITICAL_END()
+            queue_remove() <uint8_t queue_remove (ATOM_QUEUE *qptr, uint8_t *msgptr) at ./kernel/atomqueue.c:731>:
+                memcpy()
+                tcbDequeueHead() <ATOM_TCB *tcbDequeueHead (ATOM_TCB **tcb_queue_ptr) at ./kernel/atomkernel.c:828>:
+                tcbEnqueuePriority() <uint8_t tcbEnqueuePriority (ATOM_TCB **tcb_queue_ptr, ATOM_TCB *tcb_ptr) at ./kernel/atomkernel.c:753>:
+                atomTimerCancel() <uint8_t atomTimerCancel (ATOM_TIMER *timer_ptr) at ./kernel/atomtimer.c:184>:
+                    CRITICAL_START()
+                    CRITICAL_END()
+        display_date() <void display_date (uint8_t month, uint8_t day, bool on) at ./app/display.c:121>:
+            display_char() <void display_char (enum display_type type, bool on) at ./app/display.c:87>:
+            display_time() <void display_time (uint8_t type, uint8_t num1, uint8_t num2, bool on) at ./app/display.c:102>:
+                display_char() <void display_char (enum display_type type, bool on) at ./app/display.c:87>:
+                display_num() <void display_num (uint8_t pos, uint8_t val) at ./app/display.c:68>:
+        display_clock() <void display_clock (uint8_t hour, uint8_t minute, bool on) at ./app/display.c:127>:
+            display_char() <void display_char (enum display_type type, bool on) at ./app/display.c:87>:
+            display_time() <void display_time (uint8_t type, uint8_t num1, uint8_t num2, bool on) at ./app/display.c:102>:
+                display_char() <void display_char (enum display_type type, bool on) at ./app/display.c:87>:
+                display_num() <void display_num (uint8_t pos, uint8_t val) at ./app/display.c:68>:
+        display_am_pm() <void display_am_pm (bool pm, bool on) at ./app/display.c:133>:
+            display_char() <void display_char (enum display_type type, bool on) at ./app/display.c:87>:
+    cli_thread() <void cli_thread (uint32_t param) at ./app/cli.c:135>:
+        scanf()
+        find_cli_cmd() <cli_func find_cli_cmd (struct CLI_TAB cli_tab, char *cmd) at ./app/cli.c:111>:
+            strcmp()
+    atomOSStart() <void atomOSStart (void) at ./kernel/atomkernel.c:671>:
+        tcbDequeuePriority() <ATOM_TCB *tcbDequeuePriority (ATOM_TCB **tcb_queue_ptr, uint8_t priority) at ./kernel/atomkernel.c:949>:
+        archFirstThreadRestore()

@@ -549,134 +549,36 @@
 1206                     	bsct
 1207  0000               _pt_display_queue:
 1208  0000 0000          	dc.w	0
-1415                     ; 196 void display_thread(uint32_t param)
-1415                     ; 197 {
-1416                     	switch	.text
-1417  020f               _display_thread:
-1419  020f 5209          	subw	sp,#9
-1420       00000009      OFST:	set	9
-1423                     ; 199     int32_t cnt = 0;
-1425  0211 ae0000        	ldw	x,#0
-1426  0214 1f03          	ldw	(OFST-6,sp),x
-1427  0216 ae0000        	ldw	x,#0
-1428  0219 1f01          	ldw	(OFST-8,sp),x
-1429                     ; 202     lcd_glass_init();
-1431  021b ad91          	call	L353_lcd_glass_init
-1433                     ; 204     status = atomQueueCreate(&display_queue, (uint8_t *)display_queue_storage,
-1433                     ; 205                 sizeof(display_queue_storage[0]), DISPLAY_QUEUE_ENTRIES);
-1435  021d ae0004        	ldw	x,#4
-1436  0220 89            	pushw	x
-1437  0221 ae0000        	ldw	x,#0
-1438  0224 89            	pushw	x
-1439  0225 ae0004        	ldw	x,#4
-1440  0228 89            	pushw	x
-1441  0229 ae0000        	ldw	x,#0
-1442  022c 89            	pushw	x
-1443  022d ae0000        	ldw	x,#L763_display_queue_storage
-1444  0230 89            	pushw	x
-1445  0231 ae0010        	ldw	x,#L563_display_queue
-1446  0234 cd0000        	call	_atomQueueCreate
-1448  0237 5b0a          	addw	sp,#10
-1449  0239 6b05          	ld	(OFST-4,sp),a
-1450                     ; 206     if (status != ATOM_OK) {
-1452  023b 0d05          	tnz	(OFST-4,sp)
-1453  023d 2709          	jreq	L715
-1454                     ; 207         printf("atomQueueCreate display_queue failed!\n");
-1456  023f ae0081        	ldw	x,#L125
-1457  0242 cd0000        	call	_printf
-1459                     ; 208         return;
-1462  0245 5b09          	addw	sp,#9
-1463  0247 81            	ret
-1464  0248               L715:
-1465                     ; 211     pt_display_queue = (void *)&display_queue;
-1467  0248 ae0010        	ldw	x,#L563_display_queue
-1468  024b bf00          	ldw	_pt_display_queue,x
-1469  024d               L325:
-1470                     ; 214         status = atomQueueGet(pt_display_queue, 0, (uint8_t *)&msg);
-1472  024d 96            	ldw	x,sp
-1473  024e 1c0006        	addw	x,#OFST-3
-1474  0251 89            	pushw	x
-1475  0252 ae0000        	ldw	x,#0
-1476  0255 89            	pushw	x
-1477  0256 ae0000        	ldw	x,#0
-1478  0259 89            	pushw	x
-1479  025a be00          	ldw	x,_pt_display_queue
-1480  025c cd0000        	call	_atomQueueGet
-1482  025f 5b06          	addw	sp,#6
-1483  0261 6b05          	ld	(OFST-4,sp),a
-1484                     ; 215         if (status != ATOM_OK) {
-1486  0263 0d05          	tnz	(OFST-4,sp)
-1487  0265 26e6          	jrne	L325
-1488                     ; 216             continue;
-1490                     ; 219         switch (msg.type)
-1492  0267 7b06          	ld	a,(OFST-3,sp)
-1494                     ; 228         default:
-1494                     ; 229             break;
-1495  0269 4d            	tnz	a
-1496  026a 2705          	jreq	L173
-1497  026c 4a            	dec	a
-1498  026d 2710          	jreq	L373
-1499  026f 20dc          	jra	L325
-1500  0271               L173:
-1501                     ; 221         case DISPLAY_DATE:
-1501                     ; 222             display_date(msg.u.date.month, msg.u.date.day, TRUE);
-1503  0271 4b01          	push	#1
-1504  0273 7b09          	ld	a,(OFST+0,sp)
-1505  0275 97            	ld	xl,a
-1506  0276 7b08          	ld	a,(OFST-1,sp)
-1507  0278 95            	ld	xh,a
-1508  0279 cd014d        	call	L742_display_date
-1510  027c 84            	pop	a
-1511                     ; 223             break;
-1513  027d 20ce          	jra	L325
-1514  027f               L373:
-1515                     ; 224         case DISPLAY_CLOCK:
-1515                     ; 225             display_clock(msg.u.clock.hour, msg.u.clock.minute, TRUE);
-1517  027f 4b01          	push	#1
-1518  0281 7b09          	ld	a,(OFST+0,sp)
-1519  0283 97            	ld	xl,a
-1520  0284 7b08          	ld	a,(OFST-1,sp)
-1521  0286 95            	ld	xh,a
-1522  0287 cd0167        	call	L772_display_clock
-1524  028a 84            	pop	a
-1525                     ; 226             display_am_pm(msg.u.clock.pm, TRUE);
-1527  028b ae0001        	ldw	x,#1
-1528  028e 7b09          	ld	a,(OFST+0,sp)
-1529  0290 95            	ld	xh,a
-1530  0291 cd0183        	call	L723_display_am_pm
-1532                     ; 227             break;
-1534  0294 20b7          	jra	L325
-1535  0296               L573:
-1536                     ; 228         default:
-1536                     ; 229             break;
-1538  0296 20b5          	jra	L325
-1539  0298               L335:
-1541  0298 20b3          	jra	L325
-1836                     	switch	.ubsct
-1837  0000               L763_display_queue_storage:
-1838  0000 000000000000  	ds.b	16
-1839  0010               L563_display_queue:
-1840  0010 000000000000  	ds.b	26
-1841                     	xdef	_SEG8
-1842                     	xdef	_LCD_CHAR_BIT
-1843                     	xdef	_LCD_NUM_BIT
-1844                     	xdef	_display_thread
-1845                     	xdef	_pt_display_queue
-1846                     	xref	_atomQueueGet
-1847                     	xref	_atomQueueCreate
-1848                     	xref	_LCD_ContrastConfig
-1849                     	xref	_LCD_DeadTimeConfig
-1850                     	xref	_LCD_PulseOnDurationConfig
-1851                     	xref	_LCD_Cmd
-1852                     	xref	_LCD_PortMaskConfig
-1853                     	xref	_LCD_Init
-1854                     	xref	_CLK_PeripheralClockConfig
-1855                     	xref	_printf
-1856                     	switch	.const
-1857  0081               L125:
-1858  0081 61746f6d5175  	dc.b	"atomQueueCreate di"
-1859  0093 73706c61795f  	dc.b	"splay_queue failed"
-1860  00a5 210a00        	dc.b	"!",10,0
-1861                     	xref.b	c_x
-1881                     	xref	c_sdivx
-1882                     	end
+1241                     ; 196 void display_thread(uint32_t param)
+1241                     ; 197 {
+1242                     	switch	.text
+1243  020f               _display_thread:
+1247  020f               L304:
+1248                     ; 238         atomTimerDelay(10 * SYSTEM_TICKS_PER_SEC);
+1250  020f ae04e2        	ldw	x,#1250
+1251  0212 89            	pushw	x
+1252  0213 ae0000        	ldw	x,#0
+1253  0216 89            	pushw	x
+1254  0217 cd0000        	call	_atomTimerDelay
+1256  021a 5b04          	addw	sp,#4
+1258  021c 20f1          	jra	L304
+1540                     	xdef	_SEG8
+1541                     	xdef	_LCD_CHAR_BIT
+1542                     	xdef	_LCD_NUM_BIT
+1543                     	xdef	_display_thread
+1544                     	switch	.ubsct
+1545  0000               _display_queue:
+1546  0000 000000000000  	ds.b	26
+1547                     	xdef	_display_queue
+1548                     	xdef	_pt_display_queue
+1549                     	xref	_atomTimerDelay
+1550                     	xref	_LCD_ContrastConfig
+1551                     	xref	_LCD_DeadTimeConfig
+1552                     	xref	_LCD_PulseOnDurationConfig
+1553                     	xref	_LCD_Cmd
+1554                     	xref	_LCD_PortMaskConfig
+1555                     	xref	_LCD_Init
+1556                     	xref	_CLK_PeripheralClockConfig
+1557                     	xref.b	c_x
+1577                     	xref	c_sdivx
+1578                     	end

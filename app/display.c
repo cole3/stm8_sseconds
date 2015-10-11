@@ -59,7 +59,7 @@ const uint8_t LCD_CHAR_BIT[16] = {
 };
 
 // 0,1,2,3,4,5,6,7,8,9,A,b,C,d,E,F,Null bit7-bit0 cast to A-H
-const uint8_t SEG8[]={
+const uint8_t SEG8[]= {
     0xFC,0x60,0xDA,0xF2,0x66,0xB6,0xBE,0xE0,0xFE,
     0xF6,0xEE,0x3E,0x9C,0x7A,0x9E,0x8E,0x00
 };
@@ -70,8 +70,7 @@ static void display_num(uint8_t pos, uint8_t val)
     uint8_t i,j,k,L;
 
     i = SEG8[val];
-    for (j=0; j<8; j++)
-    {
+    for (j=0; j<8; j++) {
         k = LCD_NUM_BIT[pos][j];
         L = k & 0x07;
         L = 1 << L;
@@ -103,8 +102,7 @@ static void display_time(uint8_t type, uint8_t num1, uint8_t num2, bool on)
 {
     uint8_t base = (type == Date) ? 0 : 3;
 
-    if (!on)
-    {
+    if (!on) {
         display_char((type == Date) ? Ten1 : Ten2, 0);
         display_num(base, 16);
         display_num(base + 1, 16);
@@ -168,7 +166,7 @@ static void lcd_glass_init(void)
 
     /* Initialize the LCD */
     LCD_Init(LCD_Prescaler_4, LCD_Divider_18, LCD_Duty_1_4,
-           LCD_Bias_1_3, LCD_VoltageSource_External);
+             LCD_Bias_1_3, LCD_VoltageSource_External);
 
     /* Mask register*/
     LCD_PortMaskConfig(LCD_PortMaskRegister_0, 0xFE); // 1~7
@@ -186,12 +184,12 @@ static void lcd_glass_init(void)
 }
 
 
-#define DISPLAY_QUEUE_ENTRIES       4
+#define DISPLAY_QUEUE_ENTRIES       3
 
-void *pt_display_queue = NULL;
+volatile void *pt_display_queue = NULL;
 
-static ATOM_QUEUE display_queue;
-static struct display_msg display_queue_storage[DISPLAY_QUEUE_ENTRIES];
+NEAR ATOM_QUEUE display_queue;
+NEAR static struct display_msg display_queue_storage[DISPLAY_QUEUE_ENTRIES];
 
 void display_thread(uint32_t param)
 {
@@ -201,23 +199,26 @@ void display_thread(uint32_t param)
 
     lcd_glass_init();
 
+    display_char(Correction, TRUE);
+
     status = atomQueueCreate(&display_queue, (uint8_t *)display_queue_storage,
-                sizeof(display_queue_storage[0]), DISPLAY_QUEUE_ENTRIES);
+                             sizeof(display_queue_storage[0]), DISPLAY_QUEUE_ENTRIES);
     if (status != ATOM_OK) {
         printf("atomQueueCreate display_queue failed!\n");
         return;
     }
 
     pt_display_queue = (void *)&display_queue;
+    //printf("[display_thread] pt_display_queue = %x\n", (int16_t)pt_display_queue);
 
     while (1) {
         status = atomQueueGet(pt_display_queue, 0, (uint8_t *)&msg);
+        //printf("[display_thread] receive msg type = %d\n", (int16_t)msg.type);
         if (status != ATOM_OK) {
             continue;
         }
 
-        switch (msg.type)
-        {
+        switch (msg.type) {
         case DISPLAY_DATE:
             display_date(msg.u.date.month, msg.u.date.day, TRUE);
             break;

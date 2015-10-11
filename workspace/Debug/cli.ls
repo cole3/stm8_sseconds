@@ -30,7 +30,7 @@
  450  001a cd0000        	call	c_lcmp
  452  001d 2e08          	jrsge	L732
  453                     ; 25         printf("set_date year month day [week]\n");
- 455  001f ae00b8        	ldw	x,#L142
+ 455  001f ae00d6        	ldw	x,#L142
  456  0022 cd0000        	call	_printf
  458                     ; 26         return;
  460  0025 205f          	jra	L21
@@ -95,7 +95,7 @@
  537  007e 88            push A
  538  007f 86            pop CC
  540                     ; 39         printf("set_date fail!\n");
- 542  0080 ae00a8        	ldw	x,#L742
+ 542  0080 ae00c6        	ldw	x,#L742
  543  0083 cd0000        	call	_printf
  545                     ; 40         return;
  546  0086               L21:
@@ -165,7 +165,7 @@
  685  00d3 88            	push	a
  686  00d4 7b08          	ld	a,(OFST+3,sp)
  687  00d6 88            	push	a
- 688  00d7 ae008d        	ldw	x,#L103
+ 688  00d7 ae00ab        	ldw	x,#L103
  689  00da cd0000        	call	_printf
  691  00dd 5b04          	addw	sp,#4
  692                     ; 61 }
@@ -195,7 +195,7 @@
  861  00fc cd0000        	call	c_lcmp
  863  00ff 2e08          	jrsge	L373
  864                     ; 70         printf("set_clock hour minute second\n");
- 866  0101 ae006f        	ldw	x,#L573
+ 866  0101 ae008d        	ldw	x,#L573
  867  0104 cd0000        	call	_printf
  869                     ; 71         return;
  871  0107 205d          	jra	L42
@@ -263,7 +263,7 @@
  949  015e 88            push A
  950  015f 86            pop CC
  952                     ; 85         printf("set_date fail!\n");
- 954  0160 ae00a8        	ldw	x,#L742
+ 954  0160 ae00c6        	ldw	x,#L742
  955  0163 cd0000        	call	_printf
  957                     ; 86         return;
  958  0166               L42:
@@ -332,10 +332,10 @@
 1096                     ; 108         (rtc_clock.RTC_H12 == RTC_H12_AM) ? "AM" : "PM");
 1098  01b1 0d05          	tnz	(OFST+0,sp)
 1099  01b3 2605          	jrne	L03
-1100  01b5 ae0048        	ldw	x,#L534
+1100  01b5 ae0066        	ldw	x,#L534
 1101  01b8 2003          	jra	L23
 1102  01ba               L03:
-1103  01ba ae0045        	ldw	x,#L734
+1103  01ba ae0063        	ldw	x,#L734
 1104  01bd               L23:
 1105  01bd 89            	pushw	x
 1106  01be 7b06          	ld	a,(OFST+1,sp)
@@ -344,7 +344,7 @@
 1109  01c3 88            	push	a
 1110  01c4 7b06          	ld	a,(OFST+1,sp)
 1111  01c6 88            	push	a
-1112  01c7 ae004b        	ldw	x,#L334
+1112  01c7 ae0069        	ldw	x,#L334
 1113  01ca cd0000        	call	_printf
 1115  01cd 5b05          	addw	sp,#5
 1116                     ; 109 }
@@ -387,109 +387,112 @@
 1242  01fa               L63:
 1244  01fa 5b02          	addw	sp,#2
 1245  01fc 81            	ret
-1248                     	bsct
-1249  0000               L315_cli_tab:
-1250  0000 003c          	dc.w	L515
-1252  0002 0000          	dc.w	L3_set_date
-1253  0004 0033          	dc.w	L715
-1255  0006 00b0          	dc.w	L152_get_date
-1256  0008 0029          	dc.w	L125
-1258  000a 00e2          	dc.w	L303_set_clock
-1259  000c 001f          	dc.w	L325
-1261  000e 0196          	dc.w	L304_get_clock
-1262  0010 0000          	dc.w	0
-1263  0012 0000          	dc.w	0
-1330                     ; 135 void cli_thread(uint32_t param)
-1330                     ; 136 {
-1331                     	switch	.text
-1332  01fd               _cli_thread:
-1334  01fd 5208          	subw	sp,#8
-1335       00000008      OFST:	set	8
-1338                     ; 139     char **argv = (char **)string;
-1340  01ff ae0000        	ldw	x,#L525_string
-1341  0202 1f01          	ldw	(OFST-7,sp),x
-1342  0204               L165:
-1343                     ; 142         argc = scanf("%s %s %s %s %s", string[0], string[1], string[2], string[3], string[4]);
-1345  0204 4b40          	push	#L525_string+64
-1346  0206 4b30          	push	#L525_string+48
-1347  0208 4b20          	push	#L525_string+32
-1348  020a 4b10          	push	#L525_string+16
-1349  020c 4b00          	push	#L525_string
-1350  020e ae0010        	ldw	x,#L565
-1351  0211 cd0000        	call	_scanf
-1353  0214 5b05          	addw	sp,#5
-1354  0216 cd0000        	call	c_itolx
-1356  0219 96            	ldw	x,sp
-1357  021a 1c0003        	addw	x,#OFST-5
-1358  021d cd0000        	call	c_rtol
-1360                     ; 143         f = find_cli_cmd(cli_tab, (char *)string[0]);
-1362  0220 ae0000        	ldw	x,#L525_string
-1363  0223 89            	pushw	x
-1364  0224 ae0000        	ldw	x,#L315_cli_tab
-1365  0227 ada9          	call	L144_find_cli_cmd
-1367  0229 5b02          	addw	sp,#2
-1368  022b 1f07          	ldw	(OFST-1,sp),x
-1369                     ; 144         if (f) {
-1371  022d 1e07          	ldw	x,(OFST-1,sp)
-1372  022f 27d3          	jreq	L165
-1373                     ; 145             f(argc, argv);
-1375  0231 1e01          	ldw	x,(OFST-7,sp)
-1376  0233 89            	pushw	x
-1377  0234 1e07          	ldw	x,(OFST-1,sp)
-1378  0236 89            	pushw	x
-1379  0237 1e07          	ldw	x,(OFST-1,sp)
-1380  0239 89            	pushw	x
-1381  023a 1e0d          	ldw	x,(OFST+5,sp)
-1382  023c fd            	call	(x)
-1384  023d 5b06          	addw	sp,#6
-1385  023f 20c3          	jra	L165
-1423                     	switch	.ubsct
-1424  0000               L525_string:
-1425  0000 000000000000  	ds.b	80
-1426                     	xdef	_cli_thread
-1427                     	xref.b	_pt_display_queue
-1428                     	xref	_atomQueuePut
-1429                     	xref	_RTC_GetDate
-1430                     	xref	_RTC_SetDate
-1431                     	xref	_RTC_GetTime
-1432                     	xref	_RTC_SetTime
-1433                     	xref	_strcmp
-1434                     	xref	_atoi
-1435                     	xref	_scanf
-1436                     	xref	_printf
-1437                     	switch	.const
-1438  0010               L565:
-1439  0010 257320257320  	dc.b	"%s %s %s %s %s",0
-1440  001f               L325:
-1441  001f 6765745f636c  	dc.b	"get_clock",0
-1442  0029               L125:
-1443  0029 7365745f636c  	dc.b	"set_clock",0
-1444  0033               L715:
-1445  0033 6765745f6461  	dc.b	"get_date",0
-1446  003c               L515:
-1447  003c 7365745f6461  	dc.b	"set_date",0
-1448  0045               L734:
-1449  0045 504d00        	dc.b	"PM",0
-1450  0048               L534:
-1451  0048 414d00        	dc.b	"AM",0
-1452  004b               L334:
-1453  004b 63757272656e  	dc.b	"current clock: %02"
-1454  005d 643a25303264  	dc.b	"d:%02d:%02d (%s)",10,0
-1455  006f               L573:
-1456  006f 7365745f636c  	dc.b	"set_clock hour min"
-1457  0081 757465207365  	dc.b	"ute second",10,0
-1458  008d               L103:
-1459  008d 63757272656e  	dc.b	"current date: %d/%"
-1460  009f 642f25642025  	dc.b	"d/%d %d",10,0
-1461  00a8               L742:
-1462  00a8 7365745f6461  	dc.b	"set_date fail!",10,0
-1463  00b8               L142:
-1464  00b8 7365745f6461  	dc.b	"set_date year mont"
-1465  00ca 682064617920  	dc.b	"h day [week]",10,0
-1466                     	xref.b	c_x
-1486                     	xref	c_rtol
-1487                     	xref	c_itolx
-1488                     	xref	c_lcmp
-1489                     	xref	c_ltor
-1490                     	xref	c_xymvx
-1491                     	end
+1248                     	switch	.const
+1249  0010               L315_cli_tab:
+1250  0010 005a          	dc.w	L515
+1252  0012 0000          	dc.w	L3_set_date
+1253  0014 0051          	dc.w	L715
+1255  0016 00b0          	dc.w	L152_get_date
+1256  0018 0047          	dc.w	L125
+1258  001a 00e2          	dc.w	L303_set_clock
+1259  001c 003d          	dc.w	L325
+1261  001e 0196          	dc.w	L304_get_clock
+1262  0020 0000          	dc.w	0
+1263  0022 0000          	dc.w	0
+1307                     ; 137 void cli_thread(uint32_t param)
+1307                     ; 138 {
+1308                     	switch	.text
+1309  01fd               _cli_thread:
+1311  01fd 89            	pushw	x
+1312       00000002      OFST:	set	2
+1315  01fe               L745:
+1316                     ; 142         count++;
+1318  01fe ae0000        	ldw	x,#_count
+1319  0201 a601          	ld	a,#1
+1320  0203 cd0000        	call	c_lgadc
+1322                     ; 143         printf("[cli_thread] count: ");
+1324  0206 ae0028        	ldw	x,#L355
+1325  0209 cd0000        	call	_printf
+1327                     ; 144         for (i=0; i<count; i++) {
+1329  020c 5f            	clrw	x
+1330  020d 1f01          	ldw	(OFST-1,sp),x
+1332  020f 200d          	jra	L165
+1333  0211               L555:
+1334                     ; 145              printf("+");
+1336  0211 ae0026        	ldw	x,#L565
+1337  0214 cd0000        	call	_printf
+1339                     ; 144         for (i=0; i<count; i++) {
+1341  0217 1e01          	ldw	x,(OFST-1,sp)
+1342  0219 1c0001        	addw	x,#1
+1343  021c 1f01          	ldw	(OFST-1,sp),x
+1344  021e               L165:
+1347  021e 9c            	rvf
+1348  021f 1e01          	ldw	x,(OFST-1,sp)
+1349  0221 cd0000        	call	c_itolx
+1351  0224 ae0000        	ldw	x,#_count
+1352  0227 cd0000        	call	c_lcmp
+1354  022a 2fe5          	jrslt	L555
+1355                     ; 147         printf("\n");
+1357  022c ae0024        	ldw	x,#L765
+1358  022f cd0000        	call	_printf
+1360                     ; 148         atomTimerDelay(5*SYSTEM_TICKS_PER_SEC);
+1362  0232 ae0271        	ldw	x,#625
+1363  0235 89            	pushw	x
+1364  0236 ae0000        	ldw	x,#0
+1365  0239 89            	pushw	x
+1366  023a cd0000        	call	_atomTimerDelay
+1368  023d 5b04          	addw	sp,#4
+1370  023f 20bd          	jra	L745
+1397                     	xref.b	_count
+1398                     	xdef	_cli_thread
+1399                     	xref.b	_pt_display_queue
+1400                     	xref	_atomQueuePut
+1401                     	xref	_atomTimerDelay
+1402                     	xref	_RTC_GetDate
+1403                     	xref	_RTC_SetDate
+1404                     	xref	_RTC_GetTime
+1405                     	xref	_RTC_SetTime
+1406                     	xref	_strcmp
+1407                     	xref	_atoi
+1408                     	xref	_printf
+1409                     	switch	.const
+1410  0024               L765:
+1411  0024 0a00          	dc.b	10,0
+1412  0026               L565:
+1413  0026 2b00          	dc.b	"+",0
+1414  0028               L355:
+1415  0028 5b636c695f74  	dc.b	"[cli_thread] count"
+1416  003a 3a2000        	dc.b	": ",0
+1417  003d               L325:
+1418  003d 6765745f636c  	dc.b	"get_clock",0
+1419  0047               L125:
+1420  0047 7365745f636c  	dc.b	"set_clock",0
+1421  0051               L715:
+1422  0051 6765745f6461  	dc.b	"get_date",0
+1423  005a               L515:
+1424  005a 7365745f6461  	dc.b	"set_date",0
+1425  0063               L734:
+1426  0063 504d00        	dc.b	"PM",0
+1427  0066               L534:
+1428  0066 414d00        	dc.b	"AM",0
+1429  0069               L334:
+1430  0069 63757272656e  	dc.b	"current clock: %02"
+1431  007b 643a25303264  	dc.b	"d:%02d:%02d (%s)",10,0
+1432  008d               L573:
+1433  008d 7365745f636c  	dc.b	"set_clock hour min"
+1434  009f 757465207365  	dc.b	"ute second",10,0
+1435  00ab               L103:
+1436  00ab 63757272656e  	dc.b	"current date: %d/%"
+1437  00bd 642f25642025  	dc.b	"d/%d %d",10,0
+1438  00c6               L742:
+1439  00c6 7365745f6461  	dc.b	"set_date fail!",10,0
+1440  00d6               L142:
+1441  00d6 7365745f6461  	dc.b	"set_date year mont"
+1442  00e8 682064617920  	dc.b	"h day [week]",10,0
+1443                     	xref.b	c_x
+1463                     	xref	c_itolx
+1464                     	xref	c_lgadc
+1465                     	xref	c_lcmp
+1466                     	xref	c_ltor
+1467                     	xref	c_xymvx
+1468                     	end

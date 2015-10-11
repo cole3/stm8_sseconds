@@ -4,6 +4,7 @@
 #include "atomqueue.h"
 #include "atomport-private.h"
 #include "stm8l15x_conf.h"
+#include "uart.h"
 #include "display.h"
 #include "cli.h"
 
@@ -50,16 +51,24 @@ static void rtc_alarm_init(void)
     while (RTC_WaitForSynchro() != SUCCESS);
 }
 
+int32_t count = 0;
+
 static void main_thread(uint32_t param)
 {
     CRITICAL_STORE;
     RTC_DateTypeDef date;
     RTC_TimeTypeDef clock;
     struct display_msg msg;
+    int32_t count_main = 0;
+    int i;
 
     rtc_alarm_init();
 
+    //printf("[main_thread] enter\n");
+
     while (1) {
+        count++;
+        //printf("[main_thread] count = %d\n", (int16_t)count);
         {
             CRITICAL_START();
             RTC_GetDate(RTC_Format_BIN, &date);
@@ -81,33 +90,23 @@ static void main_thread(uint32_t param)
             msg.u.clock.pm = clock.RTC_H12;
             atomQueuePut(pt_display_queue, 0, (uint8_t *)&msg);
         }
-        atomTimerDelay(10 * SYSTEM_TICKS_PER_SEC);
+        atomTimerDelay(4 * SYSTEM_TICKS_PER_SEC);
     }
-}
-
-static void uart_init(void)
-{
-    SYSCFG_REMAPPinConfig(REMAP_Pin_USART1TxRxPortA, ENABLE);
-    CLK_PeripheralClockConfig(CLK_Peripheral_USART1, ENABLE);
-    GPIO_ExternalPullUpConfig(GPIOA, GPIO_Pin_2, ENABLE);
-    GPIO_ExternalPullUpConfig(GPIOA, GPIO_Pin_3, ENABLE);
-    USART_Init(USART1, 115200,
-               USART_WordLength_8b,
-               USART_StopBits_1,
-               USART_Parity_No,
-               (USART_Mode_TypeDef)(USART_Mode_Tx | USART_Mode_Rx));
 }
 
 
 void main(void)
 {
     int8_t status;
+    uint8_t c = 0;
 
     CLK_SYSCLKDivConfig(CLK_SYSCLKDiv_1);
 
-    uart_init();
-
     enableInterrupts();
+
+    uart_init(115200);
+
+    printf("main start.\n");
 
     status = atomOSInit(&idle_thread_stack[IDLE_STACK_SIZE - 1], IDLE_STACK_SIZE);
     if (status != ATOM_OK) {

@@ -2,13 +2,16 @@
 ..\kernel\atomkernel.c
 ..\kernel\atommutex.c
 ..\kernel\atommutex.h
-..\kernel\atomport-template.h
 ..\kernel\atomqueue.c
 ..\kernel\atomqueue.h
 ..\kernel\atomsem.c
 ..\kernel\atomsem.h
 ..\kernel\atomtimer.c
 ..\kernel\atomtimer.h
+..\app\cli.h
+..\app\cli.c
+..\app\display.h
+..\app\display.c
 ..\app\main.c
 ..\port\stm8\uart.h
 ..\port\stm8\uart.c
@@ -80,4 +83,5 @@
 d:\program files\stmicroelectronics\st_toolset\cxstm8\hstm8\mods0.h
 d:\program files\stmicroelectronics\st_toolset\cxstm8\hstm8\stddef.h
 d:\program files\stmicroelectronics\st_toolset\cxstm8\hstm8\stdio.h
+d:\program files\stmicroelectronics\st_toolset\cxstm8\hstm8\stdlib.h
 d:\program files\stmicroelectronics\st_toolset\cxstm8\hstm8\string.h

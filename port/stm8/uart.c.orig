@@ -40,7 +40,7 @@ int uart_init(uint32_t baudrate)
     }
 
     if (atomQueueCreate(&uart_rev_queue, (uint8_t *)uart_rev_q_msg,
-                        sizeof(uart_rev_q_msg[0]), UART_REV_Q_MSG_MAX) != ATOM_OK) {
+        sizeof(uart_rev_q_msg[0]), UART_REV_Q_MSG_MAX) != ATOM_OK) {
         status = -1;
         goto uart_init_err;
     }

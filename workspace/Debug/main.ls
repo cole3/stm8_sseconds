@@ -29,355 +29,374 @@
   77  0023 26f9          	jrne	L34
   78                     ; 51 }
   81  0025 81            	ret
- 546                     ; 53 static void main_thread(uint32_t param)
- 546                     ; 54 {
- 547                     	switch	.text
- 548  0026               L74_main_thread:
- 550  0026 520d          	subw	sp,#13
- 551       0000000d      OFST:	set	13
- 554                     ; 60     rtc_alarm_init();
- 556  0028 add6          	call	L12_rtc_alarm_init
- 558  002a               L123:
- 559                     ; 64             CRITICAL_START();
- 561  002a 96            	ldw	x,sp
- 562  002b 1c0005        	addw	x,#OFST-8
- 564  002e 8a            push CC
- 565  002f 84            pop a
- 566  0030 f7            ld (X),A
- 567  0031 9b            sim
- 569                     ; 65             RTC_GetDate(RTC_Format_BIN, &date);
- 571  0032 96            	ldw	x,sp
- 572  0033 1c0001        	addw	x,#OFST-12
- 573  0036 89            	pushw	x
- 574  0037 4f            	clr	a
- 575  0038 cd0000        	call	_RTC_GetDate
- 577  003b 85            	popw	x
- 578                     ; 66             CRITICAL_END();
- 580  003c 96            	ldw	x,sp
- 581  003d 1c0005        	addw	x,#OFST-8
- 583  0040 f6            ld A,(X)
- 584  0041 88            push A
- 585  0042 86            pop CC
- 587                     ; 68             msg.type = DISPLAY_DATE;
- 589  0043 0f0a          	clr	(OFST-3,sp)
- 590                     ; 69             msg.u.date.month = date.RTC_Month;
- 592  0045 7b02          	ld	a,(OFST-11,sp)
- 593  0047 6b0b          	ld	(OFST-2,sp),a
- 594                     ; 70             msg.u.date.day = date.RTC_Date;
- 596  0049 7b03          	ld	a,(OFST-10,sp)
- 597  004b 6b0c          	ld	(OFST-1,sp),a
- 598                     ; 71             atomQueuePut(pt_display_queue, 0, (uint8_t *)&msg);
- 600  004d 96            	ldw	x,sp
- 601  004e 1c000a        	addw	x,#OFST-3
- 602  0051 89            	pushw	x
- 603  0052 ae0000        	ldw	x,#0
- 604  0055 89            	pushw	x
- 605  0056 ae0000        	ldw	x,#0
- 606  0059 89            	pushw	x
- 607  005a be00          	ldw	x,_pt_display_queue
- 608  005c cd0000        	call	_atomQueuePut
- 610  005f 5b06          	addw	sp,#6
- 611                     ; 74             CRITICAL_START();
- 613  0061 96            	ldw	x,sp
- 614  0062 1c0005        	addw	x,#OFST-8
- 616  0065 8a            push CC
- 617  0066 84            pop a
- 618  0067 f7            ld (X),A
- 619  0068 9b            sim
- 621                     ; 75             RTC_GetTime(RTC_Format_BIN, &clock);
- 623  0069 96            	ldw	x,sp
- 624  006a 1c0006        	addw	x,#OFST-7
- 625  006d 89            	pushw	x
- 626  006e 4f            	clr	a
- 627  006f cd0000        	call	_RTC_GetTime
- 629  0072 85            	popw	x
- 630                     ; 76             CRITICAL_END();
- 632  0073 96            	ldw	x,sp
- 633  0074 1c0005        	addw	x,#OFST-8
- 635  0077 f6            ld A,(X)
- 636  0078 88            push A
- 637  0079 86            pop CC
- 639                     ; 78             msg.type = DISPLAY_CLOCK;
- 641  007a a601          	ld	a,#1
- 642  007c 6b0a          	ld	(OFST-3,sp),a
- 643                     ; 79             msg.u.clock.hour = clock.RTC_Hours;
- 645  007e 7b06          	ld	a,(OFST-7,sp)
- 646  0080 6b0b          	ld	(OFST-2,sp),a
- 647                     ; 80             msg.u.clock.minute = clock.RTC_Minutes;
- 649  0082 7b07          	ld	a,(OFST-6,sp)
- 650  0084 6b0c          	ld	(OFST-1,sp),a
- 651                     ; 81             msg.u.clock.pm = clock.RTC_H12;
- 653  0086 7b09          	ld	a,(OFST-4,sp)
- 654  0088 6b0d          	ld	(OFST+0,sp),a
- 655                     ; 82             atomQueuePut(pt_display_queue, 0, (uint8_t *)&msg);
- 657  008a 96            	ldw	x,sp
- 658  008b 1c000a        	addw	x,#OFST-3
- 659  008e 89            	pushw	x
- 660  008f ae0000        	ldw	x,#0
- 661  0092 89            	pushw	x
- 662  0093 ae0000        	ldw	x,#0
- 663  0096 89            	pushw	x
- 664  0097 be00          	ldw	x,_pt_display_queue
- 665  0099 cd0000        	call	_atomQueuePut
- 667  009c 5b06          	addw	sp,#6
- 668                     ; 84         atomTimerDelay(10 * SYSTEM_TICKS_PER_SEC);
- 670  009e ae04e2        	ldw	x,#1250
- 671  00a1 89            	pushw	x
- 672  00a2 ae0000        	ldw	x,#0
- 673  00a5 89            	pushw	x
- 674  00a6 cd0000        	call	_atomTimerDelay
- 676  00a9 5b04          	addw	sp,#4
- 678  00ab ac2a002a      	jpf	L123
- 705                     ; 88 static void uart_init(void)
- 705                     ; 89 {
- 706                     	switch	.text
- 707  00af               L523_uart_init:
- 711                     ; 90     SYSCFG_REMAPPinConfig(REMAP_Pin_USART1TxRxPortA, ENABLE);
- 713  00af 4b01          	push	#1
- 714  00b1 ae011c        	ldw	x,#284
- 715  00b4 cd0000        	call	_SYSCFG_REMAPPinConfig
- 717  00b7 84            	pop	a
- 718                     ; 91     CLK_PeripheralClockConfig(CLK_Peripheral_USART1, ENABLE);
- 720  00b8 ae0001        	ldw	x,#1
- 721  00bb a605          	ld	a,#5
- 722  00bd 95            	ld	xh,a
- 723  00be cd0000        	call	_CLK_PeripheralClockConfig
- 725                     ; 92     GPIO_ExternalPullUpConfig(GPIOA, GPIO_Pin_2, ENABLE);
- 727  00c1 4b01          	push	#1
- 728  00c3 4b04          	push	#4
- 729  00c5 ae5000        	ldw	x,#20480
- 730  00c8 cd0000        	call	_GPIO_ExternalPullUpConfig
- 732  00cb 85            	popw	x
- 733                     ; 93     GPIO_ExternalPullUpConfig(GPIOA, GPIO_Pin_3, ENABLE);
- 735  00cc 4b01          	push	#1
- 736  00ce 4b08          	push	#8
- 737  00d0 ae5000        	ldw	x,#20480
- 738  00d3 cd0000        	call	_GPIO_ExternalPullUpConfig
- 740  00d6 85            	popw	x
- 741                     ; 94     USART_Init(USART1, 115200,
- 741                     ; 95                USART_WordLength_8b,
- 741                     ; 96                USART_StopBits_1,
- 741                     ; 97                USART_Parity_No,
- 741                     ; 98                (USART_Mode_TypeDef)(USART_Mode_Tx | USART_Mode_Rx));
- 743  00d7 4b0c          	push	#12
- 744  00d9 4b00          	push	#0
- 745  00db 4b00          	push	#0
- 746  00dd 4b00          	push	#0
- 747  00df aec200        	ldw	x,#49664
- 748  00e2 89            	pushw	x
- 749  00e3 ae0001        	ldw	x,#1
- 750  00e6 89            	pushw	x
- 751  00e7 ae5230        	ldw	x,#21040
- 752  00ea cd0000        	call	_USART_Init
- 754  00ed 5b08          	addw	sp,#8
- 755                     ; 99 }
- 758  00ef 81            	ret
- 813                     ; 102 void main(void)
- 813                     ; 103 {
- 814                     	switch	.text
- 815  00f0               _main:
- 817  00f0 88            	push	a
- 818       00000001      OFST:	set	1
- 821                     ; 106     CLK_SYSCLKDivConfig(CLK_SYSCLKDiv_1);
- 823  00f1 4f            	clr	a
- 824  00f2 cd0000        	call	_CLK_SYSCLKDivConfig
- 826                     ; 108     uart_init();
- 828  00f5 adb8          	call	L523_uart_init
- 830                     ; 110     enableInterrupts();
- 833  00f7 9a            rim
- 835                     ; 112     status = atomOSInit(&idle_thread_stack[IDLE_STACK_SIZE - 1], IDLE_STACK_SIZE);
- 838  00f8 ae0080        	ldw	x,#128
- 839  00fb 89            	pushw	x
- 840  00fc ae0000        	ldw	x,#0
- 841  00ff 89            	pushw	x
- 842  0100 ae037f        	ldw	x,#L3_idle_thread_stack+127
- 843  0103 cd0000        	call	_atomOSInit
- 845  0106 5b04          	addw	sp,#4
- 846  0108 6b01          	ld	(OFST+0,sp),a
- 847                     ; 113     if (status != ATOM_OK) {
- 849  010a 0d01          	tnz	(OFST+0,sp)
- 850  010c 2709          	jreq	L753
- 851                     ; 114         printf("atomOSInit failed!\n");
- 853  010e ae007b        	ldw	x,#L163
- 854  0111 cd0000        	call	_printf
- 856                     ; 115         goto err;
- 858  0114 cc01ad        	jra	L733
- 859  0117               L753:
- 860                     ; 118     archInitSystemTickTimer();
- 862  0117 cd0000        	call	_archInitSystemTickTimer
- 864                     ; 120     status = atomThreadCreate(&main_tcb,
- 864                     ; 121                               MAIN_THREAD_PRIO, main_thread, 0,
- 864                     ; 122                               &main_thread_stack[MAIN_STACK_SIZE - 1],
- 864                     ; 123                               MAIN_STACK_SIZE);
- 866  011a ae0100        	ldw	x,#256
- 867  011d 89            	pushw	x
- 868  011e ae0000        	ldw	x,#0
- 869  0121 89            	pushw	x
- 870  0122 ae02ff        	ldw	x,#L5_main_thread_stack+255
- 871  0125 89            	pushw	x
- 872  0126 ae0000        	ldw	x,#0
- 873  0129 89            	pushw	x
- 874  012a ae0000        	ldw	x,#0
- 875  012d 89            	pushw	x
- 876  012e ae0026        	ldw	x,#L74_main_thread
- 877  0131 89            	pushw	x
- 878  0132 4b0f          	push	#15
- 879  0134 ae0022        	ldw	x,#L31_main_tcb
- 880  0137 cd0000        	call	_atomThreadCreate
- 882  013a 5b0d          	addw	sp,#13
- 883  013c 6b01          	ld	(OFST+0,sp),a
- 884                     ; 124     if (status != ATOM_OK) {
- 886  013e 0d01          	tnz	(OFST+0,sp)
- 887  0140 2708          	jreq	L363
- 888                     ; 125         printf("atomThreadCreate main_thread failed!\n");
- 890  0142 ae0055        	ldw	x,#L563
- 891  0145 cd0000        	call	_printf
- 893                     ; 126         goto err;
- 895  0148 2063          	jra	L733
- 896  014a               L363:
- 897                     ; 129     status = atomThreadCreate(&display_tcb,
- 897                     ; 130                               DISPLAY_THREAD_PRIO, display_thread, 0,
- 897                     ; 131                               &display_thread_stack[DISPLAY_STACK_SIZE - 1],
- 897                     ; 132                               DISPLAY_STACK_SIZE);
- 899  014a ae0100        	ldw	x,#256
- 900  014d 89            	pushw	x
- 901  014e ae0000        	ldw	x,#0
- 902  0151 89            	pushw	x
- 903  0152 ae00ff        	ldw	x,#L11_display_thread_stack+255
- 904  0155 89            	pushw	x
- 905  0156 ae0000        	ldw	x,#0
- 906  0159 89            	pushw	x
- 907  015a ae0000        	ldw	x,#0
- 908  015d 89            	pushw	x
- 909  015e ae0000        	ldw	x,#_display_thread
- 910  0161 89            	pushw	x
- 911  0162 4b10          	push	#16
- 912  0164 ae0000        	ldw	x,#L71_display_tcb
- 913  0167 cd0000        	call	_atomThreadCreate
- 915  016a 5b0d          	addw	sp,#13
- 916  016c 6b01          	ld	(OFST+0,sp),a
- 917                     ; 133     if (status != ATOM_OK) {
- 919  016e 0d01          	tnz	(OFST+0,sp)
- 920  0170 2708          	jreq	L763
- 921                     ; 134         printf("atomThreadCreate display_thread failed!\n");
- 923  0172 ae002c        	ldw	x,#L173
- 924  0175 cd0000        	call	_printf
- 926                     ; 135         goto err;
- 928  0178 2033          	jra	L733
- 929  017a               L763:
- 930                     ; 138     status = atomThreadCreate(&cli_tcb,
- 930                     ; 139                               CLI_THREAD_PRIO, cli_thread, 0,
- 930                     ; 140                               &cli_thread_stack[CLI_STACK_SIZE - 1],
- 930                     ; 141                               CLI_STACK_SIZE);
- 932  017a ae0100        	ldw	x,#256
- 933  017d 89            	pushw	x
- 934  017e ae0000        	ldw	x,#0
- 935  0181 89            	pushw	x
- 936  0182 ae01ff        	ldw	x,#L7_cli_thread_stack+255
- 937  0185 89            	pushw	x
- 938  0186 ae0000        	ldw	x,#0
- 939  0189 89            	pushw	x
- 940  018a ae0000        	ldw	x,#0
- 941  018d 89            	pushw	x
- 942  018e ae0000        	ldw	x,#_cli_thread
- 943  0191 89            	pushw	x
- 944  0192 4b11          	push	#17
- 945  0194 ae0011        	ldw	x,#L51_cli_tcb
- 946  0197 cd0000        	call	_atomThreadCreate
- 948  019a 5b0d          	addw	sp,#13
- 949  019c 6b01          	ld	(OFST+0,sp),a
- 950                     ; 142     if (status != ATOM_OK) {
- 952  019e 0d01          	tnz	(OFST+0,sp)
- 953  01a0 2708          	jreq	L373
- 954                     ; 143         printf("atomThreadCreate cli_thread failed!\n");
- 956  01a2 ae0007        	ldw	x,#L573
- 957  01a5 cd0000        	call	_printf
- 959                     ; 144         goto err;
- 961  01a8 2003          	jra	L733
- 962  01aa               L373:
- 963                     ; 157     atomOSStart();
- 965  01aa cd0000        	call	_atomOSStart
- 967  01ad               L733:
- 968                     ; 159 err:
- 968                     ; 160     printf("Oops!\n");
- 970  01ad ae0000        	ldw	x,#L773
- 971  01b0 cd0000        	call	_printf
- 973  01b3               L104:
- 974                     ; 161     while (1);
- 976  01b3 20fe          	jra	L104
-1010                     ; 164 void delay(__IO uint16_t nCount)
-1010                     ; 165 {
-1011                     	switch	.text
-1012  01b5               _delay:
-1014  01b5 89            	pushw	x
-1015       00000000      OFST:	set	0
-1018  01b6 2007          	jra	L524
-1019  01b8               L324:
-1020                     ; 167         nCount--;
-1022  01b8 1e01          	ldw	x,(OFST+1,sp)
-1023  01ba 1d0001        	subw	x,#1
-1024  01bd 1f01          	ldw	(OFST+1,sp),x
-1025  01bf               L524:
-1026                     ; 166     while (nCount) {
-1028  01bf 1e01          	ldw	x,(OFST+1,sp)
-1029  01c1 26f5          	jrne	L324
-1030                     ; 169 }
-1033  01c3 85            	popw	x
-1034  01c4 81            	ret
-1260                     	xdef	_main
-1261                     	xdef	_delay
-1262                     	switch	.ubsct
-1263  0000               L71_display_tcb:
-1264  0000 000000000000  	ds.b	17
-1265  0011               L51_cli_tcb:
-1266  0011 000000000000  	ds.b	17
-1267  0022               L31_main_tcb:
-1268  0022 000000000000  	ds.b	17
-1269                     	switch	.bss
-1270  0000               L11_display_thread_stack:
-1271  0000 000000000000  	ds.b	256
-1272  0100               L7_cli_thread_stack:
-1273  0100 000000000000  	ds.b	256
-1274  0200               L5_main_thread_stack:
-1275  0200 000000000000  	ds.b	256
-1276  0300               L3_idle_thread_stack:
-1277  0300 000000000000  	ds.b	128
-1278                     	xref	_cli_thread
-1279                     	xref	_display_thread
-1280                     	xref.b	_pt_display_queue
-1281                     	xref	_archInitSystemTickTimer
-1282                     	xref	_atomQueuePut
-1283                     	xref	_atomThreadCreate
-1284                     	xref	_atomOSStart
-1285                     	xref	_atomOSInit
-1286                     	xref	_atomTimerDelay
-1287                     	xref	_USART_Init
-1288                     	xref	_SYSCFG_REMAPPinConfig
-1289                     	xref	_RTC_ITConfig
-1290                     	xref	_RTC_WakeUpClockConfig
-1291                     	xref	_RTC_GetDate
-1292                     	xref	_RTC_GetTime
-1293                     	xref	_RTC_WaitForSynchro
-1294                     	xref	_GPIO_ExternalPullUpConfig
-1295                     	xref	_CLK_PeripheralClockConfig
-1296                     	xref	_CLK_RTCClockConfig
-1297                     	xref	_CLK_SYSCLKDivConfig
-1298                     	xref	_printf
-1299                     .const:	section	.text
-1300  0000               L773:
-1301  0000 4f6f7073210a  	dc.b	"Oops!",10,0
-1302  0007               L573:
-1303  0007 61746f6d5468  	dc.b	"atomThreadCreate c"
-1304  0019 6c695f746872  	dc.b	"li_thread failed!",10,0
-1305  002c               L173:
-1306  002c 61746f6d5468  	dc.b	"atomThreadCreate d"
-1307  003e 6973706c6179  	dc.b	"isplay_thread fail"
-1308  0050 6564210a00    	dc.b	"ed!",10,0
-1309  0055               L563:
-1310  0055 61746f6d5468  	dc.b	"atomThreadCreate m"
-1311  0067 61696e5f7468  	dc.b	"ain_thread failed!"
-1312  0079 0a00          	dc.b	10,0
-1313  007b               L163:
-1314  007b 61746f6d4f53  	dc.b	"atomOSInit failed!"
-1315  008d 0a00          	dc.b	10,0
-1335                     	end
+  84                     	bsct
+  85  0000               _count:
+  86  0000 00000000      	dc.l	0
+ 140                     ; 55 static void main_thread(uint32_t param)
+ 140                     ; 56 {
+ 141                     	switch	.text
+ 142  0026               L74_main_thread:
+ 144  0026 5206          	subw	sp,#6
+ 145       00000006      OFST:	set	6
+ 148                     ; 61     int32_t count_main = 0;
+ 150  0028 ae0000        	ldw	x,#0
+ 151  002b 1f03          	ldw	(OFST-3,sp),x
+ 152  002d ae0000        	ldw	x,#0
+ 153  0030 1f01          	ldw	(OFST-5,sp),x
+ 154                     ; 64     rtc_alarm_init();
+ 156  0032 adcc          	call	L12_rtc_alarm_init
+ 158                     ; 66     printf("[main_thread] enter\n");
+ 160  0034 ae00de        	ldw	x,#L77
+ 161  0037 cd0000        	call	_printf
+ 163  003a               L101:
+ 164                     ; 69         count++;
+ 166  003a ae0000        	ldw	x,#_count
+ 167  003d a601          	ld	a,#1
+ 168  003f cd0000        	call	c_lgadc
+ 170                     ; 70         printf("[main_thread] count = %d\n", (int16_t)count);
+ 172  0042 be02          	ldw	x,_count+2
+ 173  0044 89            	pushw	x
+ 174  0045 ae00c4        	ldw	x,#L501
+ 175  0048 cd0000        	call	_printf
+ 177  004b 85            	popw	x
+ 178                     ; 71         printf("[main_thread] count: ");
+ 180  004c ae00ae        	ldw	x,#L701
+ 181  004f cd0000        	call	_printf
+ 183                     ; 72         for (i=0; i<count; i++) {
+ 185  0052 5f            	clrw	x
+ 186  0053 1f05          	ldw	(OFST-1,sp),x
+ 188  0055 200d          	jra	L511
+ 189  0057               L111:
+ 190                     ; 73              printf("+");
+ 192  0057 ae00ac        	ldw	x,#L121
+ 193  005a cd0000        	call	_printf
+ 195                     ; 72         for (i=0; i<count; i++) {
+ 197  005d 1e05          	ldw	x,(OFST-1,sp)
+ 198  005f 1c0001        	addw	x,#1
+ 199  0062 1f05          	ldw	(OFST-1,sp),x
+ 200  0064               L511:
+ 203  0064 9c            	rvf
+ 204  0065 1e05          	ldw	x,(OFST-1,sp)
+ 205  0067 cd0000        	call	c_itolx
+ 207  006a ae0000        	ldw	x,#_count
+ 208  006d cd0000        	call	c_lcmp
+ 210  0070 2fe5          	jrslt	L111
+ 211                     ; 75         printf("\n");
+ 213  0072 ae00aa        	ldw	x,#L321
+ 214  0075 cd0000        	call	_printf
+ 216                     ; 76         count_main++;
+ 218  0078 96            	ldw	x,sp
+ 219  0079 1c0001        	addw	x,#OFST-5
+ 220  007c a601          	ld	a,#1
+ 221  007e cd0000        	call	c_lgadc
+ 223                     ; 77         printf("[main_thread] count_main: ");
+ 225  0081 ae008f        	ldw	x,#L521
+ 226  0084 cd0000        	call	_printf
+ 228                     ; 78         for (i=0; i<count_main; i++) {
+ 230  0087 5f            	clrw	x
+ 231  0088 1f05          	ldw	(OFST-1,sp),x
+ 233  008a 200d          	jra	L331
+ 234  008c               L721:
+ 235                     ; 79              printf("+");
+ 237  008c ae00ac        	ldw	x,#L121
+ 238  008f cd0000        	call	_printf
+ 240                     ; 78         for (i=0; i<count_main; i++) {
+ 242  0092 1e05          	ldw	x,(OFST-1,sp)
+ 243  0094 1c0001        	addw	x,#1
+ 244  0097 1f05          	ldw	(OFST-1,sp),x
+ 245  0099               L331:
+ 248  0099 9c            	rvf
+ 249  009a 1e05          	ldw	x,(OFST-1,sp)
+ 250  009c cd0000        	call	c_itolx
+ 252  009f 96            	ldw	x,sp
+ 253  00a0 1c0001        	addw	x,#OFST-5
+ 254  00a3 cd0000        	call	c_lcmp
+ 256  00a6 2fe4          	jrslt	L721
+ 257                     ; 81         printf("\n");
+ 259  00a8 ae00aa        	ldw	x,#L321
+ 260  00ab cd0000        	call	_printf
+ 262                     ; 105         atomTimerDelay(4* SYSTEM_TICKS_PER_SEC);
+ 264  00ae ae01f4        	ldw	x,#500
+ 265  00b1 89            	pushw	x
+ 266  00b2 ae0000        	ldw	x,#0
+ 267  00b5 89            	pushw	x
+ 268  00b6 cd0000        	call	_atomTimerDelay
+ 270  00b9 5b04          	addw	sp,#4
+ 272  00bb cc003a        	jra	L101
+ 299                     ; 109 static void uart_init(void)
+ 299                     ; 110 {
+ 300                     	switch	.text
+ 301  00be               L731_uart_init:
+ 305                     ; 111     SYSCFG_REMAPPinConfig(REMAP_Pin_USART1TxRxPortA, ENABLE);
+ 307  00be 4b01          	push	#1
+ 308  00c0 ae011c        	ldw	x,#284
+ 309  00c3 cd0000        	call	_SYSCFG_REMAPPinConfig
+ 311  00c6 84            	pop	a
+ 312                     ; 112     CLK_PeripheralClockConfig(CLK_Peripheral_USART1, ENABLE);
+ 314  00c7 ae0001        	ldw	x,#1
+ 315  00ca a605          	ld	a,#5
+ 316  00cc 95            	ld	xh,a
+ 317  00cd cd0000        	call	_CLK_PeripheralClockConfig
+ 319                     ; 113     GPIO_ExternalPullUpConfig(GPIOA, GPIO_Pin_2, ENABLE);
+ 321  00d0 4b01          	push	#1
+ 322  00d2 4b04          	push	#4
+ 323  00d4 ae5000        	ldw	x,#20480
+ 324  00d7 cd0000        	call	_GPIO_ExternalPullUpConfig
+ 326  00da 85            	popw	x
+ 327                     ; 114     GPIO_ExternalPullUpConfig(GPIOA, GPIO_Pin_3, ENABLE);
+ 329  00db 4b01          	push	#1
+ 330  00dd 4b08          	push	#8
+ 331  00df ae5000        	ldw	x,#20480
+ 332  00e2 cd0000        	call	_GPIO_ExternalPullUpConfig
+ 334  00e5 85            	popw	x
+ 335                     ; 115     USART_Init(USART1, 115200,
+ 335                     ; 116                USART_WordLength_8b,
+ 335                     ; 117                USART_StopBits_1,
+ 335                     ; 118                USART_Parity_No,
+ 335                     ; 119                (USART_Mode_TypeDef)(USART_Mode_Tx | USART_Mode_Rx));
+ 337  00e6 4b0c          	push	#12
+ 338  00e8 4b00          	push	#0
+ 339  00ea 4b00          	push	#0
+ 340  00ec 4b00          	push	#0
+ 341  00ee aec200        	ldw	x,#49664
+ 342  00f1 89            	pushw	x
+ 343  00f2 ae0001        	ldw	x,#1
+ 344  00f5 89            	pushw	x
+ 345  00f6 ae5230        	ldw	x,#21040
+ 346  00f9 cd0000        	call	_USART_Init
+ 348  00fc 5b08          	addw	sp,#8
+ 349                     ; 120 }
+ 352  00fe 81            	ret
+ 417                     ; 123 void main(void)
+ 417                     ; 124 {
+ 418                     	switch	.text
+ 419  00ff               _main:
+ 421  00ff 89            	pushw	x
+ 422       00000002      OFST:	set	2
+ 425                     ; 126     uint8_t c = 0;
+ 427  0100 0f01          	clr	(OFST-1,sp)
+ 428                     ; 128     CLK_SYSCLKDivConfig(CLK_SYSCLKDiv_1);
+ 430  0102 4f            	clr	a
+ 431  0103 cd0000        	call	_CLK_SYSCLKDivConfig
+ 433                     ; 130     uart_init();
+ 435  0106 adb6          	call	L731_uart_init
+ 437                     ; 132     USART_SendData8(USART1, 'A');
+ 439  0108 4b41          	push	#65
+ 440  010a ae5230        	ldw	x,#21040
+ 441  010d cd0000        	call	_USART_SendData8
+ 443  0110 84            	pop	a
+ 444                     ; 134     enableInterrupts();
+ 447  0111 9a            rim
+ 449                     ; 136     status = atomOSInit(&idle_thread_stack[IDLE_STACK_SIZE - 1], IDLE_STACK_SIZE);
+ 452  0112 ae0080        	ldw	x,#128
+ 453  0115 89            	pushw	x
+ 454  0116 ae0000        	ldw	x,#0
+ 455  0119 89            	pushw	x
+ 456  011a ae027f        	ldw	x,#L3_idle_thread_stack+127
+ 457  011d cd0000        	call	_atomOSInit
+ 459  0120 5b04          	addw	sp,#4
+ 460  0122 6b02          	ld	(OFST+0,sp),a
+ 461                     ; 137     if (status != ATOM_OK) {
+ 463  0124 0d02          	tnz	(OFST+0,sp)
+ 464  0126 2709          	jreq	L571
+ 465                     ; 138         printf("atomOSInit failed!\n");
+ 467  0128 ae007b        	ldw	x,#L771
+ 468  012b cd0000        	call	_printf
+ 470                     ; 139         goto err;
+ 472  012e cc01c7        	jra	L151
+ 473  0131               L571:
+ 474                     ; 142     archInitSystemTickTimer();
+ 476  0131 cd0000        	call	_archInitSystemTickTimer
+ 478                     ; 144     status = atomThreadCreate(&main_tcb,
+ 478                     ; 145                               MAIN_THREAD_PRIO, main_thread, 0,
+ 478                     ; 146                               &main_thread_stack[MAIN_STACK_SIZE - 1],
+ 478                     ; 147                               MAIN_STACK_SIZE);
+ 480  0134 ae0100        	ldw	x,#256
+ 481  0137 89            	pushw	x
+ 482  0138 ae0000        	ldw	x,#0
+ 483  013b 89            	pushw	x
+ 484  013c ae01ff        	ldw	x,#L5_main_thread_stack+255
+ 485  013f 89            	pushw	x
+ 486  0140 ae0000        	ldw	x,#0
+ 487  0143 89            	pushw	x
+ 488  0144 ae0000        	ldw	x,#0
+ 489  0147 89            	pushw	x
+ 490  0148 ae0026        	ldw	x,#L74_main_thread
+ 491  014b 89            	pushw	x
+ 492  014c 4b0f          	push	#15
+ 493  014e ae0022        	ldw	x,#L31_main_tcb
+ 494  0151 cd0000        	call	_atomThreadCreate
+ 496  0154 5b0d          	addw	sp,#13
+ 497  0156 6b02          	ld	(OFST+0,sp),a
+ 498                     ; 148     if (status != ATOM_OK) {
+ 500  0158 0d02          	tnz	(OFST+0,sp)
+ 501  015a 2708          	jreq	L102
+ 502                     ; 149         printf("atomThreadCreate main_thread failed!\n");
+ 504  015c ae0055        	ldw	x,#L302
+ 505  015f cd0000        	call	_printf
+ 507                     ; 150         goto err;
+ 509  0162 2063          	jra	L151
+ 510  0164               L102:
+ 511                     ; 153     status = atomThreadCreate(&display_tcb,
+ 511                     ; 154                               DISPLAY_THREAD_PRIO, display_thread, 0,
+ 511                     ; 155                               &display_thread_stack[DISPLAY_STACK_SIZE - 1],
+ 511                     ; 156                               DISPLAY_STACK_SIZE);
+ 513  0164 ae0080        	ldw	x,#128
+ 514  0167 89            	pushw	x
+ 515  0168 ae0000        	ldw	x,#0
+ 516  016b 89            	pushw	x
+ 517  016c ae007f        	ldw	x,#L11_display_thread_stack+127
+ 518  016f 89            	pushw	x
+ 519  0170 ae0000        	ldw	x,#0
+ 520  0173 89            	pushw	x
+ 521  0174 ae0000        	ldw	x,#0
+ 522  0177 89            	pushw	x
+ 523  0178 ae0000        	ldw	x,#_display_thread
+ 524  017b 89            	pushw	x
+ 525  017c 4b10          	push	#16
+ 526  017e ae0000        	ldw	x,#L71_display_tcb
+ 527  0181 cd0000        	call	_atomThreadCreate
+ 529  0184 5b0d          	addw	sp,#13
+ 530  0186 6b02          	ld	(OFST+0,sp),a
+ 531                     ; 157     if (status != ATOM_OK) {
+ 533  0188 0d02          	tnz	(OFST+0,sp)
+ 534  018a 2708          	jreq	L502
+ 535                     ; 158         printf("atomThreadCreate display_thread failed!\n");
+ 537  018c ae002c        	ldw	x,#L702
+ 538  018f cd0000        	call	_printf
+ 540                     ; 159         goto err;
+ 542  0192 2033          	jra	L151
+ 543  0194               L502:
+ 544                     ; 162     status = atomThreadCreate(&cli_tcb,
+ 544                     ; 163                               CLI_THREAD_PRIO, cli_thread, 0,
+ 544                     ; 164                               &cli_thread_stack[CLI_STACK_SIZE - 1],
+ 544                     ; 165                               CLI_STACK_SIZE);
+ 546  0194 ae0080        	ldw	x,#128
+ 547  0197 89            	pushw	x
+ 548  0198 ae0000        	ldw	x,#0
+ 549  019b 89            	pushw	x
+ 550  019c ae00ff        	ldw	x,#L7_cli_thread_stack+127
+ 551  019f 89            	pushw	x
+ 552  01a0 ae0000        	ldw	x,#0
+ 553  01a3 89            	pushw	x
+ 554  01a4 ae0000        	ldw	x,#0
+ 555  01a7 89            	pushw	x
+ 556  01a8 ae0000        	ldw	x,#_cli_thread
+ 557  01ab 89            	pushw	x
+ 558  01ac 4b11          	push	#17
+ 559  01ae ae0011        	ldw	x,#L51_cli_tcb
+ 560  01b1 cd0000        	call	_atomThreadCreate
+ 562  01b4 5b0d          	addw	sp,#13
+ 563  01b6 6b02          	ld	(OFST+0,sp),a
+ 564                     ; 166     if (status != ATOM_OK) {
+ 566  01b8 0d02          	tnz	(OFST+0,sp)
+ 567  01ba 2708          	jreq	L112
+ 568                     ; 167         printf("atomThreadCreate cli_thread failed!\n");
+ 570  01bc ae0007        	ldw	x,#L312
+ 571  01bf cd0000        	call	_printf
+ 573                     ; 168         goto err;
+ 575  01c2 2003          	jra	L151
+ 576  01c4               L112:
+ 577                     ; 181     atomOSStart();
+ 579  01c4 cd0000        	call	_atomOSStart
+ 581  01c7               L151:
+ 582                     ; 183 err:
+ 582                     ; 184     printf("Oops!\n");
+ 584  01c7 ae0000        	ldw	x,#L512
+ 585  01ca cd0000        	call	_printf
+ 587  01cd               L712:
+ 588                     ; 185     while (1);
+ 590  01cd 20fe          	jra	L712
+ 624                     ; 188 void delay(__IO uint16_t nCount)
+ 624                     ; 189 {
+ 625                     	switch	.text
+ 626  01cf               _delay:
+ 628  01cf 89            	pushw	x
+ 629       00000000      OFST:	set	0
+ 632  01d0 2007          	jra	L342
+ 633  01d2               L142:
+ 634                     ; 191         nCount--;
+ 636  01d2 1e01          	ldw	x,(OFST+1,sp)
+ 637  01d4 1d0001        	subw	x,#1
+ 638  01d7 1f01          	ldw	(OFST+1,sp),x
+ 639  01d9               L342:
+ 640                     ; 190     while (nCount) {
+ 642  01d9 1e01          	ldw	x,(OFST+1,sp)
+ 643  01db 26f5          	jrne	L142
+ 644                     ; 193 }
+ 647  01dd 85            	popw	x
+ 648  01de 81            	ret
+ 883                     	xdef	_main
+ 884                     	xdef	_count
+ 885                     	xdef	_delay
+ 886                     	switch	.ubsct
+ 887  0000               L71_display_tcb:
+ 888  0000 000000000000  	ds.b	17
+ 889  0011               L51_cli_tcb:
+ 890  0011 000000000000  	ds.b	17
+ 891  0022               L31_main_tcb:
+ 892  0022 000000000000  	ds.b	17
+ 893                     	switch	.bss
+ 894  0000               L11_display_thread_stack:
+ 895  0000 000000000000  	ds.b	128
+ 896  0080               L7_cli_thread_stack:
+ 897  0080 000000000000  	ds.b	128
+ 898  0100               L5_main_thread_stack:
+ 899  0100 000000000000  	ds.b	256
+ 900  0200               L3_idle_thread_stack:
+ 901  0200 000000000000  	ds.b	128
+ 902                     	xref	_cli_thread
+ 903                     	xref	_display_thread
+ 904                     	xref	_archInitSystemTickTimer
+ 905                     	xref	_atomThreadCreate
+ 906                     	xref	_atomOSStart
+ 907                     	xref	_atomOSInit
+ 908                     	xref	_atomTimerDelay
+ 909                     	xref	_USART_SendData8
+ 910                     	xref	_USART_Init
+ 911                     	xref	_SYSCFG_REMAPPinConfig
+ 912                     	xref	_RTC_ITConfig
+ 913                     	xref	_RTC_WakeUpClockConfig
+ 914                     	xref	_RTC_WaitForSynchro
+ 915                     	xref	_GPIO_ExternalPullUpConfig
+ 916                     	xref	_CLK_PeripheralClockConfig
+ 917                     	xref	_CLK_RTCClockConfig
+ 918                     	xref	_CLK_SYSCLKDivConfig
+ 919                     	xref	_printf
+ 920                     .const:	section	.text
+ 921  0000               L512:
+ 922  0000 4f6f7073210a  	dc.b	"Oops!",10,0
+ 923  0007               L312:
+ 924  0007 61746f6d5468  	dc.b	"atomThreadCreate c"
+ 925  0019 6c695f746872  	dc.b	"li_thread failed!",10,0
+ 926  002c               L702:
+ 927  002c 61746f6d5468  	dc.b	"atomThreadCreate d"
+ 928  003e 6973706c6179  	dc.b	"isplay_thread fail"
+ 929  0050 6564210a00    	dc.b	"ed!",10,0
+ 930  0055               L302:
+ 931  0055 61746f6d5468  	dc.b	"atomThreadCreate m"
+ 932  0067 61696e5f7468  	dc.b	"ain_thread failed!"
+ 933  0079 0a00          	dc.b	10,0
+ 934  007b               L771:
+ 935  007b 61746f6d4f53  	dc.b	"atomOSInit failed!"
+ 936  008d 0a00          	dc.b	10,0
+ 937  008f               L521:
+ 938  008f 5b6d61696e5f  	dc.b	"[main_thread] coun"
+ 939  00a1 745f6d61696e  	dc.b	"t_main: ",0
+ 940  00aa               L321:
+ 941  00aa 0a00          	dc.b	10,0
+ 942  00ac               L121:
+ 943  00ac 2b00          	dc.b	"+",0
+ 944  00ae               L701:
+ 945  00ae 5b6d61696e5f  	dc.b	"[main_thread] coun"
+ 946  00c0 743a2000      	dc.b	"t: ",0
+ 947  00c4               L501:
+ 948  00c4 5b6d61696e5f  	dc.b	"[main_thread] coun"
+ 949  00d6 74203d202564  	dc.b	"t = %d",10,0
+ 950  00de               L77:
+ 951  00de 5b6d61696e5f  	dc.b	"[main_thread] ente"
+ 952  00f0 720a00        	dc.b	"r",10,0
+ 972                     	xref	c_lcmp
+ 973                     	xref	c_itolx
+ 974                     	xref	c_lgadc
+ 975                     	end

@@ -74,5 +74,6 @@
 /* Function prototypes */
 void archInitSystemTickTimer (void);
 INTERRUPT void TIM4_SystemTickISR (void);
+INTERRUPT void UART_RcvISR (void);
 
 #endif /* __ATOM_PORT_PRIVATE_H */
