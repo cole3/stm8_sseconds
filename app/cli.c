@@ -7,6 +7,8 @@
 #include "cli.h"
 
 
+extern struct thread_info threads_info[];
+
 typedef void (* cli_func)(int32_t argc, char **argv);
 
 struct CLI_TAB {
@@ -15,6 +17,31 @@ struct CLI_TAB {
     cli_func   func;
 };
 
+
+static void stack_info(int32_t argc, char **argv)
+{
+#ifdef ATOM_STACK_CHECKING
+    uint32_t used_bytes, free_bytes;
+    int8_t i;
+
+    printf("Stack Info:\n");
+    for (i = 0; i < ARRAY_SIZE(threads_info); i++) {
+        if (atomThreadStackCheck (&threads_info[i].tcb, &used_bytes, &free_bytes) != ATOM_OK) {
+            printf("StackCheck error\n");
+            continue;
+        }
+
+        printf("%s:\tTotal:%d\tUse:%d\tFree%d\n"), threads_info[i].name, threads_info[i].stack_size,
+            (uint16_t)used_bytes, (uint16_t)free_bytes);
+        if (free_bytes == 0) {
+            printf("StackOverflow!!!\n");
+            failures++;
+        }
+    }
+#else
+    printf("If use this function, need open ATOM_STACK_CHECKING macro!\n");
+#endif
+}
 
 static void set_date(int32_t argc, char **argv)
 {
@@ -162,6 +189,7 @@ static char *get_string(char *str)
 
 
 static const struct CLI_TAB cli_tab[] = {
+    {"stack_info", "", stack_info},
     {"set_date", "", set_date},
     {"get_date", "", get_date},
     {"set_clock", "", set_clock},

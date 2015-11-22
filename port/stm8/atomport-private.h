@@ -75,5 +75,8 @@
 void archInitSystemTickTimer (void);
 INTERRUPT void TIM4_SystemTickISR (void);
 INTERRUPT void UART_RcvISR (void);
+INTERRUPT void EXTI_Key0ISR (void);
+INTERRUPT void EXTI_Key1ISR (void);
+
 
 #endif /* __ATOM_PORT_PRIVATE_H */
